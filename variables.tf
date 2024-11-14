@@ -2,15 +2,14 @@
 # Input Variables
 ########################################################################################################################
 
-variable "use_existing_resource_group" {
-  type        = bool
-  description = "Determines whether to use an existing resource group."
-  default     = false
+variable "watsonx_data_name" {
+  type        = string
+  description = "The name of the watsonx.data instance."
 }
 
-variable "resource_group_name" {
+variable "resource_group_id" {
+  description = "The resource group ID where the Event Streams instance is created."
   type        = string
-  description = "The name of a new or an existing resource group where the resources are created."
 }
 
 variable "location" {
@@ -20,17 +19,6 @@ variable "location" {
   validation {
     condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok"], var.location)
     error_message = "You must specify `eu-de`, `eu-gb`, `jp-tok` or `us-south` as the IBM Cloud location."
-  }
-}
-
-variable "resource_prefix" {
-  description = "The name to be used on all Watson resources as a prefix."
-  type        = string
-  default     = "watsonx-poc"
-
-  validation {
-    condition     = var.resource_prefix != "" && length(var.resource_prefix) <= 25
-    error_message = "You must provide a value for the resource_prefix variable and the resource_prefix length can't exceed 25 characters."
   }
 }
 

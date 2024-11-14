@@ -1,20 +1,23 @@
-locals {
-  unique_identifier = random_string.unique_identifier.result
+########################################################################################################################
+# Resource Group
+########################################################################################################################
+
+module "resource_group" {
+  source  = "terraform-ibm-modules/resource-group/ibm"
+  version = "1.1.6"
+  # if an existing resource group is not set (null) create a new one using prefix
+  resource_group_name          = var.resource_group == null ? "${var.prefix}-resource-group" : null
+  existing_resource_group_name = var.resource_group
 }
 
-# Access random string generated with random_string.unique_identifier.result
-resource "random_string" "unique_identifier" {
-  length  = 6
-  special = false
-  upper   = false
-}
-
+########################################################################################################################
+# Watsonx Data
+########################################################################################################################
 
 module "watsonx_data" {
-  source                      = "../../"
-  resource_prefix             = "basic-test-${local.unique_identifier}"
-  location                    = var.location
-  use_existing_resource_group = "false"
-  resource_group_name         = local.unique_identifier
-  watsonx_data_plan           = "lite"
+  source            = "../../"
+  watsonx_data_name = "${var.prefix}-data-instance"
+  location          = var.location
+  resource_group_id = module.resource_group.resource_group_id
+  watsonx_data_plan = "lite"
 }

@@ -24,6 +24,7 @@ func setupOptionsBasicExample(t *testing.T, prefix string, dir string) *testhelp
 	})
 	terraformVars := map[string]interface{}{
 		"location": validRegions[rand.Intn(len(validRegions))],
+		"prefix":   prefix,
 	}
 	options.TerraformVars = terraformVars
 	return options
@@ -42,7 +43,7 @@ func TestRunBasicExample(t *testing.T) {
 func TestRunUpgradeExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptionsBasicExample(t, "watsonx-upg", basicExampleDir)
+	options := setupOptionsBasicExample(t, "watsonx-data-upg", basicExampleDir)
 
 	output, err := options.RunTestUpgrade()
 	assert.Nil(t, err, "This should not have errored")

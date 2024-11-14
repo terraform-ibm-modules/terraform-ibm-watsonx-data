@@ -18,17 +18,6 @@ locals {
 }
 
 ########################################################################################################################
-# Resource Group
-########################################################################################################################
-
-module "resource_group" {
-  source                       = "terraform-ibm-modules/resource-group/ibm"
-  version                      = "1.1.6"
-  resource_group_name          = var.use_existing_resource_group == false ? var.resource_group_name : null
-  existing_resource_group_name = var.use_existing_resource_group == true ? var.resource_group_name : null
-}
-
-########################################################################################################################
 # Watsonx Data Instance
 ########################################################################################################################
 
@@ -39,11 +28,11 @@ data "ibm_resource_instance" "existing_data_instance" {
 
 resource "ibm_resource_instance" "data_instance" {
   count             = var.existing_data_instance != null ? 0 : var.watsonx_data_plan == "do not install" ? 0 : 1
-  name              = "${var.resource_prefix}-watsonx-data-instance"
+  name              = var.watsonx_data_name
   service           = "lakehouse"
   plan              = var.watsonx_data_plan
   location          = var.location
-  resource_group_id = module.resource_group.resource_group_id
+  resource_group_id = var.resource_group_id
 
   timeouts {
     create = "15m"

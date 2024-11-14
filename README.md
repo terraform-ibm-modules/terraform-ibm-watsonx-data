@@ -81,9 +81,7 @@ You need the following permissions to run this module.
 
 ### Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform-ibm-modules/resource-group/ibm | 1.1.6 |
+No modules.
 
 ### Resources
 
@@ -98,9 +96,8 @@ You need the following permissions to run this module.
 |------|-------------|------|---------|:--------:|
 | <a name="input_existing_data_instance"></a> [existing\_data\_instance](#input\_existing\_data\_instance) | CRN of the an existing watsonx.data instance. | `string` | `null` | no |
 | <a name="input_location"></a> [location](#input\_location) | The location that's used with the IBM Cloud Terraform IBM provider. It's also used during resource creation. | `string` | `"us-south"` | no |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | The name of a new or an existing resource group where the resources are created. | `string` | n/a | yes |
-| <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | The name to be used on all Watson resources as a prefix. | `string` | `"watsonx-poc"` | no |
-| <a name="input_use_existing_resource_group"></a> [use\_existing\_resource\_group](#input\_use\_existing\_resource\_group) | Determines whether to use an existing resource group. | `bool` | `false` | no |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the Event Streams instance is created. | `string` | n/a | yes |
+| <a name="input_watsonx_data_name"></a> [watsonx\_data\_name](#input\_watsonx\_data\_name) | The name of the watsonx.data instance. | `string` | n/a | yes |
 | <a name="input_watsonx_data_plan"></a> [watsonx\_data\_plan](#input\_watsonx\_data\_plan) | The plan that's used to provision the watsonx.data instance. | `string` | `"do not install"` | no |
 
 ### Outputs
