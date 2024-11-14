@@ -97,23 +97,43 @@ statement instead the previous block.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | 1.70.1 |
 
 ### Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform-ibm-modules/resource-group/ibm | 1.1.6 |
 
 ### Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [ibm_resource_instance.data_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.70.1/docs/resources/resource_instance) | resource |
+| [ibm_resource_instance.existing_data_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.70.1/docs/data-sources/resource_instance) | data source |
 
 ### Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_existing_data_instance"></a> [existing\_data\_instance](#input\_existing\_data\_instance) | CRN of the an existing watsonx.data instance. | `string` | `null` | no |
+| <a name="input_ibmcloud_api_key"></a> [ibmcloud\_api\_key](#input\_ibmcloud\_api\_key) | The API key that's used with the IBM Cloud Terraform IBM provider. | `string` | n/a | yes |
+| <a name="input_location"></a> [location](#input\_location) | The location that's used with the IBM Cloud Terraform IBM provider. It's also used during resource creation. | `string` | `"us-south"` | no |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | The name of a new or an existing resource group where the resources are created. | `string` | n/a | yes |
+| <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | The name to be used on all Watson resources as a prefix. | `string` | `"watsonx-poc"` | no |
+| <a name="input_use_existing_resource_group"></a> [use\_existing\_resource\_group](#input\_use\_existing\_resource\_group) | Determines whether to use an existing resource group. | `bool` | `false` | no |
+| <a name="input_watsonx_data_plan"></a> [watsonx\_data\_plan](#input\_watsonx\_data\_plan) | The plan that's used to provision the watsonx.data instance. | `string` | `"do not install"` | no |
 
 ### Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_watsonx_data_crn"></a> [watsonx\_data\_crn](#output\_watsonx\_data\_crn) | The CRN of the watsonx.data instance. |
+| <a name="output_watsonx_data_dashboard_url"></a> [watsonx\_data\_dashboard\_url](#output\_watsonx\_data\_dashboard\_url) | The dashboard URL of the watsonx.data instance. |
+| <a name="output_watsonx_data_guid"></a> [watsonx\_data\_guid](#output\_watsonx\_data\_guid) | The GUID of the watsonx.data instance. |
+| <a name="output_watsonx_data_name"></a> [watsonx\_data\_name](#output\_watsonx\_data\_name) | The name of the watsonx.data instance. |
+| <a name="output_watsonx_data_plan_id"></a> [watsonx\_data\_plan\_id](#output\_watsonx\_data\_plan\_id) | The plan ID of the watsonx.data instance. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->
