@@ -1,12 +1,8 @@
-locals {
+#######################################################################################################################
+# Local Variables
+#######################################################################################################################
 
-  dataplatform_ui_mapping = {
-    "us-south" = "https://dataplatform.cloud.ibm.com",
-    "eu-gb"    = "https://eu-gb.dataplatform.cloud.ibm.com",
-    "eu-de"    = "https://eu-de.dataplatform.cloud.ibm.com",
-    "jp-tok"   = "https://jp-tok.dataplatform.cloud.ibm.com"
-  }
-  dataplatform_ui = local.dataplatform_ui_mapping[var.location]
+locals {
   watsonx_data_datacenter_mapping = {
     "us-south" = "ibm:us-south:dal",
     "eu-gb"    = "ibm:eu-gb:lon",
@@ -21,12 +17,20 @@ locals {
   watsonx_data_dashboard_url = var.existing_data_instance != null ? null : var.watsonx_data_plan != "do not install" ? resource.ibm_resource_instance.data_instance[0].dashboard_url : null
 }
 
+########################################################################################################################
+# Resource Group
+########################################################################################################################
+
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
   version                      = "1.1.6"
   resource_group_name          = var.use_existing_resource_group == false ? var.resource_group_name : null
   existing_resource_group_name = var.use_existing_resource_group == true ? var.resource_group_name : null
 }
+
+########################################################################################################################
+# Watsonx Data Instance
+########################################################################################################################
 
 data "ibm_resource_instance" "existing_data_instance" {
   count      = var.existing_data_instance != null ? 1 : 0

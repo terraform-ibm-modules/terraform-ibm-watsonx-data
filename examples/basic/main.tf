@@ -11,11 +11,7 @@ resource "random_string" "unique_identifier" {
 
 
 module "watsonx_data" {
-  providers = {
-    ibm = ibm.deployer
-  }
   source                      = "../../"
-  ibmcloud_api_key            = var.ibmcloud_api_key
   resource_prefix             = "basic-test-${local.unique_identifier}"
   location                    = var.location
   use_existing_resource_group = "false"

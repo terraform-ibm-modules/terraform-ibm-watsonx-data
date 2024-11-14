@@ -2,12 +2,6 @@
 # Input Variables
 ########################################################################################################################
 
-variable "ibmcloud_api_key" {
-  description = "The API key that's used with the IBM Cloud Terraform IBM provider."
-  sensitive   = true
-  type        = string
-}
-
 variable "use_existing_resource_group" {
   type        = bool
   description = "Determines whether to use an existing resource group."
