@@ -19,9 +19,6 @@ For information, see "Module names and descriptions" at
 https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
 -->
 
-TODO: Replace this with a description of the modules in this repo.
-
-
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
@@ -46,8 +43,7 @@ https://terraform-ibm-modules.github.io/documentation/#/implementation-guideline
 
 This module supports provisioning the following:
 
-- Creating a new resource group, or using an existing one.
-- Provisioning watsonx.data instance with a selectable service plan
+* Provisioning watsonx.data instance with a selectable service plan
 
 ### Usage
 
