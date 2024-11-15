@@ -52,9 +52,9 @@ module "watsonx_data" {
     source = "terraform-ibm-modules/watsonx-data/ibm"
     version = "X.Y.Z" # Replace "X.X.X" with a release version to lock into a specific release
     resource
-    resource_prefix = "watsonx-poc"
+    watsonx_data_name = "watsonx-data"
     service = "lakehouse"
-    location = "us-south"
+    region = "us-south"
     plan = "lite"
     resource_group_id     = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
 }
