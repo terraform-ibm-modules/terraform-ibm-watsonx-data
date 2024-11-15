@@ -17,7 +17,7 @@ module "resource_group" {
 module "watsonx_data" {
   source            = "../../"
   watsonx_data_name = "${var.prefix}-data-instance"
-  location          = var.location
+  region            = var.region
   resource_group_id = module.resource_group.resource_group_id
   watsonx_data_plan = "lite"
 }

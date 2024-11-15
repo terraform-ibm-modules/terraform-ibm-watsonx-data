@@ -26,3 +26,13 @@ output "watsonx_data_plan_id" {
   description = "The plan ID of the watsonx.data instance."
   value       = module.watsonx_data.watsonx_data_plan_id
 }
+
+output "resource_group_id" {
+  description = "The resource group ID to provision the watsonx.data instance."
+  value       = module.resource_group.resource_group_id
+}
+
+output "resource_group_name" {
+  description = "The resource group name to provision the watsonx.data instance."
+  value       = module.resource_group.resource_group_name
+}

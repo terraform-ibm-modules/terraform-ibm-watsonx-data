@@ -23,8 +23,8 @@ func setupOptionsBasicExample(t *testing.T, prefix string, dir string) *testhelp
 		TerraformDir: dir,
 	})
 	terraformVars := map[string]interface{}{
-		"location": validRegions[rand.Intn(len(validRegions))],
-		"prefix":   prefix,
+		"region": validRegions[rand.Intn(len(validRegions))],
+		"prefix": prefix,
 	}
 	options.TerraformVars = terraformVars
 	return options

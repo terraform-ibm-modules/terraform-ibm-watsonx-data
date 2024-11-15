@@ -14,13 +14,13 @@ variable "ibmcloud_api_key" {
   type        = string
 }
 
-variable "location" {
+variable "region" {
   default     = "us-south"
   description = "Used with the Terraform IBM-Cloud/ibm provider as well as resource creation."
   type        = string
   validation {
-    condition     = contains(["eu-de", "eu-gb", "jp-tok", "us-south"], var.location)
-    error_message = "The IBM Cloud location to use must be one of: eu-de, eu-gb, jp-tok or us-south"
+    condition     = contains(["eu-de", "eu-gb", "jp-tok", "us-south"], var.region)
+    error_message = "The IBM Cloud region to use must be one of: eu-de, eu-gb, jp-tok or us-south"
   }
 }
 

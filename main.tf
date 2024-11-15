@@ -9,7 +9,7 @@ locals {
     "eu-de"    = "ibm:eu-de:fra",
     "jp-tok"   = "ibm:jp-tok:tok"
   }
-  watsonx_data_datacenter    = local.watsonx_data_datacenter_mapping[var.location]
+  watsonx_data_datacenter    = local.watsonx_data_datacenter_mapping[var.region]
   watsonx_data_crn           = var.existing_data_instance != null ? data.ibm_resource_instance.existing_data_instance[0].crn : var.watsonx_data_plan != "do not install" ? resource.ibm_resource_instance.data_instance[0].crn : null
   watsonx_data_guid          = var.existing_data_instance != null ? data.ibm_resource_instance.existing_data_instance[0].guid : var.watsonx_data_plan != "do not install" ? resource.ibm_resource_instance.data_instance[0].guid : null
   watsonx_data_name          = var.existing_data_instance != null ? data.ibm_resource_instance.existing_data_instance[0].resource_name : var.watsonx_data_plan != "do not install" ? resource.ibm_resource_instance.data_instance[0].resource_name : null
@@ -31,7 +31,7 @@ resource "ibm_resource_instance" "data_instance" {
   name              = var.watsonx_data_name
   service           = "lakehouse"
   plan              = var.watsonx_data_plan
-  location          = var.location
+  location          = var.region
   resource_group_id = var.resource_group_id
 
   timeouts {
@@ -43,7 +43,7 @@ resource "ibm_resource_instance" "data_instance" {
   parameters = {
     datacenter : local.watsonx_data_datacenter
     cloud_type : "ibm"
-    region : var.location
+    region : var.region
     use_case : "ai"
   }
 }

@@ -4,5 +4,5 @@
 
 provider "ibm" {
   ibmcloud_api_key = var.ibmcloud_api_key
-  region           = var.location
+  region           = var.region
 }
