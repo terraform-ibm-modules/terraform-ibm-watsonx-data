@@ -14,10 +14,14 @@ module "resource_group" {
 # Watsonx Data
 ########################################################################################################################
 
-module "watsonx_data" {
+# module "watsonx_data_crn_parser" {
+#   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
+#   version = "1.1.0"
+#   crn     = var.existing_watsonx_data_instance_crn
+# }
+
+module "existing_watsonx_data_instance" {
   source            = "../../"
-  region            = var.region
+  existing_watsonx_data_instance_crn = var.existing_watsonx_data_instance_crn
   resource_group_id = module.resource_group.resource_group_id
-  watsonx_data_name = "${var.prefix}-data-instance"
-  watsonx_data_plan = "lite"
 }

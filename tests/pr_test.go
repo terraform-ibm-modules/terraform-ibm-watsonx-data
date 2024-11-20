@@ -15,6 +15,9 @@ const basicExampleDir = "examples/basic"
 var validRegions = []string{
 	"us-south",
 	"eu-de",
+	"eu-gb",
+	"jp-tok",
+	"au-syd",
 }
 
 func setupOptionsBasicExample(t *testing.T, prefix string, dir string) *testhelper.TestOptions {

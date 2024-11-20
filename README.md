@@ -1,11 +1,11 @@
-# Terraform IBM Watsonx Data
+# IBM Watsonx.data
 
 <!--
 Update status and "latest release" badges:
   1. For the status options, see https://terraform-ibm-modules.github.io/documentation/#/badge-status
   2. Update the "latest release" badge to point to the correct module's repo. Replace "terraform-ibm-module-template" in two places.
 -->
-[![Incubating (Not yet consumable)](https://img.shields.io/badge/status-Incubating%20(Not%20yet%20consumable)-red)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
+[![Stable (With quality checks)](https://img.shields.io/badge/Status-Stable%20(With%20quality%20checks)-green)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-watsonx-data?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/releases/latest)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
@@ -18,7 +18,7 @@ Expand on the repo short description in the .github/settings.yml file.
 For information, see "Module names and descriptions" at
 https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
 -->
-
+IBM® watsonx.data is a new open architecture lakehouse that combines the elements of the data warehouse and data lakes. For more information visit [here](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-wxd_ov)
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
@@ -49,13 +49,12 @@ This module supports provisioning the following:
 
 ```hcl
 module "watsonx_data" {
-    source = "terraform-ibm-modules/watsonx-data/ibm"
-    version = "X.Y.Z" # Replace "X.X.X" with a release version to lock into a specific release
+    source                = "terraform-ibm-modules/watsonx-data/ibm"
+    version               = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
     resource
-    watsonx_data_name = "watsonx-data"
-    service = "lakehouse"
-    region = "us-south"
-    plan = "lite"
+    watsonx_data_name     = "watsonx-data"
+    region                = "us-south"
+    watsonx_data_plan     = "lite"
     resource_group_id     = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
 }
 
@@ -65,14 +64,18 @@ module "watsonx_data" {
 
 You need the following permissions to run this module.
 
-- Editor platform role on watsonx.data if you must provision.
+- Account Management service
+  - Administrator role
+
+- watsonx.data
+  - Editor platform
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.70.1, < 2.0.0 |
 
 ### Modules
@@ -84,16 +87,16 @@ No modules.
 | Name | Type |
 |------|------|
 | [ibm_resource_instance.data_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
-| [ibm_resource_instance.existing_data_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/resource_instance) | data source |
+| [ibm_resource_instance.existing_watsonx_data_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/resource_instance) | data source |
 
 ### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_existing_data_instance"></a> [existing\_data\_instance](#input\_existing\_data\_instance) | CRN of the an existing watsonx.data instance. | `string` | `null` | no |
+| <a name="input_existing_watsonx_data_instance_crn"></a> [existing\_watsonx\_data\_instance\_crn](#input\_existing\_watsonx\_data\_instance\_crn) | The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region that's used with the IBM Cloud Terraform IBM provider. It's also used during resource creation. | `string` | `"us-south"` | no |
-| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the Event Streams instance is created. | `string` | n/a | yes |
-| <a name="input_watsonx_data_name"></a> [watsonx\_data\_name](#input\_watsonx\_data\_name) | The name of the watsonx.data instance. | `string` | n/a | yes |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the watsonx data instance is created. | `string` | n/a | yes |
+| <a name="input_watsonx_data_name"></a> [watsonx\_data\_name](#input\_watsonx\_data\_name) | The name of the watsonx.data instance. | `string` | `"watsonx-data"` | no |
 | <a name="input_watsonx_data_plan"></a> [watsonx\_data\_plan](#input\_watsonx\_data\_plan) | The plan that's used to provision the watsonx.data instance. | `string` | `"do not install"` | no |
 
 ### Outputs

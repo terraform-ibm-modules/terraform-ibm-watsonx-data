@@ -5,10 +5,11 @@
 variable "watsonx_data_name" {
   type        = string
   description = "The name of the watsonx.data instance."
+  default     = "watsonx-data"
 }
 
 variable "resource_group_id" {
-  description = "The resource group ID where the Event Streams instance is created."
+  description = "The resource group ID where the watsonx data instance is created."
   type        = string
 }
 
@@ -17,14 +18,14 @@ variable "region" {
   description = "The region that's used with the IBM Cloud Terraform IBM provider. It's also used during resource creation."
   type        = string
   validation {
-    condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok"], var.region)
-    error_message = "You must specify `eu-de`, `eu-gb`, `jp-tok` or `us-south` as the IBM Cloud region."
+    condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok", "au-syd"], var.region)
+    error_message = "You must specify 'eu-de', 'eu-gb', 'jp-tok', 'au-syd' or 'us-south' as the IBM Cloud region."
   }
 }
 
-variable "existing_data_instance" {
+variable "existing_watsonx_data_instance_crn" {
   default     = null
-  description = "CRN of the an existing watsonx.data instance."
+  description = "The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned"
   type        = string
 }
 
@@ -38,6 +39,6 @@ variable "watsonx_data_plan" {
       var.watsonx_data_plan == "lakehouse-enterprise",
       var.watsonx_data_plan == "lite",
     ])
-    error_message = "You must use a lakehouse-enterprise or lite plan. Learn more. "
+    error_message = "You must use a 'do not install', 'lakehouse-enterprise' or 'lite' plan. Learn more. "
   }
 }
