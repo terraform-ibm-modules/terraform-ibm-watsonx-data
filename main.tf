@@ -11,11 +11,11 @@ locals {
     "au-syd"   = "ibm:au-syd:syd"
   }
   watsonx_data_datacenter    = local.watsonx_data_datacenter_mapping[var.region]
-  watsonx_data_crn           = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_watsonx_data_instance[0].crn : var.watsonx_data_plan != "do not install" ? resource.ibm_resource_instance.data_instance[0].crn : null
-  watsonx_data_guid          = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_watsonx_data_instance[0].guid : var.watsonx_data_plan != "do not install" ? resource.ibm_resource_instance.data_instance[0].guid : null
-  watsonx_data_name          = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_watsonx_data_instance[0].resource_name : var.watsonx_data_plan != "do not install" ? resource.ibm_resource_instance.data_instance[0].resource_name : null
-  watsonx_data_plan_id       = var.existing_watsonx_data_instance_crn != null ? null : var.watsonx_data_plan != "do not install" ? resource.ibm_resource_instance.data_instance[0].resource_plan_id : null
-  watsonx_data_dashboard_url = var.existing_watsonx_data_instance_crn != null ? null : var.watsonx_data_plan != "do not install" ? resource.ibm_resource_instance.data_instance[0].dashboard_url : null
+  watsonx_data_crn           = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_watsonx_data_instance[0].crn : resource.ibm_resource_instance.data_instance[0].crn 
+  watsonx_data_guid          = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_watsonx_data_instance[0].guid : resource.ibm_resource_instance.data_instance[0].guid 
+  watsonx_data_name          = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_watsonx_data_instance[0].resource_name : resource.ibm_resource_instance.data_instance[0].resource_name
+  watsonx_data_plan_id       = var.existing_watsonx_data_instance_crn != null ? null : resource.ibm_resource_instance.data_instance[0].resource_plan_id
+  watsonx_data_dashboard_url = var.existing_watsonx_data_instance_crn != null ? null : resource.ibm_resource_instance.data_instance[0].dashboard_url
 }
 
 ########################################################################################################################
@@ -28,7 +28,7 @@ data "ibm_resource_instance" "existing_watsonx_data_instance" {
 }
 
 resource "ibm_resource_instance" "data_instance" {
-  count             = var.existing_watsonx_data_instance_crn != null ? 0 : var.watsonx_data_plan == "do not install" ? 0 : 1
+  count             = var.existing_watsonx_data_instance_crn != null ? 0 : 1
   name              = var.watsonx_data_name
   service           = "lakehouse"
   plan              = var.watsonx_data_plan

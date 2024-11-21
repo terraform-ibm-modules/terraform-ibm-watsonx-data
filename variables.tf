@@ -37,14 +37,13 @@ variable "existing_watsonx_data_instance_crn" {
 variable "watsonx_data_plan" {
   type        = string
   description = "The plan that's used to provision the watsonx.data instance."
-  default     = "do not install"
+  default     = "lite"
   validation {
     condition = anytrue([
-      var.watsonx_data_plan == "do not install",
       var.watsonx_data_plan == "lakehouse-enterprise",
       var.watsonx_data_plan == "lite",
     ])
-    error_message = "You must use a 'do not install', 'lakehouse-enterprise' or 'lite' plan. Learn more https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started"
+    error_message = "You must use a 'lakehouse-enterprise' or 'lite' plan. Learn more https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started"
   }
 }
 
