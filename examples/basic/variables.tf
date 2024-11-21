@@ -9,20 +9,20 @@ variable "resource_group" {
 }
 
 variable "ibmcloud_api_key" {
+  type        = string
   description = "The IBM Cloud API Key"
   sensitive   = true
-  type        = string
 }
 
 variable "region" {
-  default     = "us-south"
-  description = "Region to provision all resources created by this example."
   type        = string
+  description = "Region to provision all resources created by this example."
+  default     = "us-south"
 }
 
 variable "prefix" {
-  description = "The prefix to add to all resources created by this example."
   type        = string
+  description = "The prefix to add to all resources created by this example."
   default     = "watsonx"
 }
 

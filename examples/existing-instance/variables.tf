@@ -9,25 +9,25 @@ variable "resource_group" {
 }
 
 variable "ibmcloud_api_key" {
+  type        = string
   description = "The IBM Cloud API Key"
   sensitive   = true
-  type        = string
 }
 
 variable "prefix" {
-  description = "Prefix to append to all resources."
   type        = string
+  description = "Prefix to append to all resources."
   default     = "watsonx"
 }
 
 variable "existing_watsonx_data_instance_crn" {
-  default     = null
-  description = "The CRN of the an existing watsonx.data instance."
   type        = string
+  description = "The CRN of the an existing watsonx.data instance."
+  default     = null
 }
 
 variable "region" {
-  default     = "us-south"
-  description = "Region to provision all resources created by this example."
   type        = string
+  description = "Region to provision all resources created by this example."
+  default     = "us-south"
 }
