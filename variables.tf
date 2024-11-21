@@ -15,7 +15,7 @@ variable "resource_group_id" {
 
 variable "region" {
   default     = "us-south"
-  description = "The region that's used with the IBM Cloud Terraform IBM provider. It's also used during resource creation."
+  description = "The region to provision the watsonx data instance. "
   type        = string
   validation {
     condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok", "au-syd"], var.region)
@@ -44,13 +44,13 @@ variable "watsonx_data_plan" {
       var.watsonx_data_plan == "lakehouse-enterprise",
       var.watsonx_data_plan == "lite",
     ])
-    error_message = "You must use a 'do not install', 'lakehouse-enterprise' or 'lite' plan. Learn more. "
+    error_message = "You must use a 'do not install', 'lakehouse-enterprise' or 'lite' plan. Learn more https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started"
   }
 }
 
 variable "access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the Key Protect instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
+  description = "A list of access tags to apply to the watsonx data instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
   default     = []
 
   validation {

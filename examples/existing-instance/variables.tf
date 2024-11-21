@@ -15,14 +15,14 @@ variable "ibmcloud_api_key" {
 }
 
 variable "prefix" {
-  description = "The name to be used on all Watson resources as a prefix."
+  description = "Prefix to append to all resources."
   type        = string
   default     = "watsonx"
 }
 
 variable "existing_watsonx_data_instance_crn" {
   default     = null
-  description = "The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned"
+  description = "The CRN of the an existing watsonx.data instance."
   type        = string
 }
 
