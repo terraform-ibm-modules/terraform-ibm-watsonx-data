@@ -21,7 +21,7 @@ module "watsonx_data_crn_parser" {
 }
 
 module "existing_watsonx_data_instance" {
-  source            = "../../"
+  source                             = "../../"
   existing_watsonx_data_instance_crn = var.existing_watsonx_data_instance_crn
-  resource_group_id = module.resource_group.resource_group_id
+  resource_group_id                  = module.resource_group.resource_group_id
 }

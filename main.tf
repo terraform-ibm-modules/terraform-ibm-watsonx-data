@@ -54,8 +54,8 @@ resource "ibm_resource_instance" "data_instance" {
 ##############################################################################
 
 resource "ibm_resource_tag" "watsonx_data_tag" {
-  count       = length(var.access_tags) == 0 ? 0 : 1
-  resource_id = ibm_resource_instance.data_instance.crn
+  count       = length(var.access_tags) == 0 && var.existing_watsonx_data_instance_crn == null ? 0 : 1
+  resource_id = ibm_resource_instance.data_instance[0].crn
   tags        = var.access_tags
   tag_type    = "access"
 }
