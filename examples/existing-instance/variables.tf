@@ -25,3 +25,9 @@ variable "existing_watsonx_data_instance_crn" {
   description = "The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned"
   type        = string
 }
+
+variable "region" {
+  default     = "us-south"
+  description = "Region to provision all resources created by this example."
+  type        = string
+}

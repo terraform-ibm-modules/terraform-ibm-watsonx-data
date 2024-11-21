@@ -25,3 +25,9 @@ variable "prefix" {
   type        = string
   default     = "watsonx"
 }
+
+variable "access_tags" {
+  type        = list(string)
+  description = "Optional list of access management tags to add to the Key Protect instance"
+  default     = []
+}

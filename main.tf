@@ -48,3 +48,14 @@ resource "ibm_resource_instance" "data_instance" {
     use_case : "ai"
   }
 }
+
+##############################################################################
+# Attach Access Tags
+##############################################################################
+
+resource "ibm_resource_tag" "watsonx_data_tag" {
+  count       = length(var.access_tags) == 0 ? 0 : 1
+  resource_id = ibm_resource_instance.data_instance.crn
+  tags        = var.access_tags
+  tag_type    = "access"
+}

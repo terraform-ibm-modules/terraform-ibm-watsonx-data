@@ -4,5 +4,5 @@
 
 provider "ibm" {
   ibmcloud_api_key = var.ibmcloud_api_key
-  region           = module.watsonx_data_crn_parser.region
+  region           = var.region
 }
