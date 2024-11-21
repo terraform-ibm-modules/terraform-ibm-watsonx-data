@@ -27,6 +27,11 @@ variable "existing_watsonx_data_instance_crn" {
   default     = null
   description = "The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned"
   type        = string
+
+  validation {
+    condition     = var.existing_watsonx_data_instance_crn == null ? length(var.watsonx_data_name) > 0 : true
+    error_message = "You must specify a value for 'watsonx_data_name' if 'existing_watsonx_data_instance_crn' is null."
+  }
 }
 
 variable "watsonx_data_plan" {
