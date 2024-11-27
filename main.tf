@@ -34,7 +34,7 @@ resource "ibm_resource_instance" "data_instance" {
   plan              = var.watsonx_data_plan
   location          = var.region
   resource_group_id = var.resource_group_id
-  tags     = var.resource_tags 
+  tags              = var.resource_tags
 
   timeouts {
     create = "15m"

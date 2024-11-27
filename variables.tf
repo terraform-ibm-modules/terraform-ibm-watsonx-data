@@ -8,9 +8,9 @@ variable "watsonx_data_name" {
   default     = null
 
   validation {
-  condition = ((var.watsonx_data_name != "" && var.resource_group_id != "") || var.existing_watsonx_data_instance_crn != "")
-  error_message = "You must specify either 'watsonx_data_name' and 'resource_group_id', or 'existing_watsonx_data_instance_crn'."
-}
+    condition     = ((var.watsonx_data_name != "" && var.resource_group_id != "") || var.existing_watsonx_data_instance_crn != "")
+    error_message = "You must specify either 'watsonx_data_name' and 'resource_group_id', or 'existing_watsonx_data_instance_crn'."
+  }
 }
 
 variable "resource_group_id" {

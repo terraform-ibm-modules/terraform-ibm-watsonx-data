@@ -7,11 +7,11 @@ module "resource_group" {
 }
 
 module "watsonx_data" {
-  source = "../.."
+  source            = "../.."
   region            = var.region
   resource_group_id = module.resource_group.resource_group_id
   watsonx_data_name = "${var.prefix}-data-instance"
   watsonx_data_plan = "lite"
   access_tags       = var.access_tags
-  resource_tags =  var.resource_tags
+  resource_tags     = var.resource_tags
 }
