@@ -8,8 +8,8 @@ variable "watsonx_data_name" {
   default     = null
 
   validation {
-    condition     = ((var.watsonx_data_name != "" && var.resource_group_id != "") || var.existing_watsonx_data_instance_crn != "")
-    error_message = "You must specify either 'watsonx_data_name' and 'resource_group_id', or 'existing_watsonx_data_instance_crn'."
+    condition     = var.existing_watsonx_data_instance_crn == null ? length(var.watsonx_data_name) > 0 : true
+    error_message = "You must specify a value for 'watsonx_data_name' if 'existing_watsonx_data_instance_crn' is null."
   }
 }
 
@@ -39,6 +39,11 @@ variable "existing_watsonx_data_instance_crn" {
   type        = string
   description = "The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned."
   default     = null
+
+  validation {
+    condition     = var.existing_watsonx_data_instance_crn != null || var.resource_group_id != null
+    error_message = "When 'existing_instance_crn' is specified then 'resource_group_id' is not required."
+  }
 }
 
 variable "watsonx_data_plan" {
