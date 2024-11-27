@@ -24,3 +24,15 @@ variable "prefix" {
   type        = string
   description = "Prefix to append to all resources."
 }
+
+variable "resource_tags" {
+  type        = list(string)
+  description = "Optional list of tags to be added to created resources"
+  default     = []
+}
+
+variable "access_tags" {
+  type        = list(string)
+  description = "A list of access tags to apply to the watsonx data instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
+  default     = []
+}

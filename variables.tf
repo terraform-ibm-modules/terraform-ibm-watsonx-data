@@ -6,11 +6,23 @@ variable "watsonx_data_name" {
   type        = string
   description = "The name of the watsonx.data instance."
   default     = null
+
+  validation {
+  condition = ((var.watsonx_data_name != "" && var.resource_group_id != "") || var.existing_watsonx_data_instance_crn != "")
+  error_message = "You must specify either 'watsonx_data_name' and 'resource_group_id', or 'existing_watsonx_data_instance_crn'."
+}
 }
 
 variable "resource_group_id" {
   type        = string
   description = "The resource group ID where the watsonx data instance is created."
+  default     = null
+}
+
+variable "resource_tags" {
+  type        = list(string)
+  description = "Optional list of tags to be added to created resources"
+  default     = []
 }
 
 variable "region" {
@@ -27,16 +39,11 @@ variable "existing_watsonx_data_instance_crn" {
   type        = string
   description = "The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned."
   default     = null
-
-  validation {
-    condition     = var.existing_watsonx_data_instance_crn == null ? length(var.watsonx_data_name) > 0 : true
-    error_message = "You must specify a value for 'watsonx_data_name' if 'existing_watsonx_data_instance_crn' is null."
-  }
 }
 
 variable "watsonx_data_plan" {
   type        = string
-  description = "The plan that's used to provision the watsonx.data instance."
+  description = "The plan that's used to provision the watsonx.data instance. Allowed values are 'lite' and 'lakehouse-enterprise'."
   default     = "lite"
   validation {
     condition = anytrue([

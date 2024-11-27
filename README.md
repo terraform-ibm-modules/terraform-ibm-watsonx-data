@@ -52,7 +52,6 @@ This module supports provisioning the following:
 module "watsonx_data" {
     source                = "terraform-ibm-modules/watsonx-data/ibm"
     version               = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
-    resource
     watsonx_data_name     = "watsonx-data"
     region                = "us-south"
     watsonx_data_plan     = "lite"
@@ -66,10 +65,10 @@ module "watsonx_data" {
 You need the following permissions to run this module.
 
 - Account Management service
-  - Administrator role
+    - Administrator role
 
 - watsonx.data
-  - Editor platform
+    - Editor platform
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements

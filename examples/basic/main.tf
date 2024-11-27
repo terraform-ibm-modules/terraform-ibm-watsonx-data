@@ -21,4 +21,5 @@ module "watsonx_data" {
   watsonx_data_name = "${var.prefix}-data-instance"
   watsonx_data_plan = "lite"
   access_tags       = var.access_tags
+  resource_tags = var.resource_tags
 }

@@ -3,6 +3,7 @@ package test
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"os"
 	"strings"
@@ -12,13 +13,23 @@ import (
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 )
 
 const basicExampleDir = "examples/basic"
 const existingExampleDir = "examples/existing-instance"
+
+const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
+
+var permanentResources map[string]interface{}
+
+var sharedInfoSvc *cloudinfo.CloudInfoService
 
 // Current supported regions
 var validRegions = []string{
@@ -29,14 +40,28 @@ var validRegions = []string{
 	"au-syd",
 }
 
+// TestMain will be run before any parallel tests, used to read data from yaml for use with tests
+func TestMain(m *testing.M) {
+	sharedInfoSvc, _ = cloudinfo.NewCloudInfoServiceFromEnv("TF_VAR_ibmcloud_api_key", cloudinfo.CloudInfoServiceOptions{})
+
+	var err error
+	permanentResources, err = common.LoadMapFromYaml(yamlLocation)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	os.Exit(m.Run())
+}
+
 func setupOptionsBasicExample(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
-	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:      t,
 		TerraformDir: dir,
 	})
 	terraformVars := map[string]interface{}{
-		"region": validRegions[rand.Intn(len(validRegions))],
-		"prefix": prefix,
+		"region":      validRegions[rand.Intn(len(validRegions))],
+		"prefix":      prefix,
+		"access_tags": permanentResources["accessTags"],
 	}
 	options.TerraformVars = terraformVars
 	return options
@@ -71,11 +96,11 @@ func TestRunExistingResourcesExample(t *testing.T) {
 	// Provision Watsonx data instance
 	// ------------------------------------------------------------------------------------
 
-	prefix := fmt.Sprintf("data-exist-%s", strings.ToLower(random.UniqueId()))
-	realTerraformDir := "./existing-resources"
-	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
-
 	var region = validRegions[rand.Intn(len(validRegions))]
+	prefix := fmt.Sprintf("data-exist-%s", strings.ToLower(random.UniqueId()))
+	realTerraformDir := ".."
+	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
+	tags := common.GetTagsFromTravis()
 
 	// Verify ibmcloud_api_key variable is set
 	checkVariable := "TF_VAR_ibmcloud_api_key"
@@ -85,10 +110,12 @@ func TestRunExistingResourcesExample(t *testing.T) {
 
 	logger.Log(t, "Tempdir: ", tempTerraformDir)
 	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: tempTerraformDir,
+		TerraformDir: tempTerraformDir + "/tests/existing-resources",
 		Vars: map[string]interface{}{
-			"prefix": prefix,
-			"region": region,
+			"prefix":        prefix,
+			"region":        region,
+			"resource_tags": tags,
+			"access_tags":   permanentResources["accessTags"],
 		},
 		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
 		// This is the same as setting the -upgrade=true flag with terraform.

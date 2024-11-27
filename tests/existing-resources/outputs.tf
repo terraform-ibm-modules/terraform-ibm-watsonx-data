@@ -4,5 +4,5 @@
 
 output "watsonx_data_crn" {
   description = "The CRN of the watsonx.data instance."
-  value       = ibm_resource_instance.data_instance.crn
+  value       = module.watsonx_data.watsonx_data_crn
 }
