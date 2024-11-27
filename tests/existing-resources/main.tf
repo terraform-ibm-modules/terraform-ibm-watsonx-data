@@ -1,7 +1,3 @@
-########################################################################################################################
-# Resource Group
-########################################################################################################################
-
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
   version = "1.1.6"
@@ -10,12 +6,8 @@ module "resource_group" {
   existing_resource_group_name = var.resource_group
 }
 
-########################################################################################################################
-# Watsonx Data
-########################################################################################################################
-
 module "watsonx_data" {
-  source            = "../../"
+  source            = "../.."
   region            = var.region
   resource_group_id = module.resource_group.resource_group_id
   watsonx_data_name = "${var.prefix}-data-instance"

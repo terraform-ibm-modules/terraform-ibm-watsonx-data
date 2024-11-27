@@ -1,12 +1,11 @@
-<!-- Update this title with a descriptive name. Use sentence case. -->
-# Terraform modules template project
+# IBM Watsonx.data
 
 <!--
 Update status and "latest release" badges:
   1. For the status options, see https://terraform-ibm-modules.github.io/documentation/#/badge-status
   2. Update the "latest release" badge to point to the correct module's repo. Replace "terraform-ibm-module-template" in two places.
 -->
-[![Incubating (Not yet consumable)](https://img.shields.io/badge/status-Incubating%20(Not%20yet%20consumable)-red)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
+[![Stable (With quality checks)](https://img.shields.io/badge/Status-Stable%20(With%20quality%20checks)-green)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-watsonx-data?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/releases/latest)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
@@ -19,17 +18,14 @@ Expand on the repo short description in the .github/settings.yml file.
 For information, see "Module names and descriptions" at
 https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
 -->
-
-TODO: Replace this with a description of the modules in this repo.
-
-
+IBM® watsonx.data is a new open architecture lakehouse that combines the elements of the data warehouse and data lakes. For more information visit [here](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-wxd_ov)
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
 * [terraform-ibm-watsonx-data](#terraform-ibm-watsonx-data)
 * [Examples](./examples)
-    * [Advanced example](./examples/advanced)
     * [Basic example](./examples/basic)
+    * [Existing instance example](./examples/existing-instance)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
@@ -46,58 +42,41 @@ https://terraform-ibm-modules.github.io/documentation/#/implementation-guideline
 <!-- Replace this heading with the name of the root level module (the repo name) -->
 ## terraform-ibm-watsonx-data
 
+This module supports provisioning the following:
+
+* Provisioning watsonx.data instance with a selectable service plan
+
 ### Usage
 
-<!--
-Add an example of the use of the module in the following code block.
-
-Use real values instead of "var.<var_name>" or other placeholder values
-unless real values don't help users know what to change.
--->
-
 ```hcl
+module "watsonx_data" {
+    source                = "terraform-ibm-modules/watsonx-data/ibm"
+    version               = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
+    watsonx_data_name     = "watsonx-data"
+    region                = "us-south"
+    watsonx_data_plan     = "lite"
+    resource_group_id     = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+}
 
 ```
 
 ### Required access policies
 
-<!-- PERMISSIONS REQUIRED TO RUN MODULE
-If this module requires permissions, uncomment the following block and update
-the sample permissions, following the format.
-Replace the 'Sample IBM Cloud' service and roles with applicable values.
-The required information can usually be found in the services official
-IBM Cloud documentation.
-To view all available service permissions, you can go in the
-console at Manage > Access (IAM) > Access groups and click into an existing group
-(or create a new one) and in the 'Access' tab click 'Assign access'.
--->
+You need the following permissions to run this module.
 
-<!--
-You need the following permissions to run this module:
+- Account Management service
+    - Administrator role
 
-- Service
-    - **Resource group only**
-        - `Viewer` access on the specific resource group
-    - **Sample IBM Cloud** service
-        - `Editor` platform access
-        - `Manager` service access
--->
-
-<!-- NO PERMISSIONS FOR MODULE
-If no permissions are required for the module, uncomment the following
-statement instead the previous block.
--->
-
-<!-- No permissions are needed to run this module.-->
-
-
+- watsonx.data
+    - Editor platform
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.70.1, < 2.0.0 |
 
 ### Modules
 
@@ -105,15 +84,33 @@ No modules.
 
 ### Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [ibm_resource_instance.data_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
+| [ibm_resource_tag.watsonx_data_tag](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_tag) | resource |
+| [ibm_resource_instance.existing_watsonx_data_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/resource_instance) | data source |
 
 ### Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access tags to apply to the watsonx data instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial. | `list(string)` | `[]` | no |
+| <a name="input_existing_watsonx_data_instance_crn"></a> [existing\_watsonx\_data\_instance\_crn](#input\_existing\_watsonx\_data\_instance\_crn) | The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned. | `string` | `null` | no |
+| <a name="input_region"></a> [region](#input\_region) | The region to provision the watsonx data instance. | `string` | `"us-south"` | no |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the watsonx data instance is created. | `string` | `null` | no |
+| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Optional list of tags to be added to created resources | `list(string)` | `[]` | no |
+| <a name="input_watsonx_data_name"></a> [watsonx\_data\_name](#input\_watsonx\_data\_name) | The name of the watsonx.data instance. | `string` | `null` | no |
+| <a name="input_watsonx_data_plan"></a> [watsonx\_data\_plan](#input\_watsonx\_data\_plan) | The plan that's used to provision the watsonx.data instance. Allowed values are 'lite' and 'lakehouse-enterprise'. | `string` | `"lite"` | no |
 
 ### Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_watsonx_data_crn"></a> [watsonx\_data\_crn](#output\_watsonx\_data\_crn) | The CRN of the watsonx.data instance. |
+| <a name="output_watsonx_data_dashboard_url"></a> [watsonx\_data\_dashboard\_url](#output\_watsonx\_data\_dashboard\_url) | The dashboard URL of the watsonx.data instance. |
+| <a name="output_watsonx_data_guid"></a> [watsonx\_data\_guid](#output\_watsonx\_data\_guid) | The GUID of the watsonx.data instance. |
+| <a name="output_watsonx_data_name"></a> [watsonx\_data\_name](#output\_watsonx\_data\_name) | The name of the watsonx.data instance. |
+| <a name="output_watsonx_data_plan_id"></a> [watsonx\_data\_plan\_id](#output\_watsonx\_data\_plan\_id) | The plan ID of the watsonx.data instance. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->

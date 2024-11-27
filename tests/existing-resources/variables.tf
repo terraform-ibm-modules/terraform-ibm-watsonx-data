@@ -10,30 +10,29 @@ variable "resource_group" {
 
 variable "ibmcloud_api_key" {
   type        = string
-  description = "The IBM Cloud API Key"
   sensitive   = true
+  description = "The IBM Cloud API Key"
 }
 
 variable "region" {
   type        = string
-  description = "Region to provision all resources created by this example."
+  description = "Region to provision all resources."
   default     = "us-south"
 }
 
 variable "prefix" {
   type        = string
-  description = "The prefix to add to all resources created by this example."
-  default     = "watsonx"
-}
-
-variable "access_tags" {
-  type        = list(string)
-  description = "Optional list of access management tags to add to the watsonx data instance"
-  default     = []
+  description = "Prefix to append to all resources."
 }
 
 variable "resource_tags" {
   type        = list(string)
   description = "Optional list of tags to be added to created resources"
+  default     = []
+}
+
+variable "access_tags" {
+  type        = list(string)
+  description = "A list of access tags to apply to the watsonx data instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
   default     = []
 }
