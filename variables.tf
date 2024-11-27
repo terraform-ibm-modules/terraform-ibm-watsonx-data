@@ -17,6 +17,11 @@ variable "resource_group_id" {
   type        = string
   description = "The resource group ID where the watsonx data instance is created."
   default     = null
+
+  validation {
+    condition     = var.existing_watsonx_data_instance_crn == null ? length(var.resource_group_id) > 0 : true
+    error_message = "You must specify a value for 'resource_group_id' if 'existing_watsonx_data_instance_crn' is null."
+  }
 }
 
 variable "resource_tags" {
@@ -27,7 +32,7 @@ variable "resource_tags" {
 
 variable "region" {
   type        = string
-  description = "The region to provision the watsonx data instance. "
+  description = "The region to provision the watsonx data instance."
   default     = "us-south"
   validation {
     condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok", "au-syd"], var.region)
@@ -39,11 +44,6 @@ variable "existing_watsonx_data_instance_crn" {
   type        = string
   description = "The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned."
   default     = null
-
-  validation {
-    condition     = var.existing_watsonx_data_instance_crn != null || var.resource_group_id != null
-    error_message = "When 'existing_instance_crn' is specified then 'resource_group_id' is not required."
-  }
 }
 
 variable "watsonx_data_plan" {
