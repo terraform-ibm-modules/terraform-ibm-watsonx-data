@@ -4,7 +4,7 @@
 
 variable "resource_group" {
   type        = string
-  description = "An existing resource group name to use for this example. If not specified, a new resource group is created."
+  description = "The name of an existing resource group to provision resources into. If not set a new resource group will be created using the prefix variable."
   default     = null
 }
 
@@ -22,18 +22,22 @@ variable "region" {
 
 variable "prefix" {
   type        = string
-  description = "The prefix to add to all resources created by this example."
-  default     = "watsonx"
+  description = "Prefix for name of all resources created by this example."
+  default     = "lakehouse"
+  validation {
+    error_message = "Prefix must begin and end with a letter and contain only letters, numbers, and - characters."
+    condition     = can(regex("^([A-z]|[a-z][-a-z0-9]*[a-z0-9])$", var.prefix))
+  }
 }
 
 variable "access_tags" {
   type        = list(string)
-  description = "Optional list of access management tags to add to the watsonx data instance"
+  description = "Optional list of access management tags to add to the watsonx.data instance"
   default     = []
 }
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to created resources"
+  description = "Optional list of tags to be added to the created resources."
   default     = []
 }

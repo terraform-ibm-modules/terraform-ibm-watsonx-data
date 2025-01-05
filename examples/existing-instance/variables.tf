@@ -10,12 +10,11 @@ variable "ibmcloud_api_key" {
 
 variable "existing_watsonx_data_instance_crn" {
   type        = string
-  description = "The CRN of the an existing watsonx.data instance."
-  default     = null
+  description = "The CRN of an existing watsonx.data instance."
 }
 
-variable "region" {
-  type        = string
-  description = "Region to provision all resources created by this example."
-  default     = "us-south"
+variable "access_tags" {
+  type        = list(string)
+  description = "Optional list of access management tags to add to the watsonx.data instance"
+  default     = []
 }
