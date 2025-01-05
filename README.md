@@ -55,7 +55,7 @@ module "watsonx_data" {
     watsonx_data_name     = "watsonx-data"
     region                = "us-south"
     watsonx_data_plan     = "lite"
-    resource_group_id     = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+    resource_group_id     = "xxXXxxXXxXxxXXXXX" # replace with ID of resource group
 }
 
 ```
@@ -64,11 +64,19 @@ module "watsonx_data" {
 
 You need the following permissions to run this module.
 
-- Account Management service
-    - Administrator role
+* Account Management
+  * **Resource Group**
+        - `Viewer` role
+* IAM Services
+  * **watsonx.data** service
+        - `Editor` platform access
 
-- watsonx.data
-    - Editor platform
+To attach access management tags to resources in this module, you need the following permissions.
+
+- IAM Services
+    - **Tagging** service
+        - `Administrator` platform access
+
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
@@ -102,6 +110,7 @@ You need the following permissions to run this module.
 | <a name="input_region"></a> [region](#input\_region) | The region to provision the watsonx.data instance. | `string` | `"us-south"` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the watsonx.data instance will be grouped. Required when creating a new instance. | `string` | `null` | no |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Optional list of tags to describe the watsonx.data instance created by the module. | `list(string)` | `[]` | no |
+| <a name="input_use_case"></a> [use\_case](#input\_use\_case) | The Lite plan instance can be provisioned based on the three use cases - Generative AI, Data Engineering and High Performance BI. Allowed values are : 'ai', 'workloads' and 'performance'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-tutorial_prov_lite_1) | `string` | `"workloads"` | no |
 | <a name="input_watsonx_data_name"></a> [watsonx\_data\_name](#input\_watsonx\_data\_name) | The name of the watsonx.data instance. Required if creating a new instance. | `string` | `null` | no |
 
 ### Outputs
