@@ -3,6 +3,7 @@
 #######################################################################################################################
 
 locals {
+  # watsonx Data values
   watsonx_data_datacenter_mapping = {
     "us-south" = "ibm:us-south:dal",
     "eu-gb"    = "ibm:eu-gb:lon",
@@ -10,6 +11,7 @@ locals {
     "jp-tok"   = "ibm:jp-tok:tok",
     "au-syd"   = "ibm:au-syd:syd"
   }
+
   watsonx_data_datacenter    = local.watsonx_data_datacenter_mapping[var.region]
   account_id                 = var.existing_watsonx_data_instance_crn != null ? module.crn_parser[0].account_id : ibm_resource_instance.data_instance[0].account_id
   watsonx_data_id            = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_data_instance[0].id : ibm_resource_instance.data_instance[0].id
@@ -27,6 +29,24 @@ module "crn_parser" {
   crn     = var.existing_watsonx_data_instance_crn
 }
 
+module "kms_key_crn_parser" {
+  count = var.watsonx_data_kms_key_crn != null ? 1 : 0
+  # count   = var.enable_kms_key_crn_parser ? 1 : 0
+  source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
+  version = "1.1.0"
+  crn     = var.watsonx_data_kms_key_crn
+}
+
+locals {
+
+  # KMS values
+  enable_kms_key_crn_parser   = var.plan == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
+  kms_service                 = local.enable_kms_key_crn_parser ? module.kms_key_crn_parser[0].service_name : null
+  kms_account_id              = local.enable_kms_key_crn_parser ? module.kms_key_crn_parser[0].account_id : null
+  kms_key_id                  = local.enable_kms_key_crn_parser ? module.kms_key_crn_parser[0].resource : null
+  target_resource_instance_id = local.enable_kms_key_crn_parser ? module.kms_key_crn_parser[0].service_instance : null
+
+}
 ########################################################################################################################
 # Watsonx Data Instance
 ########################################################################################################################
@@ -56,6 +76,8 @@ resource "ibm_resource_instance" "data_instance" {
     cloud_type : "ibm"
     region : var.region
     use_case : var.use_case
+    kms_instance : var.watsonx_data_kms_key_crn
+    kms_key : local.kms_key_id
   }
 }
 
@@ -68,4 +90,52 @@ resource "ibm_resource_tag" "watsonx_data_tag" {
   resource_id = local.watsonx_data_crn
   tags        = var.access_tags
   tag_type    = "access"
+}
+
+##############################################################################
+# IAM Authorization Policy
+##############################################################################
+
+resource "ibm_iam_authorization_policy" "kms_policy" {
+  count                       = var.plan == "lakehouse-enterprise" && !var.skip_iam_authorization_policy ? 1 : 0
+  source_service_name         = "lakehouse"
+  source_resource_instance_id = ibm_resource_instance.data_instance[0].guid
+  roles                       = ["Reader"]
+  resource_attributes {
+    name     = "serviceName"
+    operator = "stringEquals"
+    value    = local.kms_service
+  }
+  resource_attributes {
+    name     = "accountId"
+    operator = "stringEquals"
+    value    = local.kms_account_id
+  }
+  resource_attributes {
+    name     = "serviceInstance"
+    operator = "stringEquals"
+    value    = local.target_resource_instance_id
+  }
+  resource_attributes {
+    name     = "resourceType"
+    operator = "stringEquals"
+    value    = "key"
+  }
+  resource_attributes {
+    name     = "resource"
+    operator = "stringEquals"
+    value    = local.kms_key_id
+  }
+  # Scope of policy now includes the key, so ensure to create new policy before
+  # destroying old one to prevent any disruption to every day services.
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
+resource "time_sleep" "wait_for_kms_authorization_policy" {
+  count           = var.plan == "lakehouse-enterprise" && !var.skip_iam_authorization_policy ? 1 : 0
+  depends_on      = [ibm_iam_authorization_policy.kms_policy]
+  create_duration = "30s"
 }

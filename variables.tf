@@ -82,3 +82,25 @@ variable "use_case" {
     error_message = "Use case is only applicable for the 'Lite' plan. Allowed values are: 'ai', 'workloads', and 'performance'."
   }
 }
+
+# variable "enable_kms_key_crn_parser" {
+#   description = "Flag to enable the kms_key_crn_parser module"
+#   type        = bool
+#   default     = false
+# }
+
+variable "watsonx_data_kms_key_crn" {
+  description = "The KMS key CRN used to encrypt the watsonx data instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.plan == "lakehouse-enterprise" || var.watsonx_data_kms_key_crn == null
+    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the watsonx data plan is configured is 'lakehouse-enterprise'."
+  }
+}
+
+variable "skip_iam_authorization_policy" {
+  type        = bool
+  description = "Whether to create an IAM authorization policy that permits the watsonx Data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy."
+  default     = false
+}
