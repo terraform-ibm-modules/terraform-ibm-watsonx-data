@@ -15,13 +15,13 @@ module "resource_group" {
 ##############################################################################
 
 locals {
-  enable_kms_policy = var.plan != "lite" ? true : false
-  key_ring_name     = "${var.prefix}-keyring"
-  key_name          = "${var.prefix}-key"
+  enable_kms_encryption = var.plan != "lite" ? true : false
+  key_ring_name         = "${var.prefix}-keyring"
+  key_name              = "${var.prefix}-key"
 }
 
 module "key_protect_all_inclusive" {
-  count                     = local.enable_kms_policy ? 1 : 0
+  count                     = local.enable_kms_encryption ? 1 : 0
   source                    = "terraform-ibm-modules/kms-all-inclusive/ibm"
   version                   = "4.19.2"
   resource_group_id         = module.resource_group.resource_group_id
@@ -54,6 +54,7 @@ module "watsonx_data" {
   use_case                      = "ai"
   resource_tags                 = var.resource_tags
   access_tags                   = var.access_tags
-  skip_iam_authorization_policy = local.enable_kms_policy
-  watsonx_data_kms_key_crn      = local.enable_kms_policy ? module.key_protect_all_inclusive[0].keys["${local.key_ring_name}.${local.key_name}"].crn : null
+  enable_kms_encryption         = local.enable_kms_encryption
+  skip_iam_authorization_policy = !local.enable_kms_encryption
+  watsonx_data_kms_key_crn      = local.enable_kms_encryption ? module.key_protect_all_inclusive[0].keys["${local.key_ring_name}.${local.key_name}"].crn : null
 }

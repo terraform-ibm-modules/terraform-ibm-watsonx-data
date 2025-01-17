@@ -83,11 +83,11 @@ variable "use_case" {
   }
 }
 
-# variable "enable_kms_key_crn_parser" {
-#   description = "Flag to enable the kms_key_crn_parser module"
-#   type        = bool
-#   default     = false
-# }
+variable "enable_kms_encryption" {
+  description = "Flag to enable the KMS encryption."
+  type        = bool
+  default     = false
+}
 
 variable "watsonx_data_kms_key_crn" {
   description = "The KMS key CRN used to encrypt the watsonx data instance."

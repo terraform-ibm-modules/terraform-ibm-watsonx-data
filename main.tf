@@ -30,21 +30,20 @@ module "crn_parser" {
 }
 
 module "kms_key_crn_parser" {
-  count = var.watsonx_data_kms_key_crn != null ? 1 : 0
-  # count   = var.enable_kms_key_crn_parser ? 1 : 0
+  count   = var.enable_kms_encryption ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
   version = "1.1.0"
   crn     = var.watsonx_data_kms_key_crn
 }
 
+# KMS values
 locals {
 
-  # KMS values
-  enable_kms_key_crn_parser   = var.plan == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
-  kms_service                 = local.enable_kms_key_crn_parser ? module.kms_key_crn_parser[0].service_name : null
-  kms_account_id              = local.enable_kms_key_crn_parser ? module.kms_key_crn_parser[0].account_id : null
-  kms_key_id                  = local.enable_kms_key_crn_parser ? module.kms_key_crn_parser[0].resource : null
-  target_resource_instance_id = local.enable_kms_key_crn_parser ? module.kms_key_crn_parser[0].service_instance : null
+  validate_kms_plan           = var.plan == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
+  kms_service                 = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].service_name, null) : null
+  kms_account_id              = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].account_id, null) : null
+  kms_key_id                  = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].resource, null) : null
+  target_resource_instance_id = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].service_instance, null) : null
 
 }
 ########################################################################################################################
@@ -97,7 +96,7 @@ resource "ibm_resource_tag" "watsonx_data_tag" {
 ##############################################################################
 
 resource "ibm_iam_authorization_policy" "kms_policy" {
-  count                       = var.plan == "lakehouse-enterprise" && !var.skip_iam_authorization_policy ? 1 : 0
+  count                       = var.enable_kms_encryption == false || var.skip_iam_authorization_policy ? 0 : 1
   source_service_name         = "lakehouse"
   source_resource_instance_id = ibm_resource_instance.data_instance[0].guid
   roles                       = ["Reader"]
@@ -135,7 +134,7 @@ resource "ibm_iam_authorization_policy" "kms_policy" {
 
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_kms_authorization_policy" {
-  count           = var.plan == "lakehouse-enterprise" && !var.skip_iam_authorization_policy ? 1 : 0
+  count           = var.enable_kms_encryption == false || var.skip_iam_authorization_policy ? 0 : 1
   depends_on      = [ibm_iam_authorization_policy.kms_policy]
   create_duration = "30s"
 }
