@@ -1,0 +1,170 @@
+{
+  "products": [
+    {
+      "name": "deploy-arch-ibm-watsonx-data",
+      "label": "watsonx Data",
+      "product_kind": "solution",
+      "tags": [
+        "ibm_created",
+        "target_terraform",
+        "terraform",
+        "lakehouse",
+        "ai",
+        "solution"
+      ],
+      "keywords": [
+        "watsonx data",
+        "watsonx.data",
+        "IaC",
+        "infrastructure as code",
+        "terraform",
+        "solution",
+        "ai"
+      ],
+      "short_description": "Creates and configures an instance of IBM watsonx Data.",
+      "long_description": "This architecture supports creating and configuring an instance of watsonx.data.",
+      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/blob/main/README.md",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/images/watsonx-data.svg",
+      "provider_name": "IBM",
+      "features": [
+        {
+          "title": "Creates an instance of IBM watsonx Data",
+          "description": "Creates and configures an IBM watsonx Data instance."
+        }
+      ],
+      "flavors": [
+        {
+          "label": "Standard",
+          "name": "standard",
+          "install_type": "fullstack",
+          "working_directory": "solutions/standard",
+          "compliance": {
+            "authority": "scc-v3",
+            "profiles": [
+              {
+                "profile_name": "IBM Cloud Framework for AI Security Guardrails 2.0",
+                "profile_version": "1.1.0"
+              }
+            ]},
+          "iam_permissions": [
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "all-account-management-services"
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "lakehouse"
+            }
+          ],
+          "architecture": {
+            "descriptions": "This architecture creates an instance of IBM watsonx Data.",
+            "features": [
+              {
+                "title": " Creates and configures an instance of watsonx Data",
+                "description": "This architecture creates and configures an instance of IBM watsonx Data. It accepts or creates a resource group."
+              }
+            ],
+            "diagrams": [
+              {
+                "diagram": {
+                  "caption": "watsonx Data on IBM Cloud",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/reference-architecture/deployable-architecture-watsonx-data.svg",
+                  "type": "image/svg+xml"
+                },
+                "description": "This architecture supports creating and configuring an instance of watsonx Data."
+              }
+            ]
+          },
+          "configuration": [
+              {
+                "key": "ibmcloud_api_key",
+                "required": true,
+                "type": "password"
+              },
+              {
+                "key": "provider_visibility",
+                "options": [
+                  {
+                    "displayname": "private",
+                    "value": "private"
+                  },
+                  {
+                    "displayname": "public",
+                    "value": "public"
+                  },
+                  {
+                    "displayname": "public-and-private",
+                    "value": "public-and-private"
+                  }
+                ]
+              },
+              {
+                "key": "use_existing_resource_group"
+              },
+              {
+                "key": "resource_group_name"
+              },
+              {
+                "key": "prefix",
+                "required": true
+              },
+              {
+                "key": "watsonx_data_name"
+              },
+              {
+                "key": "region",
+                "required": true,
+                "default_value": "us-south",
+                "options": [
+                  {
+                    "displayname": "Dallas (us-south)",
+                    "value": "us-south"
+                  },
+                  {
+                    "displayname": "Frankfurt (eu-de)",
+                    "value": "eu-de"
+                  },
+                  {
+                    "displayname": "London (eu-gb)",
+                    "value": "eu-gb"
+                  },
+                  {
+                    "displayname": "Sydney (au-syd)",
+                    "value": "au-syd"
+                  },
+                  {
+                    "displayname": "Tokyo (jp-tok)",
+                    "value": "jp-tok"
+                  }
+                ]
+              },
+              {
+                "key": "plan",
+                "default_value": "lakehouse-enterprise",
+                "options": [
+                  {
+                    "displayname": "Lite",
+                    "value": "lite"
+                  },
+                  {
+                    "displayname": "Enterprise",
+                    "value": "lakehouse-enterprise"
+                  }
+                ]
+              },
+              {
+                "key": "resource_tags"
+              },
+              {
+                "key": "access_tags"
+              }
+            ]
+        }
+      ]
+    }
+  ]
+}
