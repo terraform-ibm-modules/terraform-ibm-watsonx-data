@@ -70,7 +70,7 @@ module "watsonx_data" {
   region                   = var.region
   plan                     = var.plan
   resource_group_id        = module.resource_group.resource_group_id
-  watsonx_data_name        = var.prefix != null ? "${var.prefix}-${var.name}" : var.name
+  watsonx_data_name        = try("${local.prefix}-${var.name}", var.name)
   access_tags              = var.access_tags
   resource_tags            = var.resource_tags
   enable_kms_encryption    = true
