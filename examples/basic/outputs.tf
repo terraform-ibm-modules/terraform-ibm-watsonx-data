@@ -2,29 +2,34 @@
 # Outputs
 ########################################################################################################################
 
-output "watsonx_data_crn" {
-  description = "The CRN of the watsonx.data instance."
-  value       = module.watsonx_data.watsonx_data_crn
+output "account_id" {
+  description = "Account ID of the watsonx.data instance"
+  value       = module.watsonx_data.account_id
 }
 
-output "watsonx_data_dashboard_url" {
-  description = "The dashboard URL of the watsonx.data."
-  value       = module.watsonx_data.watsonx_data_dashboard_url
+output "crn" {
+  description = "CRN of the watsonx.data instance."
+  value       = module.watsonx_data.crn
 }
 
-output "watsonx_data_guid" {
-  description = "The GUID of the watsonx.data instance."
-  value       = module.watsonx_data.watsonx_data_guid
+output "dashboard_url" {
+  description = "The dashboard URL of the watsonx.data instance."
+  value       = module.watsonx_data.dashboard_url
 }
 
-output "watsonx_data_name" {
-  description = "The name of the watsonx.data instance."
-  value       = module.watsonx_data.watsonx_data_name
+output "guid" {
+  description = "GUID of the watsonx.data instance."
+  value       = module.watsonx_data.guid
 }
 
-output "watsonx_data_plan_id" {
+output "name" {
+  description = "Name of the watsonx.data instance."
+  value       = module.watsonx_data.name
+}
+
+output "plan_id" {
   description = "The plan ID of the watsonx.data instance."
-  value       = module.watsonx_data.watsonx_data_plan_id
+  value       = module.watsonx_data.plan_id
 }
 
 output "resource_group_id" {

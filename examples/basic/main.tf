@@ -10,16 +10,51 @@ module "resource_group" {
   existing_resource_group_name = var.resource_group
 }
 
+##############################################################################
+# Key Protect All Inclusive
+##############################################################################
+
+locals {
+  enable_kms_encryption = var.plan != "lite" ? true : false
+  key_ring_name         = "${var.prefix}-keyring"
+  key_name              = "${var.prefix}-key"
+}
+
+module "key_protect_all_inclusive" {
+  count                     = local.enable_kms_encryption ? 1 : 0
+  source                    = "terraform-ibm-modules/kms-all-inclusive/ibm"
+  version                   = "4.19.2"
+  resource_group_id         = module.resource_group.resource_group_id
+  region                    = var.region
+  key_protect_instance_name = "${var.prefix}-kp"
+  resource_tags             = var.resource_tags
+  keys = [
+    {
+      key_ring_name = "${var.prefix}-keyring"
+      keys = [
+        {
+          key_name     = "${var.prefix}-key"
+          force_delete = true
+        }
+      ]
+    }
+  ]
+}
+
 ########################################################################################################################
 # Watsonx Data
 ########################################################################################################################
 
 module "watsonx_data" {
-  source            = "../../"
-  region            = var.region
-  resource_group_id = module.resource_group.resource_group_id
-  watsonx_data_name = "${var.prefix}-data-instance"
-  watsonx_data_plan = "lite"
-  access_tags       = var.access_tags
-  resource_tags     = var.resource_tags
+  source                        = "../../"
+  region                        = var.region
+  watsonx_data_name             = "${var.prefix}-data-instance"
+  plan                          = var.plan
+  resource_group_id             = module.resource_group.resource_group_id
+  use_case                      = "ai"
+  resource_tags                 = var.resource_tags
+  access_tags                   = var.access_tags
+  enable_kms_encryption         = local.enable_kms_encryption
+  skip_iam_authorization_policy = !local.enable_kms_encryption
+  watsonx_data_kms_key_crn      = local.enable_kms_encryption ? module.key_protect_all_inclusive[0].keys["${local.key_ring_name}.${local.key_name}"].crn : null
 }

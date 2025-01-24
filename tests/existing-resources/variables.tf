@@ -2,16 +2,16 @@
 # Input variables
 ########################################################################################################################
 
-variable "resource_group" {
-  type        = string
-  description = "An existing resource group name to use for this example. If not specified, a new resource group is created."
-  default     = null
-}
-
 variable "ibmcloud_api_key" {
   type        = string
-  sensitive   = true
   description = "The IBM Cloud API Key"
+  sensitive   = true
+}
+
+variable "resource_group" {
+  type        = string
+  description = "The name of an existing resource group to provision resources into. If not set a new resource group will be created using the prefix variable."
+  default     = null
 }
 
 variable "region" {
@@ -22,17 +22,22 @@ variable "region" {
 
 variable "prefix" {
   type        = string
-  description = "Prefix to append to all resources."
+  description = "Prefix for name of all resources created by this example"
+  default     = "wx-lakehouse"
+  validation {
+    error_message = "Prefix must begin and end with a letter and contain only letters, numbers, and - characters."
+    condition     = can(regex("^([A-z]|[a-z][-a-z0-9]*[a-z0-9])$", var.prefix))
+  }
 }
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to created resources"
+  description = "Optional list of tags to be added to the created resources."
   default     = []
 }
 
 variable "access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the watsonx data instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
+  description = "Optional list of access management tags to apply to the watsonx.data instance. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
   default     = []
 }

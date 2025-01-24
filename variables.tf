@@ -4,18 +4,18 @@
 
 variable "watsonx_data_name" {
   type        = string
-  description = "The name of the watsonx.data instance."
+  description = "The name of the watsonx.data instance. Required if creating a new instance."
   default     = null
 
   validation {
     condition     = var.existing_watsonx_data_instance_crn == null ? length(var.watsonx_data_name) > 0 : true
-    error_message = "You must specify a value for 'watsonx_data_name' if 'existing_watsonx_data_instance_crn' is null."
+    error_message = "watsonx.data name must be provided when creating a new instance."
   }
 }
 
 variable "resource_group_id" {
   type        = string
-  description = "The resource group ID where the watsonx data instance is created."
+  description = "The resource group ID where the watsonx.data instance will be grouped. Required when creating a new instance."
   default     = null
 
   validation {
@@ -26,13 +26,13 @@ variable "resource_group_id" {
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to created resources"
+  description = "Optional list of tags to describe the watsonx.data instance created by the module."
   default     = []
 }
 
 variable "region" {
   type        = string
-  description = "The region to provision the watsonx data instance."
+  description = "The region to provision the watsonx.data instance."
   default     = "us-south"
   validation {
     condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok", "au-syd"], var.region)
@@ -42,26 +42,26 @@ variable "region" {
 
 variable "existing_watsonx_data_instance_crn" {
   type        = string
-  description = "The CRN of the an existing watsonx.data instance. If no value is passed, and new instance will be provisioned."
+  description = "The CRN of an existing watsonx.data instance.If not provided, a new instance will be provisioned."
   default     = null
 }
 
-variable "watsonx_data_plan" {
+variable "plan" {
   type        = string
-  description = "The plan that's used to provision the watsonx.data instance. Allowed values are 'lite' and 'lakehouse-enterprise'."
+  description = "The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' and 'lakehouse-enterprise'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
   default     = "lite"
   validation {
     condition = anytrue([
-      var.watsonx_data_plan == "lakehouse-enterprise",
-      var.watsonx_data_plan == "lite",
+      var.plan == "lakehouse-enterprise",
+      var.plan == "lite",
     ])
-    error_message = "You must use a 'lakehouse-enterprise' or 'lite' plan. Learn more https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started"
+    error_message = "A new watsonx.data instance requires a 'lakehouse-enterprise' or 'lite' plan."
   }
 }
 
 variable "access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the watsonx data instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
+  description = "A list of access tags to apply to the watsonx.data instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
   default     = []
 
   validation {
@@ -70,4 +70,37 @@ variable "access_tags" {
     ])
     error_message = "Tags must match the regular expression \"[\\w\\-_\\.]+:[\\w\\-_\\.]+\", see https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#limits for more details"
   }
+}
+
+variable "use_case" {
+  type        = string
+  description = "The Lite plan instance can be provisioned based on the three use cases - Generative AI, Data Engineering and High Performance BI. Allowed values are : 'ai', 'workloads' and 'performance'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-tutorial_prov_lite_1)"
+  default     = "workloads"
+
+  validation {
+    condition     = var.plan != "lite" || contains(["ai", "workloads", "performance"], var.use_case)
+    error_message = "Use case is only applicable for the 'Lite' plan. Allowed values are: 'ai', 'workloads', and 'performance'."
+  }
+}
+
+variable "enable_kms_encryption" {
+  description = "Flag to enable the KMS encryption."
+  type        = bool
+  default     = false
+}
+
+variable "watsonx_data_kms_key_crn" {
+  description = "The KMS key CRN used to encrypt the watsonx data instance."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.plan == "lakehouse-enterprise" || var.watsonx_data_kms_key_crn == null
+    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the watsonx data plan is configured is 'lakehouse-enterprise'."
+  }
+}
+
+variable "skip_iam_authorization_policy" {
+  type        = bool
+  description = "Whether to create an IAM authorization policy that permits the watsonx Data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy."
+  default     = false
 }
