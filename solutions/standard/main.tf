@@ -65,6 +65,10 @@ module "kms" {
 # watsonx.data with KMS encryption
 #######################################################################################################################
 
+locals {
+  kms_key_crn  = (var.existing_kms_key_crn != null ? var.existing_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn)
+}
+
 module "watsonx_data" {
   source                   = "../../"
   region                   = var.region
@@ -74,5 +78,5 @@ module "watsonx_data" {
   access_tags              = var.access_tags
   resource_tags            = var.resource_tags
   enable_kms_encryption    = true
-  watsonx_data_kms_key_crn = var.existing_kms_key_crn
+  watsonx_data_kms_key_crn = local.kms_key_crn
 }

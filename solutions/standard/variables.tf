@@ -82,6 +82,11 @@ variable "existing_kms_instance_crn" {
     ])
     error_message = "The provided KMS (Key Protect) instance CRN in not valid."
   }
+
+  validation {
+    condition = var.existing_kms_instance_crn == null ? (var.existing_kms_key_crn == null ? false : true) : true
+    error_message = "A value must be passed for either 'existing_kms_instance_crn' or 'existing_kms_key_crn' as 'enable_cos_kms_encryption' is set to true."
+  }
 }
 
 variable "existing_kms_key_crn" {
