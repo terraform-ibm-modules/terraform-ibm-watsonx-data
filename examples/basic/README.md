@@ -6,4 +6,4 @@ Following resources are provisioned by this example:
 
 - A new resource group if an existing one is not passed in.
 - A newly created watsonx.data instance.
-- Create a KMS encryption enabled IBM watsonx data instance.
+- Create a KMS encryption enabled IBM watsonx.data instance.

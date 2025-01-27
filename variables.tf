@@ -38,6 +38,10 @@ variable "region" {
     condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok", "au-syd"], var.region)
     error_message = "You must specify 'eu-de', 'eu-gb', 'jp-tok', 'au-syd' or 'us-south' as the IBM Cloud region."
   }
+  validation {
+    condition     = local.kms_region == null || (local.kms_region == var.region)
+    error_message = "In case of enterprise plan, KMS instance should be in the same region as watsonx.data"
+  }
 }
 
 variable "existing_watsonx_data_instance_crn" {
@@ -90,17 +94,17 @@ variable "enable_kms_encryption" {
 }
 
 variable "watsonx_data_kms_key_crn" {
-  description = "The KMS key CRN used to encrypt the watsonx data instance."
+  description = "The KMS key CRN used to encrypt the watsonx.data instance."
   type        = string
   default     = null
   validation {
     condition     = var.plan == "lakehouse-enterprise" || var.watsonx_data_kms_key_crn == null
-    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the watsonx data plan is configured is 'lakehouse-enterprise'."
+    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the plan configured is 'lakehouse-enterprise'."
   }
 }
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Whether to create an IAM authorization policy that permits the watsonx Data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy."
+  description = "Whether to create an IAM authorization policy that permits the watsonx.data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy."
   default     = false
 }

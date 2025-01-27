@@ -1,9 +1,9 @@
-# IBM watsonx Data
+# IBM watsonx.data
 
-This architecture creates an instance of IBM watsonx Data and supports provisioning of the following resources:
+This architecture creates an instance of IBM watsonx.data and supports provisioning of the following resources:
 
 - A `resource group` , if one is not passed in.
-- A `watsonx Data` instance.
+- A `watsonx.data` instance.
 
 ![ai-security-guardrails-watsonx-data](../../reference-architecture/deployable-architecture-watsonx-data.svg)
 

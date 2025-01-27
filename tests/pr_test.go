@@ -201,7 +201,7 @@ func TestRunStandardSolution(t *testing.T) {
 		assert.True(t, existErr == nil, "Init and Apply of temp resources (KP Instance and Key creation) failed")
 	} else {
 		// ------------------------------------------------------------------------------------
-		// Deploy watsonx Data DA using existing KP details
+		// Deploy watsonx.data DA using existing KP details
 		// ------------------------------------------------------------------------------------
 
 		options := testhelper.TestOptionsDefault(&testhelper.TestOptions{

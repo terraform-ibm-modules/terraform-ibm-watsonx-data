@@ -27,7 +27,7 @@ variable "use_existing_resource_group" {
 
 variable "resource_group_name" {
   type        = string
-  description = "The name of a new or an existing resource group to provision the watsonx Data in. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
+  description = "The name of a new or an existing resource group to provision the watsonx.data in. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
 }
 
 variable "prefix" {
@@ -38,7 +38,7 @@ variable "prefix" {
 
 variable "name" {
   type        = string
-  description = "The name of the watsonx Data instance. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
+  description = "The name of the watsonx.data instance. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
   default     = "dev"
 }
 
@@ -46,30 +46,34 @@ variable "region" {
   description = "The region where you want to deploy your instance."
   type        = string
   default     = "us-south"
+  validation {
+    condition     = local.kms_region == null || (local.kms_region == var.region)
+    error_message = "In case of enterprise plan, KMS instance should be in the same region as watsonx.data"
+  }
 }
 
 variable "plan" {
   type        = string
-  description = "The plan that is required to provision the watsonx Data instance. Possible values are: essentials, standard. [Learn more](https://www.ibm.com/products/watsonx-data/pricing)."
+  description = "The plan that is required to provision the watsonx.data instance. Possible values are: essentials, standard. [Learn more](https://www.ibm.com/products/watsonx-data/pricing)."
   default     = "lakehouse-enterprise"
 }
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to describe the newly created watsonx Data instance."
+  description = "Optional list of tags to describe the newly created watsonx.data instance."
   default     = []
 }
 
 variable "access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the watsonx Data instance. [Learn more](https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial)."
+  description = "A list of access tags to apply to the watsonx.data instance. [Learn more](https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial)."
   default     = []
 }
 
 variable "existing_kms_instance_crn" {
   type        = string
   default     = null
-  description = "The CRN of the existing key management service (KMS) that is used to create keys for encrypting the watsonx Data instance. If you are not using an existing KMS root key, you must specify this CRN. If you are using an existing KMS root key, an existing watsonx Data instance and auth policy is not set for watsonx Data to KMS, you must specify this CRN."
+  description = "The CRN of the existing key management service (KMS) that is used to create keys for encrypting the watsonx.data instance. If you are not using an existing KMS root key, you must specify this CRN. If you are using an existing KMS root key, an existing watsonx.data instance and auth policy is not set for watsonx.data to KMS, you must specify this CRN."
 
   validation {
     condition = anytrue([
@@ -83,7 +87,7 @@ variable "existing_kms_instance_crn" {
 variable "existing_kms_key_crn" {
   type        = string
   default     = null
-  description = "Optional. The CRN of an existing key management service (Key Protect) key to use to encrypt the watsonx Data instance that this solution creates. To create a key ring and key, pass a value for the `existing_kms_instance_crn` input variable."
+  description = "Optional. The CRN of an existing key management service (Key Protect) key to use to encrypt the watsonx.data instance that this solution creates. To create a key ring and key, pass a value for the `existing_kms_instance_crn` input variable."
 }
 
 variable "kms_endpoint_type" {
@@ -99,11 +103,11 @@ variable "kms_endpoint_type" {
 variable "kms_key_ring_name" {
   type        = string
   default     = "watsonx-data-key-ring"
-  description = "The name of the key ring to create for the watsonx Data instance key. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `<prefix>-value` format."
+  description = "The name of the key ring to create for the watsonx.data instance key. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `<prefix>-value` format."
 }
 
 variable "kms_key_name" {
   type        = string
   default     = "watsonx-data-key"
-  description = "The name of the key to create for the watsonx Data instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format."
+  description = "The name of the key to create for the watsonx.data instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format."
 }

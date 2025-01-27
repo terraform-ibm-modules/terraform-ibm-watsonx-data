@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-watsonx-data",
-      "label": "watsonx Data",
+      "label": "watsonx.data",
       "product_kind": "solution",
       "tags": [
         "ibm_created",
@@ -13,7 +13,6 @@
         "solution"
       ],
       "keywords": [
-        "watsonx data",
         "watsonx.data",
         "IaC",
         "infrastructure as code",
@@ -21,15 +20,15 @@
         "solution",
         "ai"
       ],
-      "short_description": "Creates and configures an instance of IBM watsonx Data.",
+      "short_description": "Creates and configures an instance of IBM watsonx.data.",
       "long_description": "This architecture supports creating and configuring an instance of watsonx.data.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/blob/main/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/images/watsonx-data.svg",
       "provider_name": "IBM",
       "features": [
         {
-          "title": "Creates an instance of IBM watsonx Data",
-          "description": "Creates and configures an IBM watsonx Data instance."
+          "title": "Creates an instance of IBM watsonx.data",
+          "description": "Creates and configures an IBM watsonx.data instance."
         }
       ],
       "flavors": [
@@ -61,21 +60,21 @@
             }
           ],
           "architecture": {
-            "descriptions": "This architecture creates an instance of IBM watsonx Data.",
+            "descriptions": "This architecture creates an instance of IBM watsonx.data.",
             "features": [
               {
-                "title": " Creates and configures an instance of watsonx Data",
-                "description": "This architecture creates and configures an instance of IBM watsonx Data. It accepts or creates a resource group."
+                "title": " Creates and configures an instance of watsonx.data",
+                "description": "This architecture creates and configures an instance of IBM watsonx.data. It accepts or creates a resource group."
               }
             ],
             "diagrams": [
               {
                 "diagram": {
-                  "caption": "watsonx Data on IBM Cloud",
+                  "caption": "watsonx.data on IBM Cloud",
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/reference-architecture/deployable-architecture-watsonx-data.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture supports creating and configuring an instance of watsonx Data."
+                "description": "This architecture supports creating and configuring an instance of watsonx.data."
               }
             ]
           },

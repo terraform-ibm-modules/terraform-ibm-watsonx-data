@@ -115,9 +115,9 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_region"></a> [region](#input\_region) | The region to provision the watsonx.data instance. | `string` | `"us-south"` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the watsonx.data instance will be grouped. Required when creating a new instance. | `string` | `null` | no |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Optional list of tags to describe the watsonx.data instance created by the module. | `list(string)` | `[]` | no |
-| <a name="input_skip_iam_authorization_policy"></a> [skip\_iam\_authorization\_policy](#input\_skip\_iam\_authorization\_policy) | Whether to create an IAM authorization policy that permits the watsonx Data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy. | `bool` | `false` | no |
+| <a name="input_skip_iam_authorization_policy"></a> [skip\_iam\_authorization\_policy](#input\_skip\_iam\_authorization\_policy) | Whether to create an IAM authorization policy that permits the watsonx.data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy. | `bool` | `false` | no |
 | <a name="input_use_case"></a> [use\_case](#input\_use\_case) | The Lite plan instance can be provisioned based on the three use cases - Generative AI, Data Engineering and High Performance BI. Allowed values are : 'ai', 'workloads' and 'performance'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-tutorial_prov_lite_1) | `string` | `"workloads"` | no |
-| <a name="input_watsonx_data_kms_key_crn"></a> [watsonx\_data\_kms\_key\_crn](#input\_watsonx\_data\_kms\_key\_crn) | The KMS key CRN used to encrypt the watsonx data instance. | `string` | `null` | no |
+| <a name="input_watsonx_data_kms_key_crn"></a> [watsonx\_data\_kms\_key\_crn](#input\_watsonx\_data\_kms\_key\_crn) | The KMS key CRN used to encrypt the watsonx.data instance. | `string` | `null` | no |
 | <a name="input_watsonx_data_name"></a> [watsonx\_data\_name](#input\_watsonx\_data\_name) | The name of the watsonx.data instance. Required if creating a new instance. | `string` | `null` | no |
 
 ### Outputs

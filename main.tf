@@ -3,7 +3,7 @@
 #######################################################################################################################
 
 locals {
-  # watsonx Data values
+  # watsonx.data values
   watsonx_data_datacenter_mapping = {
     "us-south" = "ibm:us-south:dal",
     "eu-gb"    = "ibm:eu-gb:lon",
@@ -40,6 +40,7 @@ module "kms_key_crn_parser" {
 locals {
 
   validate_kms_plan           = var.plan == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
+  kms_region                  = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].region, null) : null
   kms_service                 = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].service_name, null) : null
   kms_account_id              = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].account_id, null) : null
   kms_key_id                  = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].resource, null) : null
@@ -47,7 +48,7 @@ locals {
 
 }
 ########################################################################################################################
-# Watsonx Data Instance
+# watsonx.data
 ########################################################################################################################
 
 data "ibm_resource_instance" "existing_data_instance" {
