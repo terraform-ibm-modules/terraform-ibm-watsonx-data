@@ -38,10 +38,6 @@ variable "region" {
     condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok", "au-syd"], var.region)
     error_message = "You must specify 'eu-de', 'eu-gb', 'jp-tok', 'au-syd' or 'us-south' as the IBM Cloud region."
   }
-  validation {
-    condition     = local.kms_region == null || (local.kms_region == var.region)
-    error_message = "In case of enterprise plan, KMS instance should be in the same region as watsonx.data"
-  }
 }
 
 variable "existing_watsonx_data_instance_crn" {
@@ -52,14 +48,15 @@ variable "existing_watsonx_data_instance_crn" {
 
 variable "plan" {
   type        = string
-  description = "The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' and 'lakehouse-enterprise'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
+  description = "The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' , 'lakehouse-enterprise' and `lakehouse-enterprise-mcsp` (only for au-syd region). [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
   default     = "lite"
+
   validation {
     condition = anytrue([
-      var.plan == "lakehouse-enterprise",
-      var.plan == "lite",
+      var.region == "au-syd" && var.plan == "lakehouse-enterprise-mcsp",
+      var.region != "au-syd" && contains(["lakehouse-enterprise", "lite"], var.plan)
     ])
-    error_message = "A new watsonx.data instance requires a 'lakehouse-enterprise' or 'lite' plan."
+    error_message = "If the region is 'au-syd', the plan must be 'lakehouse-enterprise-mcsp'. For other supported regions, the plan must be 'lakehouse-enterprise' or 'lite'."
   }
 }
 
@@ -91,6 +88,10 @@ variable "enable_kms_encryption" {
   description = "Flag to enable the KMS encryption."
   type        = bool
   default     = false
+  validation {
+    condition     = !var.enable_kms_encryption || var.plan == "lakehouse-enterprise"
+    error_message = "KMS encryption is only supported when the plan configured is 'lakehouse-enterprise'."
+  }
 }
 
 variable "watsonx_data_kms_key_crn" {

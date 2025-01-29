@@ -33,7 +33,7 @@ variable "resource_group_name" {
 variable "prefix" {
   type        = string
   description = "(Optional) Prefix to add to all resources created by this solution. To not use any prefix value, you can set this value to `null` or an empty string."
-  default     = "data-dev"
+  default     = "wx-data"
 }
 
 variable "name" {
@@ -46,16 +46,19 @@ variable "region" {
   description = "The region where you want to deploy your instance."
   type        = string
   default     = "us-south"
-  validation {
-    condition     = local.kms_region == null || (local.kms_region == var.region)
-    error_message = "In case of enterprise plan, KMS instance should be in the same region as watsonx.data"
-  }
 }
 
 variable "plan" {
   type        = string
-  description = "The plan that is required to provision the watsonx.data instance. Possible values are: essentials, standard. [Learn more](https://www.ibm.com/products/watsonx-data/pricing)."
+  description = "The plan that is required to provision the watsonx.data instance. Possible values are: `lite` , `lakehouse-enterprise` or `lakehouse-enterprise-mcsp` only for `au-syd` region. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started_1)."
   default     = "lakehouse-enterprise"
+  validation {
+    condition = anytrue([
+      var.region == "au-syd" && var.plan == "lakehouse-enterprise-mcsp",
+      var.region != "au-syd" && contains(["lakehouse-enterprise", "lite"], var.plan)
+    ])
+    error_message = "If the region is 'au-syd', the plan must be 'lakehouse-enterprise-mcsp'. For other supported regions, the plan must be 'lakehouse-enterprise' or 'lite'."
+  }
 }
 
 variable "resource_tags" {
@@ -71,7 +74,7 @@ variable "access_tags" {
 }
 
 variable "enable_kms_encryption" {
-  description = "Flag to enable KMS encryption. If set to true, a value must be passed for `existing_kms_key_crn`. This is applicable only for Enterprise plan."
+  description = "Flag to enable KMS encryption. If set to true, a value must be passed for either `existing_kms_instance_crn` or `existing_kms_key_crn`. This is applicable only for Enterprise plan."
   type        = bool
   default     = true
 
@@ -81,11 +84,10 @@ variable "enable_kms_encryption" {
   }
 }
 
-
 variable "existing_kms_instance_crn" {
   type        = string
   default     = null
-  description = "The CRN of the existing key management service (KMS) that is used to create keys for encrypting the watsonx.data enterprise instance. If you are not using an existing KMS root key, you must specify this CRN. If you are using an existing KMS root key, an existing watsonx.data instance and auth policy is not set for watsonx.data to KMS, you must specify this CRN."
+  description = "The CRN of the existing key management service (KMS) that is used to create keys for encrypting the watsonx.data instance. If you are not using an existing KMS root key, you must specify this CRN. If you are using an existing KMS root key and auth policy is not set for watsonx.data to KMS, you must specify this CRN. This is applicable only for Enterprise plan."
 
   validation {
     condition = anytrue([
@@ -99,12 +101,12 @@ variable "existing_kms_instance_crn" {
 variable "existing_kms_key_crn" {
   type        = string
   default     = null
-  description = "(Optional) CRN of an existing key management service (Key Protect) key to use to encrypt the watsonx.data enterprise instance that this solution creates. To create a key ring and key, pass a value for the `existing_kms_instance_crn` input variable."
+  description = "(Optional) CRN of an existing key management service (Key Protect) key to use to encrypt the watsonx.data instance that this solution creates. To create a key ring and key, pass a value for the `existing_kms_instance_crn` input variable. This is applicable only for Enterprise plan."
 }
 
 variable "kms_endpoint_type" {
   type        = string
-  description = "The type of endpoint to use for communicating with the Key Protect instance. Possible values: `public`, `private`. Applies only if `existing_kms_key_crn` is not specified. This is applicable only for Enterprise plan."
+  description = "The type of endpoint to use for communicating with the Key Protect instance. Possible values: `public`, `private`. Applies only if `existing_kms_key_crn` is specified. This is applicable only for Enterprise plan."
   default     = "public"
   validation {
     condition     = can(regex("public|private", var.kms_endpoint_type))
@@ -115,11 +117,17 @@ variable "kms_endpoint_type" {
 variable "kms_key_ring_name" {
   type        = string
   default     = "watsonx-data-key-ring"
-  description = "The name of the key ring to create for the watsonx.data enterprise instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `<prefix>-value` format."
+  description = "The name of the key ring to create for the watsonx.data instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `<prefix>-value` format. This is applicable only for Enterprise plan."
 }
 
 variable "kms_key_name" {
   type        = string
   default     = "watsonx-data-key"
-  description = "The name of the key to create for the watsonx.data enterprise instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format."
+  description = "The name of the key to create for the watsonx.data instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format. This is applicable only for Enterprise plan."
+}
+
+variable "skip_iam_authorization_policy" {
+  type        = bool
+  description = "Whether to create an IAM authorization policy that permits the watsonx.data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy."
+  default     = false
 }

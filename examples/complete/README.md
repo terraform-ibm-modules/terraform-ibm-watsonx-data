@@ -1,4 +1,4 @@
-# Basic example
+# Complete example
 
 This example provisions an instance of the [watsonx.data](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data)
 

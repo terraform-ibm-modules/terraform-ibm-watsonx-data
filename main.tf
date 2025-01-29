@@ -3,6 +3,7 @@
 #######################################################################################################################
 
 locals {
+
   # watsonx.data values
   watsonx_data_datacenter_mapping = {
     "us-south" = "ibm:us-south:dal",
@@ -38,9 +39,8 @@ module "kms_key_crn_parser" {
 
 # KMS values
 locals {
-
+  # kms not applicable for plan - `lakehouse-enterprise-mcsp`
   validate_kms_plan           = var.plan == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
-  kms_region                  = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].region, null) : null
   kms_service                 = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].service_name, null) : null
   kms_account_id              = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].account_id, null) : null
   kms_key_id                  = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].resource, null) : null

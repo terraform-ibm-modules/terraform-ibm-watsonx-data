@@ -24,7 +24,7 @@ import (
 
 // Use existing resource group
 const resourceGroup = "geretain-test-resources"
-const basicExampleDir = "examples/basic"
+const completeExampleDir = "examples/complete"
 const existingExampleDir = "examples/existing-instance"
 const standardSolutionTerraformDir = "solutions/standard"
 
@@ -70,10 +70,10 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 	return options
 }
 
-func TestRunBasicExample(t *testing.T) {
+func TestRunCompleteExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wx-data-basic", basicExampleDir)
+	options := setupOptions(t, "wx-complete", completeExampleDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
@@ -83,7 +83,7 @@ func TestRunBasicExample(t *testing.T) {
 func TestRunUpgradeExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wx-data-upg", basicExampleDir)
+	options := setupOptions(t, "wx-data-upg", completeExampleDir)
 
 	output, err := options.RunTestUpgrade()
 	if !options.UpgradeTestSkipped {

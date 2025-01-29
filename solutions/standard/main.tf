@@ -10,8 +10,7 @@ locals {
   kms_key_ring_name = try("${var.prefix}-${var.kms_key_ring_name}", var.kms_key_ring_name)
   kms_key_name      = try("${var.prefix}-${var.kms_key_name}", var.kms_key_name)
 
-  enable_kms  = var.enable_kms_encryption && var.plan == "lakehouse-enterprise" ? true : false
-  kms_key_crn = local.enable_kms ? (var.existing_kms_key_crn != null ? var.existing_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
+  kms_key_crn = var.enable_kms_encryption ? (var.existing_kms_key_crn != null ? var.existing_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
 }
 
 #######################################################################################################################
@@ -38,7 +37,7 @@ module "existing_kms_crn_parser" {
 }
 
 module "kms" {
-  count                       = local.enable_kms && var.existing_kms_instance_crn != null ? 1 : 0 # no need to create any KMS resources if passing an existing key
+  count                       = var.enable_kms_encryption && var.existing_kms_instance_crn != null ? 1 : 0 # no need to create any KMS resources if passing an existing key
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
   version                     = "4.19.1"
   create_key_protect_instance = false
@@ -76,7 +75,7 @@ module "watsonx_data" {
   watsonx_data_name             = try("${local.prefix}-${var.name}", var.name)
   access_tags                   = var.access_tags
   resource_tags                 = var.resource_tags
-  enable_kms_encryption         = local.enable_kms
-  skip_iam_authorization_policy = !local.enable_kms
+  enable_kms_encryption         = var.enable_kms_encryption
+  skip_iam_authorization_policy = var.skip_iam_authorization_policy
   watsonx_data_kms_key_crn      = local.kms_key_crn
 }
