@@ -97,7 +97,7 @@ resource "ibm_resource_tag" "watsonx_data_tag" {
 ##############################################################################
 
 resource "ibm_iam_authorization_policy" "kms_policy" {
-  count                       = var.enable_kms_encryption == false || var.skip_iam_authorization_policy ? 0 : 1
+  count                       = !var.enable_kms_encryption || var.skip_iam_authorization_policy ? 0 : 1
   source_service_name         = "lakehouse"
   source_resource_instance_id = ibm_resource_instance.data_instance[0].guid
   roles                       = ["Reader"]
@@ -135,7 +135,7 @@ resource "ibm_iam_authorization_policy" "kms_policy" {
 
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_kms_authorization_policy" {
-  count           = var.enable_kms_encryption == false || var.skip_iam_authorization_policy ? 0 : 1
+  count           = !var.enable_kms_encryption || var.skip_iam_authorization_policy ? 0 : 1
   depends_on      = [ibm_iam_authorization_policy.kms_policy]
   create_duration = "30s"
 }

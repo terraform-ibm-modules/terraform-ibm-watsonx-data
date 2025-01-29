@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-watsonx-data",
-      "label": "watsonx.data",
+      "label": "Cloud automation for watsonx.data",
       "product_kind": "solution",
       "tags": [
         "ibm_created",
@@ -29,6 +29,10 @@
         {
           "title": "Creates an instance of IBM watsonx.data",
           "description": "Creates and configures an IBM watsonx.data instance."
+        },
+        {
+          "title": "Creates a KMS encryption enabled IBM watsonx.data instance",
+          "description": "Create and configures a KMS encryption enabled IBM watsonx.data instance for Enterprise plan."
         }
       ],
       "flavors": [
@@ -109,7 +113,8 @@
               },
               {
                 "key": "prefix",
-                "required": true
+                "required": true,
+                "description": "Prefix to add to all resources created by this solution. To not use any prefix value, you can enter the string `__NULL__`."
               },
               {
                 "key": "watsonx_data_name"
@@ -160,6 +165,12 @@
               },
               {
                 "key": "access_tags"
+              },
+              {
+                "key": "existing_kms_instance_crn"
+              },
+              {
+                "key": "existing_kms_key_crn"
               }
             ]
         }
