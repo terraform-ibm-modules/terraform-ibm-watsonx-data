@@ -4,7 +4,7 @@ offerings:
   - name: deploy-arch-ibm-watsonx-data
     kind: solution
     catalog_id: 7df1e4ca-d54c-4fd0-82ce-3d13247308cd
-    offering_id: #TODO: To be added
+    offering_id: 40dddcc7-246e-4c56-9e04-ac173f855868
     variations:
       - name: standard
         mark_ready: true
