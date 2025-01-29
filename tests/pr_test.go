@@ -40,7 +40,6 @@ var validRegions = []string{
 	"eu-de",
 	"eu-gb",
 	"jp-tok",
-	"au-syd",
 }
 
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
