@@ -17,7 +17,7 @@ variable "ibmcloud_api_key" {
 variable "region" {
   type        = string
   description = "Region to provision all resources created by this example."
-  default     = "us-south"
+  default     = "au-syd"
 }
 
 variable "prefix" {
@@ -45,5 +45,5 @@ variable "resource_tags" {
 variable "plan" {
   type        = string
   description = "The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' and 'lakehouse-enterprise'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
-  default     = "lakehouse-enterprise"
+  default     = "lite"
 }
