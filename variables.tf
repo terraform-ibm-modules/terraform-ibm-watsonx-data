@@ -53,10 +53,11 @@ variable "plan" {
 
   validation {
     condition = anytrue([
-      var.region == "au-syd" && var.plan == "lakehouse-enterprise-mcsp",
-      var.region != "au-syd" && contains(["lakehouse-enterprise", "lite"], var.plan)
+      var.plan == "lite",
+      var.plan == "lakehouse-enterprise" && var.region != "au-syd",     # lakehouse-enterprise is supported in all regions except au-syd
+      var.plan == "lakehouse-enterprise-mcsp" && var.region == "au-syd" # lakehouse-enterprise-mcsp is only supported in au-syd
     ])
-    error_message = "If the region is 'au-syd', the plan must be 'lakehouse-enterprise-mcsp'. For other supported regions, the plan must be 'lakehouse-enterprise' or 'lite'."
+    error_message = "Allowed plan-region combinations are: 'lite' (any region), 'lakehouse-enterprise' (all regions except 'au-syd'), 'lakehouse-enterprise-mcsp' (only in 'au-syd')."
   }
 }
 

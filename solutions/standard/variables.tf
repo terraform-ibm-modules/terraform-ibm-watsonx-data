@@ -33,13 +33,13 @@ variable "resource_group_name" {
 variable "prefix" {
   type        = string
   description = "(Optional) Prefix to add to all resources created by this solution. To not use any prefix value, you can set this value to `null` or an empty string."
-  default     = "wx-data"
+  default     = "dev"
 }
 
 variable "name" {
   type        = string
   description = "The name of the watsonx.data instance. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
-  default     = "dev"
+  default     = "watsonx-data"
 }
 
 variable "region" {
@@ -54,10 +54,11 @@ variable "plan" {
   default     = "lakehouse-enterprise"
   validation {
     condition = anytrue([
-      var.region == "au-syd" && var.plan == "lakehouse-enterprise-mcsp",
-      var.region != "au-syd" && contains(["lakehouse-enterprise", "lite"], var.plan)
+      var.plan == "lite",
+      var.plan == "lakehouse-enterprise" && var.region != "au-syd",     # lakehouse-enterprise is supported in all regions except au-syd
+      var.plan == "lakehouse-enterprise-mcsp" && var.region == "au-syd" # lakehouse-enterprise-mcsp is only supported in au-syd
     ])
-    error_message = "If the region is 'au-syd', the plan must be 'lakehouse-enterprise-mcsp'. For other supported regions, the plan must be 'lakehouse-enterprise' or 'lite'."
+    error_message = "Allowed plan-region combinations are: 'lite' (any region), 'lakehouse-enterprise' (all regions except 'au-syd'), 'lakehouse-enterprise-mcsp' (only in 'au-syd')."
   }
 }
 
