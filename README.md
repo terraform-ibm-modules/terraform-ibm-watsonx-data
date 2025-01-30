@@ -24,7 +24,7 @@ IBM® watsonx.data is a new open architecture lakehouse that combines the elemen
 ## Overview
 * [terraform-ibm-watsonx-data](#terraform-ibm-watsonx-data)
 * [Examples](./examples)
-    * [Complete example](./examples/complete)
+    * [Basic example](./examples/basic)
     * [Existing instance example](./examples/existing-instance)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
