@@ -3,7 +3,8 @@
 #######################################################################################################################
 
 locals {
-  # watsonx Data values
+
+  # watsonx.data values
   watsonx_data_datacenter_mapping = {
     "us-south" = "ibm:us-south:dal",
     "eu-gb"    = "ibm:eu-gb:lon",
@@ -38,7 +39,7 @@ module "kms_key_crn_parser" {
 
 # KMS values
 locals {
-
+  # kms not applicable for plan - `lakehouse-enterprise-mcsp`
   validate_kms_plan           = var.plan == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
   kms_service                 = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].service_name, null) : null
   kms_account_id              = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].account_id, null) : null
@@ -47,7 +48,7 @@ locals {
 
 }
 ########################################################################################################################
-# Watsonx Data Instance
+# watsonx.data
 ########################################################################################################################
 
 data "ibm_resource_instance" "existing_data_instance" {
@@ -96,7 +97,7 @@ resource "ibm_resource_tag" "watsonx_data_tag" {
 ##############################################################################
 
 resource "ibm_iam_authorization_policy" "kms_policy" {
-  count                       = var.enable_kms_encryption == false || var.skip_iam_authorization_policy ? 0 : 1
+  count                       = !var.enable_kms_encryption || var.skip_iam_authorization_policy ? 0 : 1
   source_service_name         = "lakehouse"
   source_resource_instance_id = ibm_resource_instance.data_instance[0].guid
   roles                       = ["Reader"]
@@ -134,7 +135,7 @@ resource "ibm_iam_authorization_policy" "kms_policy" {
 
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_kms_authorization_policy" {
-  count           = var.enable_kms_encryption == false || var.skip_iam_authorization_policy ? 0 : 1
+  count           = !var.enable_kms_encryption || var.skip_iam_authorization_policy ? 0 : 1
   depends_on      = [ibm_iam_authorization_policy.kms_policy]
   create_duration = "30s"
 }

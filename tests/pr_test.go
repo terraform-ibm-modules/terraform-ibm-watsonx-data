@@ -26,6 +26,7 @@ import (
 const resourceGroup = "geretain-test-resources"
 const basicExampleDir = "examples/basic"
 const existingExampleDir = "examples/existing-instance"
+const standardSolutionTerraformDir = "solutions/standard"
 
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 
@@ -39,7 +40,6 @@ var validRegions = []string{
 	"eu-de",
 	"eu-gb",
 	"jp-tok",
-	"au-syd",
 }
 
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
@@ -72,7 +72,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wx-data-basic", basicExampleDir)
+	options := setupOptions(t, "wx-basic", basicExampleDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
@@ -157,6 +157,77 @@ func TestRunExistingResourcesExample(t *testing.T) {
 		logger.Log(t, "START: Destroy (existing resources)")
 		terraform.Destroy(t, existingTerraformOptions)
 		terraform.WorkspaceDelete(t, existingTerraformOptions, prefix)
+		logger.Log(t, "END: Destroy (existing resources)")
+	}
+}
+
+// Test the DA
+func TestRunStandardSolution(t *testing.T) {
+	t.Parallel()
+
+	// ---------------------------------------------------------
+	// Provision KMS - Key Protect
+	// ---------------------------------------------------------
+
+	var region = validRegions[rand.Intn(len(validRegions))]
+
+	prefix := "wx-da"
+	realTerraformDir := "./kp-instance"
+	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
+
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+
+	logger.Log(t, "Tempdir: ", tempTerraformDir)
+	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: tempTerraformDir,
+		Vars: map[string]interface{}{
+			"prefix": prefix,
+			"region": region,
+		},
+		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
+		// This is the same as setting the -upgrade=true flag with terraform.
+		Upgrade: true,
+	})
+
+	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
+	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
+
+	if existErr != nil {
+		assert.True(t, existErr == nil, "Init and Apply of temp resources (KP Instance and Key creation) failed")
+	} else {
+		// ------------------------------------------------------------------------------------
+		// Deploy watsonx.data DA using existing KP details
+		// ------------------------------------------------------------------------------------
+
+		options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
+			Testing:      t,
+			TerraformDir: standardSolutionTerraformDir,
+			Prefix:       "wx-data",
+			TerraformVars: map[string]interface{}{
+				"region":                      region,
+				"use_existing_resource_group": true,
+				"resource_group_name":         terraform.Output(t, existingTerraformOptions, "resource_group_name"),
+				"provider_visibility":         "public",
+				"existing_kms_instance_crn":   terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
+			},
+		})
+
+		output, err := options.RunTestConsistency()
+		assert.Nil(t, err, "This should not have errored")
+		assert.NotNil(t, output, "Expected some output")
+	}
+
+	envVal, _ := os.LookupEnv("DO_NOT_DESTROY_ON_FAILURE")
+	// Destroy the temporary resources created
+	if t.Failed() && strings.ToLower(envVal) == "true" {
+		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
+	} else {
+		logger.Log(t, "START: Destroy (existing resources)")
+		terraform.Destroy(t, existingTerraformOptions)
 		logger.Log(t, "END: Destroy (existing resources)")
 	}
 }

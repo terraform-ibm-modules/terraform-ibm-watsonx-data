@@ -48,14 +48,16 @@ variable "existing_watsonx_data_instance_crn" {
 
 variable "plan" {
   type        = string
-  description = "The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' and 'lakehouse-enterprise'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
+  description = "The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' , 'lakehouse-enterprise' and `lakehouse-enterprise-mcsp` (only for au-syd region). [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
   default     = "lite"
+
   validation {
     condition = anytrue([
-      var.plan == "lakehouse-enterprise",
       var.plan == "lite",
+      var.plan == "lakehouse-enterprise" && var.region != "au-syd",     # lakehouse-enterprise is supported in all regions except au-syd
+      var.plan == "lakehouse-enterprise-mcsp" && var.region == "au-syd" # lakehouse-enterprise-mcsp is only supported in au-syd
     ])
-    error_message = "A new watsonx.data instance requires a 'lakehouse-enterprise' or 'lite' plan."
+    error_message = "Allowed plan-region combinations are: 'lite' (any region), 'lakehouse-enterprise' (all regions except 'au-syd'), 'lakehouse-enterprise-mcsp' (only in 'au-syd')."
   }
 }
 
@@ -87,20 +89,24 @@ variable "enable_kms_encryption" {
   description = "Flag to enable the KMS encryption."
   type        = bool
   default     = false
+  validation {
+    condition     = !var.enable_kms_encryption || var.plan == "lakehouse-enterprise"
+    error_message = "KMS encryption is only supported when the plan configured is 'lakehouse-enterprise'."
+  }
 }
 
 variable "watsonx_data_kms_key_crn" {
-  description = "The KMS key CRN used to encrypt the watsonx data instance."
+  description = "The KMS key CRN used to encrypt the watsonx.data instance."
   type        = string
   default     = null
   validation {
     condition     = var.plan == "lakehouse-enterprise" || var.watsonx_data_kms_key_crn == null
-    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the watsonx data plan is configured is 'lakehouse-enterprise'."
+    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the plan configured is 'lakehouse-enterprise'."
   }
 }
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Whether to create an IAM authorization policy that permits the watsonx Data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy."
+  description = "Whether to create an IAM authorization policy that permits the watsonx.data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy."
   default     = false
 }

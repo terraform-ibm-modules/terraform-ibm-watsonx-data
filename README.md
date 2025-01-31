@@ -85,7 +85,7 @@ To attach access management tags to resources in this module, you need the follo
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.70.1, < 2.0.0 |
-| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.12.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.12.1 |
 
 ### Modules
 
@@ -111,13 +111,13 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access tags to apply to the watsonx.data instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial. | `list(string)` | `[]` | no |
 | <a name="input_enable_kms_encryption"></a> [enable\_kms\_encryption](#input\_enable\_kms\_encryption) | Flag to enable the KMS encryption. | `bool` | `false` | no |
 | <a name="input_existing_watsonx_data_instance_crn"></a> [existing\_watsonx\_data\_instance\_crn](#input\_existing\_watsonx\_data\_instance\_crn) | The CRN of an existing watsonx.data instance.If not provided, a new instance will be provisioned. | `string` | `null` | no |
-| <a name="input_plan"></a> [plan](#input\_plan) | The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' and 'lakehouse-enterprise'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started) | `string` | `"lite"` | no |
+| <a name="input_plan"></a> [plan](#input\_plan) | The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' , 'lakehouse-enterprise' and `lakehouse-enterprise-mcsp` (only for au-syd region). [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started) | `string` | `"lite"` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region to provision the watsonx.data instance. | `string` | `"us-south"` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the watsonx.data instance will be grouped. Required when creating a new instance. | `string` | `null` | no |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Optional list of tags to describe the watsonx.data instance created by the module. | `list(string)` | `[]` | no |
-| <a name="input_skip_iam_authorization_policy"></a> [skip\_iam\_authorization\_policy](#input\_skip\_iam\_authorization\_policy) | Whether to create an IAM authorization policy that permits the watsonx Data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy. | `bool` | `false` | no |
+| <a name="input_skip_iam_authorization_policy"></a> [skip\_iam\_authorization\_policy](#input\_skip\_iam\_authorization\_policy) | Whether to create an IAM authorization policy that permits the watsonx.data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy. | `bool` | `false` | no |
 | <a name="input_use_case"></a> [use\_case](#input\_use\_case) | The Lite plan instance can be provisioned based on the three use cases - Generative AI, Data Engineering and High Performance BI. Allowed values are : 'ai', 'workloads' and 'performance'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-tutorial_prov_lite_1) | `string` | `"workloads"` | no |
-| <a name="input_watsonx_data_kms_key_crn"></a> [watsonx\_data\_kms\_key\_crn](#input\_watsonx\_data\_kms\_key\_crn) | The KMS key CRN used to encrypt the watsonx data instance. | `string` | `null` | no |
+| <a name="input_watsonx_data_kms_key_crn"></a> [watsonx\_data\_kms\_key\_crn](#input\_watsonx\_data\_kms\_key\_crn) | The KMS key CRN used to encrypt the watsonx.data instance. | `string` | `null` | no |
 | <a name="input_watsonx_data_name"></a> [watsonx\_data\_name](#input\_watsonx\_data\_name) | The name of the watsonx.data instance. Required if creating a new instance. | `string` | `null` | no |
 
 ### Outputs
