@@ -171,15 +171,15 @@
                 "default_value": "workloads",
                 "options": [
                   {
-                    "displayname": "ai",
+                    "displayname": "Generative AI",
                     "value": "ai"
                   },
                   {
-                    "displayname": "workloads",
+                    "displayname": "Data Engineering",
                     "value": "workloads"
                   },
                   {
-                    "displayname": "performance",
+                    "displayname": "High Performance BI",
                     "value": "performance"
                   }
                 ]
