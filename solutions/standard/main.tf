@@ -75,6 +75,7 @@ module "watsonx_data" {
   watsonx_data_name             = try("${local.prefix}-${var.name}", var.name)
   access_tags                   = var.access_tags
   resource_tags                 = var.resource_tags
+  use_case                      = var.plan == "lite" ? var.lite_plan_use_case : null
   enable_kms_encryption         = var.enable_kms_encryption
   skip_iam_authorization_policy = var.skip_iam_authorization_policy
   watsonx_data_kms_key_crn      = local.kms_key_crn

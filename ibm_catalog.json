@@ -167,6 +167,27 @@
                 "key": "access_tags"
               },
               {
+                "key": "lite_plan_use_case",
+                "default_value": "workloads",
+                "options": [
+                  {
+                    "displayname": "ai",
+                    "value": "ai"
+                  },
+                  {
+                    "displayname": "workloads",
+                    "value": "workloads"
+                  },
+                  {
+                    "displayname": "performance",
+                    "value": "performance"
+                  }
+                ]
+              },
+              {
+                "key": "enable_kms_encryption"
+              },
+              {
                 "key": "existing_kms_instance_crn"
               },
               {
