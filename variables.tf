@@ -80,7 +80,7 @@ variable "use_case" {
   default     = "workloads"
 
   validation {
-    condition     = var.plan != "lite" || contains(["ai", "workloads", "performance"], var.use_case)
+    condition     = var.plan == "lite" ? contains(["ai", "workloads", "performance"], var.use_case) : true
     error_message = "Use case is only applicable for the 'Lite' plan. Allowed values are: 'ai', 'workloads', and 'performance'."
   }
 }
