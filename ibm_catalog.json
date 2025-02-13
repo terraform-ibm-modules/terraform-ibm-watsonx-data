@@ -48,7 +48,8 @@
                 "profile_name": "IBM Cloud Framework for AI Security Guardrails 2.0",
                 "profile_version": "1.1.0"
               }
-            ]},
+            ]
+          },
           "iam_permissions": [
             {
               "role_crns": [
@@ -83,96 +84,111 @@
             ]
           },
           "configuration": [
-              {
-                "key": "ibmcloud_api_key",
-                "required": true,
-                "type": "password"
-              },
-              {
-                "key": "provider_visibility",
-                "options": [
-                  {
-                    "displayname": "private",
-                    "value": "private"
-                  },
-                  {
-                    "displayname": "public",
-                    "value": "public"
-                  },
-                  {
-                    "displayname": "public-and-private",
-                    "value": "public-and-private"
-                  }
-                ]
-              },
-              {
-                "key": "use_existing_resource_group"
-              },
-              {
-                "key": "resource_group_name"
-              },
-              {
-                "key": "prefix",
-                "required": true,
-                "description": "Prefix to add to all resources created by this solution. To not use any prefix value, you can enter the string `__NULL__`."
-              },
-              {
-                "key": "watsonx_data_name"
-              },
-              {
-                "key": "region",
-                "required": true,
-                "default_value": "us-south",
-                "options": [
-                  {
-                    "displayname": "Dallas (us-south)",
-                    "value": "us-south"
-                  },
-                  {
-                    "displayname": "Frankfurt (eu-de)",
-                    "value": "eu-de"
-                  },
-                  {
-                    "displayname": "London (eu-gb)",
-                    "value": "eu-gb"
-                  },
-                  {
-                    "displayname": "Sydney (au-syd)",
-                    "value": "au-syd"
-                  },
-                  {
-                    "displayname": "Tokyo (jp-tok)",
-                    "value": "jp-tok"
-                  }
-                ]
-              },
-              {
-                "key": "plan",
-                "default_value": "lakehouse-enterprise",
-                "options": [
-                  {
-                    "displayname": "Lite",
-                    "value": "lite"
-                  },
-                  {
-                    "displayname": "Enterprise",
-                    "value": "lakehouse-enterprise"
-                  }
-                ]
-              },
-              {
-                "key": "resource_tags"
-              },
-              {
-                "key": "access_tags"
-              },
-              {
-                "key": "existing_kms_instance_crn"
-              },
-              {
-                "key": "existing_kms_key_crn"
-              }
-            ]
+            {
+              "key": "ibmcloud_api_key",
+              "required": true,
+              "type": "password"
+            },
+            {
+              "key": "provider_visibility",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
+            },
+            {
+              "key": "use_existing_resource_group"
+            },
+            {
+              "key": "resource_group_name"
+            },
+            {
+              "key": "prefix",
+              "required": true,
+              "description": "Prefix to add to all resources created by this solution. To not use any prefix value, you can enter the string `__NULL__`."
+            },
+            {
+              "key": "name"
+            },
+            {
+              "key": "region",
+              "required": true,
+              "default_value": "us-south",
+              "options": [
+                {
+                  "displayname": "Dallas (us-south)",
+                  "value": "us-south"
+                },
+                {
+                  "displayname": "Frankfurt (eu-de)",
+                  "value": "eu-de"
+                },
+                {
+                  "displayname": "London (eu-gb)",
+                  "value": "eu-gb"
+                },
+                {
+                  "displayname": "Sydney (au-syd)",
+                  "value": "au-syd"
+                },
+                {
+                  "displayname": "Tokyo (jp-tok)",
+                  "value": "jp-tok"
+                }
+              ]
+            },
+            {
+              "key": "plan",
+              "default_value": "lakehouse-enterprise",
+              "options": [
+                {
+                  "displayname": "Lite",
+                  "value": "lite"
+                },
+                {
+                  "displayname": "Enterprise",
+                  "value": "lakehouse-enterprise"
+                }
+              ]
+            },
+            {
+              "key": "resource_tags"
+            },
+            {
+              "key": "access_tags"
+            },
+            {
+              "key": "enable_kms_encryption"
+            },
+            {
+              "key": "existing_kms_instance_crn"
+            },
+            {
+              "key": "existing_kms_key_crn"
+            },
+            {
+              "key": "kms_endpoint_type"
+            },
+            {
+              "key": "kms_key_ring_name"
+            },
+            {
+              "key": "kms_key_name"
+            },
+            {
+              "key": "skip_iam_authorization_policy"
+            }
+          ]
         }
       ]
     }
