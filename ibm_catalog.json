@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-watsonx-data",
-      "label": "Cloud automation for watsonx.data",
+      "label": "[Add-ons Beta] Cloud automation for watsonx.data",
       "product_kind": "solution",
       "tags": [
         "ibm_created",
@@ -48,7 +48,8 @@
                 "profile_name": "IBM Cloud Framework for AI Security Guardrails 2.0",
                 "profile_version": "1.1.0"
               }
-            ]},
+            ]
+          },
           "iam_permissions": [
             {
               "role_crns": [
@@ -83,117 +84,170 @@
             ]
           },
           "configuration": [
-              {
-                "key": "ibmcloud_api_key",
-                "required": true,
-                "type": "password"
-              },
-              {
-                "key": "provider_visibility",
-                "options": [
-                  {
-                    "displayname": "private",
-                    "value": "private"
-                  },
-                  {
-                    "displayname": "public",
-                    "value": "public"
-                  },
-                  {
-                    "displayname": "public-and-private",
-                    "value": "public-and-private"
-                  }
-                ]
-              },
-              {
-                "key": "use_existing_resource_group"
-              },
-              {
-                "key": "resource_group_name"
-              },
-              {
-                "key": "prefix",
-                "required": true,
-                "description": "Prefix to add to all resources created by this solution. To not use any prefix value, you can enter the string `__NULL__`."
-              },
-              {
-                "key": "watsonx_data_name"
-              },
-              {
-                "key": "region",
-                "required": true,
-                "default_value": "us-south",
-                "options": [
-                  {
-                    "displayname": "Dallas (us-south)",
-                    "value": "us-south"
-                  },
-                  {
-                    "displayname": "Frankfurt (eu-de)",
-                    "value": "eu-de"
-                  },
-                  {
-                    "displayname": "London (eu-gb)",
-                    "value": "eu-gb"
-                  },
-                  {
-                    "displayname": "Sydney (au-syd)",
-                    "value": "au-syd"
-                  },
-                  {
-                    "displayname": "Tokyo (jp-tok)",
-                    "value": "jp-tok"
-                  }
-                ]
-              },
-              {
-                "key": "plan",
-                "default_value": "lakehouse-enterprise",
-                "options": [
-                  {
-                    "displayname": "Lite",
-                    "value": "lite"
-                  },
-                  {
-                    "displayname": "Enterprise",
-                    "value": "lakehouse-enterprise"
-                  }
-                ]
-              },
-              {
-                "key": "resource_tags"
-              },
-              {
-                "key": "access_tags"
-              },
-              {
-                "key": "lite_plan_use_case",
-                "default_value": "workloads",
-                "options": [
-                  {
-                    "displayname": "Generative AI",
-                    "value": "ai"
-                  },
-                  {
-                    "displayname": "Data Engineering",
-                    "value": "workloads"
-                  },
-                  {
-                    "displayname": "High Performance BI",
-                    "value": "performance"
-                  }
-                ]
-              },
-              {
-                "key": "enable_kms_encryption"
-              },
-              {
-                "key": "existing_kms_instance_crn"
-              },
-              {
-                "key": "existing_kms_key_crn"
-              }
-            ]
+            {
+              "key": "ibmcloud_api_key",
+              "required": true,
+              "type": "password"
+            },
+            {
+              "key": "provider_visibility",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
+            },
+            {
+              "key": "use_existing_resource_group"
+            },
+            {
+              "key": "resource_group_name"
+            },
+            {
+              "key": "prefix",
+              "required": true,
+              "description": "Prefix to add to all resources created by this solution. To not use any prefix value, you can enter the string `__NULL__`."
+            },
+            {
+              "key": "watsonx_data_name"
+            },
+            {
+              "key": "region",
+              "required": true,
+              "default_value": "us-south",
+              "options": [
+                {
+                  "displayname": "Dallas (us-south)",
+                  "value": "us-south"
+                },
+                {
+                  "displayname": "Frankfurt (eu-de)",
+                  "value": "eu-de"
+                },
+                {
+                  "displayname": "London (eu-gb)",
+                  "value": "eu-gb"
+                },
+                {
+                  "displayname": "Sydney (au-syd)",
+                  "value": "au-syd"
+                },
+                {
+                  "displayname": "Tokyo (jp-tok)",
+                  "value": "jp-tok"
+                }
+              ]
+            },
+            {
+              "key": "plan",
+              "default_value": "lakehouse-enterprise",
+              "options": [
+                {
+                  "displayname": "Lite",
+                  "value": "lite"
+                },
+                {
+                  "displayname": "Enterprise",
+                  "value": "lakehouse-enterprise"
+                }
+              ]
+            },
+            {
+              "key": "resource_tags"
+            },
+            {
+              "key": "access_tags"
+            },
+            {
+              "key": "lite_plan_use_case",
+              "default_value": "workloads",
+              "options": [
+                {
+                  "displayname": "Generative AI",
+                  "value": "ai"
+                },
+                {
+                  "displayname": "Data Engineering",
+                  "value": "workloads"
+                },
+                {
+                  "displayname": "High Performance BI",
+                  "value": "performance"
+                }
+              ]
+            },
+            {
+              "key": "enable_kms_encryption"
+            },
+            {
+              "key": "existing_kms_instance_crn"
+            },
+            {
+              "key": "existing_kms_key_crn"
+            }
+          ],
+          "dependencies": [
+            {
+              "name": "deploy-arch-ibm-account-infra-base",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "flavors": [
+                "standard"
+              ],
+              "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
+              "ignore_auto_referencing": [
+                "*"
+              ],
+              "input_mapping": [
+                {
+                  "dependency_output": "workload_resource_group_name",
+                  "version_input": "resource_group_name"
+                },
+                {
+                  "value": true,
+                  "dependency_input": "use_existing_resource_group",
+                  "reference_version": true
+                }
+              ],
+              "optional": true,
+              "on_by_default": true,
+              "version": "^v1.18.0"
+            },
+            {
+              "name": "testing-deploy-arch-ibm-kms",
+              "id": "85fdbd7a-8c77-4abd-b716-653a31f3aba9",
+              "version": "^1.0.6",
+              "flavors": [
+                "standard"
+              ],
+              "catalog_id": "f64499c8-eb50-4985-bf91-29f9e605a433",
+              "optional": true,
+              "on_by_default": true,
+              "ignore_auto_referencing": [
+                "*"
+              ],
+              "input_mapping": [
+                {
+                  "dependency_output": "kms_instance_crn",
+                  "version_input": "existing_kms_instance_crn"
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                }
+              ]
+            }
+          ],
+          "dependency_version_2": true
         }
       ]
     }
