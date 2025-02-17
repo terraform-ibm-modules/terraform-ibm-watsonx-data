@@ -202,7 +202,7 @@
               "key": "kms_key_name"
             },
             {
-               "key": "skip_iam_authorization_policy"
+              "key": "skip_iam_authorization_policy"
             }
           ],
           "dependencies": [
