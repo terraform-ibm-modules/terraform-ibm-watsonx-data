@@ -107,7 +107,8 @@
               ]
             },
             {
-              "key": "use_existing_resource_group"
+              "key": "use_existing_resource_group",
+              "required": true
             },
             {
               "key": "resource_group_name"
@@ -118,12 +119,11 @@
               "description": "Prefix to add to all resources created by this solution. To not use any prefix value, you can enter the string `__NULL__`."
             },
             {
-              "key": "watsonx_data_name"
+              "key": "name"
             },
             {
               "key": "region",
               "required": true,
-              "default_value": "us-south",
               "options": [
                 {
                   "displayname": "Dallas (us-south)",
@@ -149,7 +149,6 @@
             },
             {
               "key": "plan",
-              "default_value": "lakehouse-enterprise",
               "options": [
                 {
                   "displayname": "Lite",
@@ -162,14 +161,7 @@
               ]
             },
             {
-              "key": "resource_tags"
-            },
-            {
-              "key": "access_tags"
-            },
-            {
               "key": "lite_plan_use_case",
-              "default_value": "workloads",
               "options": [
                 {
                   "displayname": "Generative AI",
@@ -186,6 +178,12 @@
               ]
             },
             {
+              "key": "resource_tags"
+            },
+            {
+              "key": "access_tags"
+            },
+            {
               "key": "enable_kms_encryption"
             },
             {
@@ -193,61 +191,20 @@
             },
             {
               "key": "existing_kms_key_crn"
-            }
-          ],
-          "dependencies": [
-            {
-              "name": "deploy-arch-ibm-account-infra-base",
-              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-              "flavors": [
-                "standard"
-              ],
-              "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
-              "ignore_auto_referencing": [
-                "*"
-              ],
-              "input_mapping": [
-                {
-                  "dependency_output": "workload_resource_group_name",
-                  "version_input": "resource_group_name"
-                },
-                {
-                  "value": true,
-                  "dependency_input": "use_existing_resource_group",
-                  "reference_version": true
-                }
-              ],
-              "optional": true,
-              "on_by_default": true,
-              "version": "^v1.18.0"
             },
             {
-              "name": "testing-deploy-arch-ibm-kms",
-              "id": "85fdbd7a-8c77-4abd-b716-653a31f3aba9",
-              "version": "^1.0.6",
-              "flavors": [
-                "standard"
-              ],
-              "catalog_id": "f64499c8-eb50-4985-bf91-29f9e605a433",
-              "optional": true,
-              "on_by_default": true,
-              "ignore_auto_referencing": [
-                "*"
-              ],
-              "input_mapping": [
-                {
-                  "dependency_output": "kms_instance_crn",
-                  "version_input": "existing_kms_instance_crn"
-                },
-                {
-                  "dependency_input": "prefix",
-                  "version_input": "prefix",
-                  "reference_version": true
-                }
-              ]
+              "key": "kms_endpoint_type"
+            },
+            {
+              "key": "kms_key_ring_name"
+            },
+            {
+              "key": "kms_key_name"
+            },
+            {
+              "key": "skip_iam_authorization_policy"
             }
-          ],
-          "dependency_version_2": true
+          ]
         }
       ]
     }
