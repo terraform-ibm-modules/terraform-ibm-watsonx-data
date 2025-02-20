@@ -61,34 +61,25 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		TerraformDir:  dir,
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
-		TerraformVars: map[string]interface{}{
-			"region":      validRegions[rand.Intn(len(validRegions))],
-			"access_tags": permanentResources["accessTags"],
-		},
 	})
+	options.TerraformVars = map[string]interface{}{
+		"access_tags":    permanentResources["accessTags"],
+		"region":         validRegions[rand.Intn(len(validRegions))],
+		"prefix":         options.Prefix,
+		"resource_group": resourceGroup,
+		"resource_tags":  options.Tags,
+	}
 	return options
 }
 
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wx-basic", basicExampleDir)
+	options := setupOptions(t, "wxd-basic", basicExampleDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
-}
-
-func TestRunUpgradeExample(t *testing.T) {
-	t.Parallel()
-
-	options := setupOptions(t, "wx-data-upg", basicExampleDir)
-
-	output, err := options.RunTestUpgrade()
-	if !options.UpgradeTestSkipped {
-		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
-	}
 }
 
 func TestRunExistingResourcesExample(t *testing.T) {
@@ -98,7 +89,7 @@ func TestRunExistingResourcesExample(t *testing.T) {
 	// Provision watsonx.data instance
 	// ------------------------------------------------------------------------------------
 
-	prefix := fmt.Sprintf("data-exist-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("ex-wxd-%s", strings.ToLower(random.UniqueId()))
 	realTerraformDir := ".."
 	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
 	tags := common.GetTagsFromTravis()
@@ -204,17 +195,20 @@ func TestRunStandardSolution(t *testing.T) {
 		// ------------------------------------------------------------------------------------
 
 		options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
-			Testing:      t,
-			TerraformDir: standardSolutionTerraformDir,
-			Prefix:       "wx-data",
-			TerraformVars: map[string]interface{}{
-				"region":                      region,
-				"use_existing_resource_group": true,
-				"resource_group_name":         terraform.Output(t, existingTerraformOptions, "resource_group_name"),
-				"provider_visibility":         "public",
-				"existing_kms_instance_crn":   terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
-			},
+			Testing:       t,
+			TerraformDir:  standardSolutionTerraformDir,
+			Prefix:        "wxd-da",
+			Region:        region,
+			ResourceGroup: resourceGroup,
 		})
+		options.TerraformVars = map[string]interface{}{
+			"prefix":                      options.Prefix,
+			"region":                      options.Region,
+			"use_existing_resource_group": true,
+			"resource_group_name":         terraform.Output(t, existingTerraformOptions, "resource_group_name"),
+			"provider_visibility":         "public",
+			"existing_kms_instance_crn":   terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
+		}
 
 		output, err := options.RunTestConsistency()
 		assert.Nil(t, err, "This should not have errored")
@@ -229,5 +223,31 @@ func TestRunStandardSolution(t *testing.T) {
 		logger.Log(t, "START: Destroy (existing resources)")
 		terraform.Destroy(t, existingTerraformOptions)
 		logger.Log(t, "END: Destroy (existing resources)")
+	}
+}
+
+func TestRunStandardUpgradeSolution(t *testing.T) {
+	t.Parallel()
+
+	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  standardSolutionTerraformDir,
+		Region:        validRegions[rand.Intn(len(validRegions))],
+		Prefix:        "wxa-da-upg",
+		ResourceGroup: resourceGroup,
+	})
+	options.TerraformVars = map[string]interface{}{
+		"prefix":                      options.Prefix,
+		"region":                      options.Region,
+		"use_existing_resource_group": true,
+		"resource_group_name":         options.Prefix,
+		"provider_visibility":         "public",
+		"existing_kms_instance_crn":   permanentResources["hpcs_south_crn"],
+	}
+
+	output, err := options.RunTestUpgrade()
+	if !options.UpgradeTestSkipped {
+		assert.Nil(t, err, "This should not have errored")
+		assert.NotNil(t, output, "Expected some output")
 	}
 }
