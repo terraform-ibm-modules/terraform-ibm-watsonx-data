@@ -48,6 +48,18 @@ variable "region" {
   default     = "us-south"
 }
 
+variable "resource_tags" {
+  type        = list(string)
+  description = "Optional list of tags to describe the newly created watsonx.data instance."
+  default     = []
+}
+
+variable "access_tags" {
+  type        = list(string)
+  description = "A list of access tags to apply to the watsonx.data instance. [Learn more](https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial)."
+  default     = []
+}
+
 variable "plan" {
   type        = string
   description = "The plan that is required to provision the watsonx.data instance. Possible values are: `lite` , `lakehouse-enterprise` or `lakehouse-enterprise-mcsp` only for `au-syd` region. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started_1)."
@@ -62,22 +74,21 @@ variable "plan" {
   }
 }
 
-variable "resource_tags" {
-  type        = list(string)
-  description = "Optional list of tags to describe the newly created watsonx.data instance."
-  default     = []
-}
+variable "lite_plan_use_case" {
+  type        = string
+  description = "The lite plan instance can be provisioned based on the three use cases - Generative AI, Data Engineering and High Performance BI. Allowed values are : 'ai', 'workloads' and 'performance'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-tutorial_prov_lite_1)"
+  default     = "workloads"
 
-variable "access_tags" {
-  type        = list(string)
-  description = "A list of access tags to apply to the watsonx.data instance. [Learn more](https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial)."
-  default     = []
+  validation {
+    condition     = var.plan == "lite" ? contains(["ai", "workloads", "performance"], var.lite_plan_use_case) : true
+    error_message = "Use case is only applicable for the 'Lite' plan. Allowed values are: 'ai', 'workloads', and 'performance'."
+  }
 }
 
 variable "enable_kms_encryption" {
   description = "Flag to enable KMS encryption. If set to true, a value must be passed for either `existing_kms_instance_crn` or `existing_kms_key_crn`. This is applicable only for Enterprise plan."
   type        = bool
-  default     = true
+  default     = false
 
   validation {
     condition     = (var.enable_kms_encryption && var.existing_kms_key_crn == null) ? (var.existing_kms_instance_crn == null ? false : true) : true

@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-watsonx-data",
-      "label": "Cloud automation for watsonx.data",
+      "label": "[Add-ons Beta] Cloud automation for watsonx.data",
       "product_kind": "solution",
       "tags": [
         "ibm_created",
@@ -85,9 +85,7 @@
           },
           "configuration": [
             {
-              "key": "ibmcloud_api_key",
-              "required": true,
-              "type": "password"
+              "key": "ibmcloud_api_key"
             },
             {
               "key": "provider_visibility",
@@ -107,7 +105,8 @@
               ]
             },
             {
-              "key": "use_existing_resource_group"
+              "key": "use_existing_resource_group",
+              "required": true
             },
             {
               "key": "resource_group_name"
@@ -123,7 +122,6 @@
             {
               "key": "region",
               "required": true,
-              "default_value": "us-south",
               "options": [
                 {
                   "displayname": "Dallas (us-south)",
@@ -149,7 +147,6 @@
             },
             {
               "key": "plan",
-              "default_value": "lakehouse-enterprise",
               "options": [
                 {
                   "displayname": "Lite",
@@ -158,6 +155,23 @@
                 {
                   "displayname": "Enterprise",
                   "value": "lakehouse-enterprise"
+                }
+              ]
+            },
+            {
+              "key": "lite_plan_use_case",
+              "options": [
+                {
+                  "displayname": "Generative AI",
+                  "value": "ai"
+                },
+                {
+                  "displayname": "Data Engineering",
+                  "value": "workloads"
+                },
+                {
+                  "displayname": "High Performance BI",
+                  "value": "performance"
                 }
               ]
             },
