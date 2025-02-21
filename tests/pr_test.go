@@ -108,7 +108,9 @@ func cleanupResources(t *testing.T, terraformOptions *terraform.Options, prefix 
 	} else {
 		logger.Log(t, "START: Destroy (existing resources)")
 		terraform.Destroy(t, terraformOptions)
-		terraform.WorkspaceDelete(t, terraformOptions, prefix)
+		if prefix != "" {
+			terraform.WorkspaceDelete(t, terraformOptions, prefix)
+		}
 		logger.Log(t, "END: Destroy (existing resources)")
 	}
 }
@@ -179,7 +181,7 @@ func TestRunExistingResourcesExample(t *testing.T) {
 			assert.NotNil(t, output, "Expected some output")
 		}
 	}
-	cleanupResources(t, existingTerraformOptions)
+	cleanupResources(t, existingTerraformOptions, "")
 }
 
 func TestRunStandardSolution(t *testing.T) {
