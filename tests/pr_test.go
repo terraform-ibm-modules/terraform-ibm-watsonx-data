@@ -73,8 +73,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 }
 
 // Provision KMS - Key Protect to use in DA tests
-func setupKMSKeyProtect(t *testing.T, region string) *terraform.Options {
-	prefix := "wxd-da-key"
+func setupKMSKeyProtect(t *testing.T, region string, prefix string) *terraform.Options {
 	realTerraformDir := "./kp-instance"
 	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
 
@@ -100,7 +99,7 @@ func setupKMSKeyProtect(t *testing.T, region string) *terraform.Options {
 	return existingTerraformOptions
 }
 
-func cleanupResources(t *testing.T, terraformOptions *terraform.Options) {
+func cleanupResources(t *testing.T, terraformOptions *terraform.Options, prefix string) {
 	// Check if "DO_NOT_DESTROY_ON_FAILURE" is set
 	envVal, _ := os.LookupEnv("DO_NOT_DESTROY_ON_FAILURE")
 	// Destroy the temporary existing resources if required
@@ -109,6 +108,7 @@ func cleanupResources(t *testing.T, terraformOptions *terraform.Options) {
 	} else {
 		logger.Log(t, "START: Destroy (existing resources)")
 		terraform.Destroy(t, terraformOptions)
+		terraform.WorkspaceDelete(t, terraformOptions, prefix)
 		logger.Log(t, "END: Destroy (existing resources)")
 	}
 }
@@ -184,8 +184,10 @@ func TestRunExistingResourcesExample(t *testing.T) {
 
 func TestRunStandardSolution(t *testing.T) {
 	t.Parallel()
+
 	var region = validRegions[rand.Intn(len(validRegions))]
-	existingTerraformOptions := setupKMSKeyProtect(t, region)
+	prefixKMSKey := "wxd-da-key"
+	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
 
 	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
 		Testing:       t,
@@ -207,13 +209,15 @@ func TestRunStandardSolution(t *testing.T) {
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
 
-	cleanupResources(t, existingTerraformOptions)
+	cleanupResources(t, existingTerraformOptions, prefixKMSKey)
 }
 
 func TestRunStandardUpgradeSolution(t *testing.T) {
 	t.Parallel()
+
 	var region = validRegions[rand.Intn(len(validRegions))]
-	existingTerraformOptions := setupKMSKeyProtect(t, region)
+	prefixKMSKey := "wxd-da-key-upg"
+	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
 
 	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
 		Testing:       t,
@@ -237,5 +241,5 @@ func TestRunStandardUpgradeSolution(t *testing.T) {
 		assert.NotNil(t, output, "Expected some output")
 	}
 
-	cleanupResources(t, existingTerraformOptions)
+	cleanupResources(t, existingTerraformOptions, prefixKMSKey)
 }
