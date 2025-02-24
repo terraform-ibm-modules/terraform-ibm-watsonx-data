@@ -8,7 +8,7 @@
         "ibm_created",
         "target_terraform",
         "terraform",
-        "lakehouse",
+        "watson",
         "ai",
         "solution"
       ],
@@ -85,9 +85,7 @@
           },
           "configuration": [
             {
-              "key": "ibmcloud_api_key",
-              "required": true,
-              "type": "password"
+              "key": "ibmcloud_api_key"
             },
             {
               "key": "provider_visibility",
