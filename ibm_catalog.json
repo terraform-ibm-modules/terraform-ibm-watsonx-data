@@ -208,17 +208,17 @@
               "ignore_auto_referencing": ["*"],
               "input_mapping": [
                 {
-                  "dependency_output": "workload_resource_group_name",
-                  "version_input": "resource_group_name"
+                  "dependency_input": "workload_resource_group_name",
+                  "version_input": "resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "value": "__NULL__",
+                  "dependency_input": "prefix"
                 },
                 {
                   "value": true,
                   "version_input": "use_existing_resource_group"
-                },
-                {
-                  "dependency_input": "prefix",
-                  "version_input": "prefix",
-                  "reference_version": true
                 }
               ],
               "optional": true,
@@ -227,10 +227,10 @@
             },
             {
               "name": "testing-deploy-arch-ibm-kms",
-              "id": "85fdbd7a-8c77-4abd-b716-653a31f3aba9",
+              "id": "85fdbd7a-8c77-4abd-b716-653a31f3aba9-global",
               "version": "^1.0.6",
               "flavors": ["standard"],
-              "catalog_id": "f64499c8-eb50-4985-bf91-29f9e605a433",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
               "ignore_auto_referencing": ["*"],
