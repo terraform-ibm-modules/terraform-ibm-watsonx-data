@@ -37,10 +37,10 @@
       ],
       "flavors": [
         {
-          "label": "Standard",
-          "name": "standard",
+          "label": "Fully Configurable",
+          "name": "fully-configurable",
           "install_type": "fullstack",
-          "working_directory": "solutions/standard",
+          "working_directory": "solutions/fully-configurable",
           "compliance": {
             "authority": "scc-v3",
             "profiles": [
@@ -238,6 +238,10 @@
                 {
                   "dependency_output": "kms_instance_crn",
                   "version_input": "existing_kms_instance_crn"
+                },
+                {
+                  "value": true,
+                  "version_input": "enable_kms_encryption"
                 },
                 {
                   "dependency_input": "resource_group_name",
