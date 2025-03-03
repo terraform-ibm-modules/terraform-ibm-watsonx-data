@@ -37,7 +37,7 @@
       ],
       "flavors": [
         {
-          "label": "Fully Configurable",
+          "label": "Fully configurable",
           "name": "fully-configurable",
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
@@ -84,36 +84,9 @@
               "key": "ibmcloud_api_key"
             },
             {
-              "key": "provider_visibility",
-              "options": [
-                {
-                  "displayname": "private",
-                  "value": "private"
-                },
-                {
-                  "displayname": "public",
-                  "value": "public"
-                },
-                {
-                  "displayname": "public-and-private",
-                  "value": "public-and-private"
-                }
-              ]
-            },
-            {
-              "key": "use_existing_resource_group",
-              "required": true
-            },
-            {
-              "key": "resource_group_name"
-            },
-            {
               "key": "prefix",
               "required": true,
               "description": "Prefix to add to all resources created by this solution. To not use any prefix value, you can enter the string `__NULL__`."
-            },
-            {
-              "key": "name"
             },
             {
               "key": "region",
@@ -142,6 +115,17 @@
               ]
             },
             {
+              "key": "use_existing_resource_group",
+              "required": true
+            },
+            {
+              "key": "resource_group_name"
+            },
+            {
+              "key": "name"
+            },
+
+            {
               "key": "plan",
               "options": [
                 {
@@ -168,6 +152,23 @@
                 {
                   "displayname": "High Performance BI",
                   "value": "performance"
+                }
+              ]
+            },
+            {
+              "key": "provider_visibility",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
                 }
               ]
             },
