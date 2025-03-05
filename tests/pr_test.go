@@ -202,7 +202,6 @@ func TestRunStandardSolution(t *testing.T) {
 		"prefix":                       options.Prefix,
 		"region":                       options.Region,
 		"existing_resource_group_name": resourceGroup,
-		"resource_group_name":          terraform.Output(t, existingTerraformOptions, "resource_group_name"),
 		"provider_visibility":          "public",
 		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
@@ -232,7 +231,6 @@ func TestRunStandardUpgradeSolution(t *testing.T) {
 		"prefix":                       options.Prefix,
 		"region":                       options.Region,
 		"existing_resource_group_name": resourceGroup,
-		"resource_group_name":          terraform.Output(t, existingTerraformOptions, "resource_group_name"),
 		"provider_visibility":          "public",
 		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
