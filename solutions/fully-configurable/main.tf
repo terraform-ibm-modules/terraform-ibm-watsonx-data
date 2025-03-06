@@ -20,8 +20,7 @@ locals {
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
   version                      = "1.1.6"
-  resource_group_name          = var.use_existing_resource_group ? null : try("${local.prefix}-${var.resource_group_name}", var.resource_group_name)
-  existing_resource_group_name = var.use_existing_resource_group ? var.resource_group_name : null
+  existing_resource_group_name = var.existing_resource_group_name
 }
 
 #######################################################################################################################
@@ -39,7 +38,7 @@ module "existing_kms_crn_parser" {
 module "kms" {
   count                       = var.enable_kms_encryption && var.existing_kms_instance_crn != null ? 1 : 0 # no need to create any KMS resources if passing an existing key
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "4.19.8"
+  version                     = "4.20.0"
   create_key_protect_instance = false
   region                      = local.kms_region
   existing_kms_instance_crn   = var.existing_kms_instance_crn

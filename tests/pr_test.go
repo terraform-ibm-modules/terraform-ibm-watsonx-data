@@ -26,7 +26,7 @@ import (
 const resourceGroup = "geretain-test-resources"
 const basicExampleDir = "examples/basic"
 const existingExampleDir = "examples/existing-instance"
-const standardSolutionTerraformDir = "solutions/standard"
+const standardSolutionTerraformDir = "solutions/fully-configurable"
 
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 
@@ -199,12 +199,11 @@ func TestRunStandardSolution(t *testing.T) {
 		ResourceGroup: resourceGroup,
 	})
 	options.TerraformVars = map[string]interface{}{
-		"prefix":                      options.Prefix,
-		"region":                      options.Region,
-		"use_existing_resource_group": true,
-		"resource_group_name":         terraform.Output(t, existingTerraformOptions, "resource_group_name"),
-		"provider_visibility":         "public",
-		"existing_kms_instance_crn":   terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
+		"prefix":                       options.Prefix,
+		"region":                       options.Region,
+		"existing_resource_group_name": resourceGroup,
+		"provider_visibility":          "public",
+		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
 
 	output, err := options.RunTestConsistency()
@@ -229,12 +228,11 @@ func TestRunStandardUpgradeSolution(t *testing.T) {
 		ResourceGroup: resourceGroup,
 	})
 	options.TerraformVars = map[string]interface{}{
-		"prefix":                      options.Prefix,
-		"region":                      options.Region,
-		"use_existing_resource_group": true,
-		"resource_group_name":         terraform.Output(t, existingTerraformOptions, "resource_group_name"),
-		"provider_visibility":         "public",
-		"existing_kms_instance_crn":   terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
+		"prefix":                       options.Prefix,
+		"region":                       options.Region,
+		"existing_resource_group_name": resourceGroup,
+		"provider_visibility":          "public",
+		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
 
 	output, err := options.RunTestUpgrade()
