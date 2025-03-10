@@ -127,11 +127,28 @@
               }
             },
             {
-              "key": "name"
+              "key": "provider_visibility",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
+            },
+            {
+              "key": "watsonx_data_instance_name"
             },
 
             {
-              "key": "plan",
+              "key": "watsonx_data_plan",
               "options": [
                 {
                   "displayname": "Lite",
@@ -161,27 +178,24 @@
               ]
             },
             {
-              "key": "provider_visibility",
-              "options": [
-                {
-                  "displayname": "private",
-                  "value": "private"
-                },
-                {
-                  "displayname": "public",
-                  "value": "public"
-                },
-                {
-                  "displayname": "public-and-private",
-                  "value": "public-and-private"
+              "key": "resource_tags",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
                 }
-              ]
+              }
             },
             {
-              "key": "resource_tags"
-            },
-            {
-              "key": "access_tags"
+              "key": "access_tags",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
             },
             {
               "key": "enable_kms_encryption"
@@ -202,7 +216,7 @@
               "key": "kms_key_name"
             },
             {
-              "key": "skip_iam_authorization_policy"
+              "key": "skip_watsonx_data_kms_iam_auth_policy"
             }
           ],
           "dependencies": [

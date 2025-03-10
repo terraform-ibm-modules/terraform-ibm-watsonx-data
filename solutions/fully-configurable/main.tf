@@ -69,13 +69,13 @@ module "kms" {
 module "watsonx_data" {
   source                        = "../../"
   region                        = var.region
-  plan                          = var.plan
+  plan                          = var.watsonx_data_plan
   resource_group_id             = module.resource_group.resource_group_id
-  watsonx_data_name             = try("${local.prefix}-${var.name}", var.name)
+  watsonx_data_name             = try("${local.prefix}-${var.watsonx_data_instance_name}", var.watsonx_data_instance_name)
   access_tags                   = var.access_tags
   resource_tags                 = var.resource_tags
-  use_case                      = var.plan == "lite" ? var.lite_plan_use_case : null
+  use_case                      = var.watsonx_data_plan == "lite" ? var.lite_plan_use_case : null
   enable_kms_encryption         = var.enable_kms_encryption
-  skip_iam_authorization_policy = var.skip_iam_authorization_policy
+  skip_iam_authorization_policy = var.skip_watsonx_data_kms_iam_auth_policy
   watsonx_data_kms_key_crn      = local.kms_key_crn
 }
