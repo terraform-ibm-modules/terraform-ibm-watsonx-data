@@ -27,10 +27,10 @@ variable "existing_resource_group_name" {
 variable "prefix" {
   type        = string
   nullable    = true
-  description = "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To not use any prefix value, you can set this value to `null` or an empty string."
+  description = "The prefix to add to all resources that this solution creates. To not use any prefix value, you can set this value to `null` or an empty string."
 }
 
-variable "name" {
+variable "watsonx_data_instance_name" {
   type        = string
   description = "The name of the watsonx.data instance. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
   default     = "watsonx-data"
@@ -54,15 +54,15 @@ variable "access_tags" {
   default     = []
 }
 
-variable "plan" {
+variable "watsonx_data_plan" {
   type        = string
   description = "The plan that is required to provision the watsonx.data instance. Possible values are: `lite` , `lakehouse-enterprise` or `lakehouse-enterprise-mcsp` only for `au-syd` region. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started_1)."
   default     = "lakehouse-enterprise"
   validation {
     condition = anytrue([
-      var.plan == "lite",
-      var.plan == "lakehouse-enterprise" && var.region != "au-syd",     # lakehouse-enterprise is supported in all regions except au-syd
-      var.plan == "lakehouse-enterprise-mcsp" && var.region == "au-syd" # lakehouse-enterprise-mcsp is only supported in au-syd
+      var.watsonx_data_plan == "lite",
+      var.watsonx_data_plan == "lakehouse-enterprise" && var.region != "au-syd",     # lakehouse-enterprise is supported in all regions except au-syd
+      var.watsonx_data_plan == "lakehouse-enterprise-mcsp" && var.region == "au-syd" # lakehouse-enterprise-mcsp is only supported in au-syd
     ])
     error_message = "Allowed plan-region combinations are: 'lite' (any region), 'lakehouse-enterprise' (all regions except 'au-syd'), 'lakehouse-enterprise-mcsp' (only in 'au-syd')."
   }
@@ -74,7 +74,7 @@ variable "lite_plan_use_case" {
   default     = "workloads"
 
   validation {
-    condition     = var.plan == "lite" ? contains(["ai", "workloads", "performance"], var.lite_plan_use_case) : true
+    condition     = var.watsonx_data_plan == "lite" ? contains(["ai", "workloads", "performance"], var.lite_plan_use_case) : true
     error_message = "Use case is only applicable for the 'Lite' plan. Allowed values are: 'ai', 'workloads', and 'performance'."
   }
 }
@@ -132,7 +132,7 @@ variable "kms_key_name" {
   description = "The name of the key to create for the watsonx.data instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format. This is applicable only for Enterprise plan."
 }
 
-variable "skip_iam_authorization_policy" {
+variable "skip_watsonx_data_kms_iam_auth_policy" {
   type        = bool
   description = "Whether to create an IAM authorization policy that permits the watsonx.data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy."
   default     = false
