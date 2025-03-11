@@ -86,7 +86,7 @@
             {
               "key": "prefix",
               "required": true,
-              "description": "Prefix to add to all resources created by this solution. To not use any prefix value, you can enter the string `__NULL__`."
+              "description": "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To not use any prefix value, you can enter the string `__NULL__`."
             },
             {
               "key": "region",
@@ -148,7 +148,7 @@
             },
 
             {
-              "key": "watsonx_data_plan",
+              "key": "service_plan",
               "options": [
                 {
                   "displayname": "Lite",
@@ -210,10 +210,10 @@
               "key": "kms_endpoint_type"
             },
             {
-              "key": "kms_key_ring_name"
+              "key": "watsonx_data_key_ring_name"
             },
             {
-              "key": "kms_key_name"
+              "key": "watsonx_data_key_name"
             },
             {
               "key": "skip_watsonx_data_kms_iam_auth_policy"

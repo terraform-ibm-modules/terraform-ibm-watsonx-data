@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -189,6 +190,8 @@ func TestRunStandardSolution(t *testing.T) {
 
 	var region = validRegions[rand.Intn(len(validRegions))]
 	prefixKMSKey := "wxd-da-key"
+	prefixKMSKey += strconv.Itoa(rand.Intn(1000))
+
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
 
 	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
@@ -218,6 +221,7 @@ func TestRunStandardUpgradeSolution(t *testing.T) {
 
 	var region = validRegions[rand.Intn(len(validRegions))]
 	prefixKMSKey := "wxd-da-key-upg"
+	prefixKMSKey += strconv.Itoa(rand.Intn(1000))
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
 
 	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
