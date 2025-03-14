@@ -3,12 +3,12 @@
 #######################################################################################################################
 
 locals {
-  prefix = var.prefix != null ? (var.prefix != "" ? var.prefix : null) : null
+  prefix = var.prefix != null ? trimspace(var.prefix) != "" ? "${var.prefix}-" : "" : ""
 
   # fetch KMS region from existing_kms_instance_crn if KMS resources are required and existing_kms_key_crn is not provided
   kms_region        = var.existing_kms_key_crn == null && var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].region : null
-  kms_key_ring_name = try("${var.prefix}-${var.kms_key_ring_name}", var.kms_key_ring_name)
-  kms_key_name      = try("${var.prefix}-${var.kms_key_name}", var.kms_key_name)
+  kms_key_ring_name = var.watsonx_data_key_ring_name != null ? "${local.prefix}${var.watsonx_data_key_ring_name}" : null
+  kms_key_name      = var.watsonx_data_key_name != null ? "${local.prefix}${var.watsonx_data_key_name}" : null
 
   kms_key_crn = var.enable_kms_encryption ? (var.existing_kms_key_crn != null ? var.existing_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
 }
@@ -69,13 +69,13 @@ module "kms" {
 module "watsonx_data" {
   source                        = "../../"
   region                        = var.region
-  plan                          = var.plan
+  plan                          = var.service_plan
   resource_group_id             = module.resource_group.resource_group_id
-  watsonx_data_name             = try("${local.prefix}-${var.name}", var.name)
+  watsonx_data_name             = var.watsonx_data_instance_name != null ? "${local.prefix}${var.watsonx_data_instance_name}" : null
   access_tags                   = var.access_tags
   resource_tags                 = var.resource_tags
-  use_case                      = var.plan == "lite" ? var.lite_plan_use_case : null
+  use_case                      = var.service_plan == "lite" ? var.lite_plan_use_case : null
   enable_kms_encryption         = var.enable_kms_encryption
-  skip_iam_authorization_policy = var.skip_iam_authorization_policy
+  skip_iam_authorization_policy = var.skip_watsonx_data_kms_iam_auth_policy
   watsonx_data_kms_key_crn      = local.kms_key_crn
 }
