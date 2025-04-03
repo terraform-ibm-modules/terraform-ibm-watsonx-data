@@ -85,8 +85,7 @@
             },
             {
               "key": "prefix",
-              "required": true,
-              "description": "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To not use any prefix value, you can enter the string `__NULL__`."
+              "required": true
             },
             {
               "key": "region",
@@ -146,7 +145,6 @@
             {
               "key": "watsonx_data_instance_name"
             },
-
             {
               "key": "service_plan",
               "options": [
