@@ -61,7 +61,7 @@
             }
           ],
           "architecture": {
-            "descriptions": "This architecture creates an instance of IBM watsonx.data.",
+            "descriptions": "This architecture creates an instance of IBM test.",
             "features": [
               {
                 "title": " Creates and configures an instance of watsonx.data",
