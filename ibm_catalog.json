@@ -33,6 +33,14 @@
         {
           "title": "Creates a KMS encryption enabled IBM watsonx.data instance",
           "description": "Create and configures a KMS encryption enabled IBM watsonx.data instance for Enterprise plan."
+        },
+        {
+          "title": "Creates an instance of IBM watsonx.data",
+          "description": "Creates and configures an IBM watsonx.data instance."
+        },
+        {
+          "title": "Creates an instance of IBM watsonx.data",
+          "description": "Creates and configures an IBM watsonx.data instance."
         }
       ],
       "flavors": [
