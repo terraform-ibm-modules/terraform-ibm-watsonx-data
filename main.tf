@@ -20,7 +20,8 @@ locals {
   watsonx_data_guid          = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_data_instance[0].guid : resource.ibm_resource_instance.data_instance[0].guid
   watsonx_data_name          = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_data_instance[0].resource_name : resource.ibm_resource_instance.data_instance[0].resource_name
   watsonx_data_plan_id       = var.existing_watsonx_data_instance_crn != null ? null : resource.ibm_resource_instance.data_instance[0].resource_plan_id
-  watsonx_data_dashboard_url = var.existing_watsonx_data_instance_crn != null ? null : resource.ibm_resource_instance.data_instance[0].dashboard_url
+  raw_crn                    = "crn:v1:bluemix:public:watsonx-data:${var.region}:a/${local.account_id}:${local.watsonx_data_guid}::"
+  watsonx_data_dashboard_url = "https://cloud.ibm.com/services/watsonx-data/${urlencode(local.raw_crn)}"
 }
 
 module "crn_parser" {
