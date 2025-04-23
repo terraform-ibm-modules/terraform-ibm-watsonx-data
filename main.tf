@@ -16,13 +16,12 @@ locals {
   watsonx_data_datacenter = local.watsonx_data_datacenter_mapping[var.region]
   account_id              = var.existing_watsonx_data_instance_crn != null ? module.crn_parser[0].account_id : ibm_resource_instance.data_instance[0].account_id
   watsonx_data_id         = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_data_instance[0].id : ibm_resource_instance.data_instance[0].id
-  watsonx_data_crn        = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_data_instance[0].crn : resource.ibm_resource_instance.data_instance[0].crn
+  watsonx_data_crn        = var.existing_watsonx_data_instance_crn != null ? var.existing_watsonx_data_instance_crn : resource.ibm_resource_instance.data_instance[0].crn
   watsonx_data_guid       = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_data_instance[0].guid : resource.ibm_resource_instance.data_instance[0].guid
   watsonx_data_name       = var.existing_watsonx_data_instance_crn != null ? data.ibm_resource_instance.existing_data_instance[0].resource_name : resource.ibm_resource_instance.data_instance[0].resource_name
   watsonx_data_plan_id    = var.existing_watsonx_data_instance_crn != null ? null : resource.ibm_resource_instance.data_instance[0].resource_plan_id
-  raw_crn                 = "crn:v1:bluemix:public:lakehouse:${var.region}:a/${local.account_id}:${local.watsonx_data_guid}::"
   # Temporary workaround for issue 13341[https://github.ibm.com/GoldenEye/issues/issues/13341]
-  watsonx_data_dashboard_url = "https://cloud.ibm.com/services/lakehouse/${urlencode(local.raw_crn)}"
+  watsonx_data_dashboard_url = "https://cloud.ibm.com/services/lakehouse/${urlencode(local.watsonx_data_crn)}"
 }
 
 module "crn_parser" {
