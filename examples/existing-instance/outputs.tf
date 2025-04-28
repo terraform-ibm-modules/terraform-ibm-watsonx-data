@@ -26,3 +26,8 @@ output "name" {
   description = "Name of the existing watsonx.data instance."
   value       = module.existing_watsonx_data_instance.name
 }
+
+output "dashboard_url" {
+  description = "The dashboard URL of the watsonx.data instance."
+  value       = module.existing_watsonx_data_instance.dashboard_url
+}
