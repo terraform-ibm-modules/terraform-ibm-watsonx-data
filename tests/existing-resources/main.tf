@@ -10,7 +10,7 @@ module "watsonx_data" {
   source            = "../.."
   region            = var.region
   watsonx_data_name = "${var.prefix}-data-instance"
-  plan              = "lite"
+  plan = var.region == "au-syd" ? "lakehouse-enterprise-mcsp" : "lakehouse-enterprise"
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
   access_tags       = var.access_tags
