@@ -83,7 +83,6 @@
             }
           ],
           "architecture": {
-            "descriptions": "This architecture creates an instance of IBM watsonx.data.",
             "features": [
               {
                 "title": "Watsonx data instance",
@@ -245,6 +244,9 @@
               ],
               "default_flavor": "resource-group-only",
               "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
+              "ignore_auto_referencing": [
+                "*"
+              ],
               "input_mapping": [
                 {
                   "version_input": "use_existing_resource_group",
