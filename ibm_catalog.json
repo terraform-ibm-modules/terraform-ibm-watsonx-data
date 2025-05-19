@@ -249,10 +249,6 @@
                   "version_input": "existing_resource_group_name"
                 },
                 {
-                  "dependency_input": "single_resource_group_name",
-                  "value": "workload-rg"
-                },
-                {
                   "dependency_input": "prefix",
                   "version_input": "prefix",
                   "reference_version": true
