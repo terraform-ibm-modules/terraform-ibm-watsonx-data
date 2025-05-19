@@ -294,12 +294,11 @@
               ]
             },
             {
-              "name": "deploy-arch-ibm-observability",
-              "description": "Cloud Automation for Observability supports configuring IBM Cloud Observability resources for logging, monitoring, and activity tracking.",
-              "id": "a3137d28-79e0-479d-8a24-758ebd5a0eab-global",
-              "version": "v2.11.4",
+              "name": "testing-deploy-arch-ibm-observability",
+              "id": "daf2cf91-2384-4205-b7f4-621299a4896d-global",
+              "version": "^1.3.0",
               "flavors": [
-                "instances"
+                "standard"
               ],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
