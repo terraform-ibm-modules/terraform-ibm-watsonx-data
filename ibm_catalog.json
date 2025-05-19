@@ -249,12 +249,12 @@
               ],
               "input_mapping": [
                 {
-                  "version_input": "use_existing_resource_group",
-                  "value": true
-                },
-                {
                   "dependency_output": "single_resource_group_name",
                   "version_input": "existing_resource_group_name"
+                },
+                {
+                  "dependency_input": "single_resource_group_name",
+                  "value": "workload-rg"
                 },
                 {
                   "dependency_input": "prefix",
