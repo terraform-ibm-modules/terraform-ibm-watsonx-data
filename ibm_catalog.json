@@ -156,7 +156,8 @@
               }
             },
             {
-              "key": "provider_visibility"
+              "key": "provider_visibility",
+              "hidden": true
             },
             {
               "key": "watsonx_data_instance_name"
