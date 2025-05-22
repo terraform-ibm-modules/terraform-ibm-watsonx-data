@@ -21,21 +21,25 @@
         "ai"
       ],
       "short_description": "Creates and configures an instance of IBM watsonx.data.",
-      "long_description": "This architecture supports creating and configuring an instance of watsonx.data. For more details on watsonx data, [see here](https://cloud.ibm.com/docs/watsonxdata/index.html).",
+      "long_description": "IBM® watsonx.data is a data management solution for collecting, storing, querying, and analyzing all your enterprise data with a single unified data platform. The Cloud automation for watsonx.data allows user to set up an instance of watsonx.data. For more details on watsonx data, [see here](https://cloud.ibm.com/docs/watsonxdata/index.html).",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/blob/main/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/images/watsonx-data.svg",
       "provider_name": "IBM",
       "features": [
         {
-          "title": "Creates an instance of IBM watsonx.data",
-          "description": "For more details on Watsonx Data instances, [see here](https://cloud.ibm.com/watsonxdata#about)"
+          "title": "watsonx.data",
+          "description": "For more details on Watsonx Data instances, [refer here](https://cloud.ibm.com/watsonxdata#about)"
         },
         {
-          "title": "Creates a KMS encryption enabled IBM watsonx.data instance",
-          "description": "Create and configures a KMS encryption enabled IBM watsonx.data instance for Enterprise plan."
+          "title": "KMS encryption enabled IBM watsonx.data instance",
+          "description": "Create and configures a KMS encryption enabled IBM watsonx.data instance for Enterprise plan. For more details on KMS encryption, [refer this](https://cloud.ibm.com/catalog/services/key-protect#about)"
+        },
+        {
+          "title": "Optional Integrations",
+          "description": "This solution can be integrated with [IBM Cloud Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracking."
         }
       ],
-      "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in that repository [https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/issues](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/issues). Please note this product is not supported via the IBM Cloud Support Center.",
+      "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in that repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/issues). Please note this product is not supported via the IBM Cloud Support Center.",
       "flavors": [
         {
           "label": "Fully configurable",
@@ -58,7 +62,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "kms",
-              "notes": "Required if you are creating a new Key Protect instance or provisioning associated resources like key rings and keys."
+              "notes": "[Optional] Required if KMS encryption is enabled and Key protect is used for encryption."
             },
             {
               "role_crns": [
@@ -66,20 +70,21 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "hs-crypto",
-              "notes": "Required if you are provisioning resources like key rings and keys for an existing Hyper Protect Crypto Services (HPCS) instance."
+              "notes": "[Optional] Required if HPCS encryption is enabled and Hyper Protect Crypto Services  like key rings and keys for an existing Hyper Protect Crypto Services (HPCS) instance."
             },
             {
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
-              "service_name": "iam-identity",
-              "notes": "Required if Cloud automation for account configuration is enabled."
+              "service_name": "All Account Management services",
+              "notes": "[Optional] Required when setting up foundational IBM Cloud account components such as IAM settings, trusted profiles, access groups, and resource groups."
             },
             {
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "service_name": "lakehouse"
+              "service_name": "lakehouse",
+              "notes": "Required for creating a new instance of watsonx data"
             }
           ],
           "architecture": {
@@ -89,18 +94,18 @@
                 "description": "Creates and configures an instance of watsonx.data."
               },
               {
-                "title": "Key Rings and Keys",
-                "description": "Creates Key Rings and Keys for either watsonx.data instances."
+                "title": "Keys and Key Rings",
+                "description": "Supports the creation of Keys and Key Rings for encrypting watsonx.data instances."
               }
             ],
             "diagrams": [
               {
                 "diagram": {
-                  "caption": "IBM Watsonx.data architecture",
+                  "caption": "IBM watsonx.data architecture",
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/reference-architecture/deployable-architecture-watsonx-data.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture supports creating and configuring an instance of IBM watsonx.data resources."
+                "description": "**watsonx data** <br/> <br/><b>Description</b> <br/> Create a watsonx data instance on IBM Cloud. Optional services used are:<br/> - Account Configuration <br/> - Key Protect. <br/> - Observability. <br/><br/> **Observability**: <br/> This architecture supports creating and configuring the foundational components of an IBM Cloud account. This includes IAM account settings, a trusted profile and associated access groups, and the resource groups in which all resources are provisioned. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-account-infrastructure-base/tree/main/docs/about.md)<br/> <br/> This architecture supports creating and configuring an IBM Key Protect instance, Key Rings, and Keys. For more details on Key Protect, [see here](https://cloud.ibm.com/docs/key-protect/index.html). <br/><br/> **Observability**: <br/> This architecture supports configuring IBM Cloud Observability resources for logging, monitoring, and activity tracking.<br/>"
               }
             ]
           },
@@ -151,8 +156,7 @@
               }
             },
             {
-              "key": "provider_visibility",
-              "hidden": true
+              "key": "provider_visibility"
             },
             {
               "key": "watsonx_data_instance_name"
@@ -296,7 +300,7 @@
             {
               "name": "testing-deploy-arch-ibm-observability",
               "id": "daf2cf91-2384-4205-b7f4-621299a4896d-global",
-              "version": "^1.3.0",
+              "version": "v3.0.3",
               "flavors": [
                 "standard"
               ],
