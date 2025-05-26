@@ -105,7 +105,7 @@
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/reference-architecture/deployable-architecture-watsonx-data.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This solution deploys a watsonx.data instance on IBM Cloud, with optional integration of additional services to support enterprise-grade requirements. It enables KMS encryption by provisioning and configuring IBM Key Protect, including Key Rings and Keys, for secure key management. Additionally, the architecture supports IBM Cloud Observability to provide logging, monitoring, and activity tracking capabilities. This deployable architecture offers a secure, compliant, and operationally transparent foundation for building and managing watsonx.data workloads in the cloud. For more information on Key Protect, [see here](https://cloud.ibm.com/docs/key-protect/index.html)."
+                "description": "This solution deploys a watsonx.data instance on IBM Cloud, with optional integration of additional services to support enterprise-grade requirements. It enables KMS encryption by provisioning and configuring IBM Key Protect, including Key Rings and Keys, for secure key management. Additionally, the architecture supports IBM Cloud Observability to provide logging, monitoring, and activity tracking capabilities. For more information on Key Protect, [see here](https://cloud.ibm.com/docs/key-protect/index.html)."
               }
             ]
           },
