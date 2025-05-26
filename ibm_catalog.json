@@ -32,7 +32,7 @@
         },
         {
           "title": "Enable KMS Encryption in watsonx.data instance",
-          "description": "IBM watsonx.data instance can have KMS encryption enabled for the Enterprise plan using this deployable architecture. For more details on KMS encryption, [refer this](https://cloud.ibm.com/catalog/services/key-protect#about)"
+          "description": "IBM watsonx.data instance can have KMS encryption enabled for the Enterprise plan using this deployable architecture. For more details on KMS encryption, [refer this](https://cloud.ibm.com/docs/key-protect?topic=key-protect-about)"
         },
         {
           "title": "Optional Integrations",
@@ -70,7 +70,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "hs-crypto",
-              "notes": "[Optional] Required if HPCS encryption is enabled and Hyper Protect Crypto Services  like key rings and keys for an existing Hyper Protect Crypto Services (HPCS) instance."
+              "notes": "[Optional] Required if Hyper Protect Crypto Services (HPCS) encryption is enabled and is used for encryption."
             },
             {
               "role_crns": [
@@ -245,9 +245,6 @@
               ],
               "default_flavor": "resource-group-only",
               "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
-              "ignore_auto_referencing": [
-                "*"
-              ],
               "input_mapping": [
                 {
                   "dependency_output": "workload_resource_group_name",
@@ -274,9 +271,6 @@
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
-              "ignore_auto_referencing": [
-                "*"
-              ],
               "input_mapping": [
                 {
                   "dependency_output": "kms_instance_crn",
@@ -308,9 +302,6 @@
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
-              "ignore_auto_referencing": [
-                "*"
-              ],
               "input_mapping": [
                 {
                   "dependency_input": "prefix",
