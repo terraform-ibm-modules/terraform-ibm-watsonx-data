@@ -28,15 +28,15 @@
       "features": [
         {
           "title": "watsonx.data",
-          "description": "For more details on watsonx.data instances, [refer here](https://cloud.ibm.com/watsonxdata#about)"
+          "description": "Provision an instance of [IBM watsonx.data](https://cloud.ibm.com/watsonxdata#about)"
         },
         {
-          "title": "KMS encryption enabled IBM watsonx.data instance",
-          "description": "Create and configures a KMS encryption enabled IBM watsonx.data instance for Enterprise plan. For more details on KMS encryption, [refer this](https://cloud.ibm.com/catalog/services/key-protect#about)"
+          "title": "Enable KMS Encryption in watsonx.data instance",
+          "description": "IBM watsonx.data instance can have KMS encryption enabled for the Enterprise plan using this deployable architecture. For more details on KMS encryption, [refer this](https://cloud.ibm.com/catalog/services/key-protect#about)"
         },
         {
           "title": "Optional Integrations",
-          "description": "This solution can be integrated with [IBM Cloud Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracking."
+          "description": "This solution can be integrated with [IBM Cloud Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing"
         }
       ],
       "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in that repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/issues). Please note this product is not supported via the IBM Cloud Support Center.",
@@ -94,7 +94,7 @@
                 "description": "Creates and configures an instance of watsonx.data."
               },
               {
-                "title": "Keys and Key Rings",
+                "title": "KMS Keys and Key Rings",
                 "description": "Supports the creation of Keys and Key Rings for encrypting watsonx.data instances."
               }
             ],
@@ -105,7 +105,7 @@
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/reference-architecture/deployable-architecture-watsonx-data.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "**watsonx.data** <br/> <br/><b>Description</b> <br/> Create a watsonx.data instance on IBM Cloud. Optional services used are:<br/> - Account Configuration <br/> - Key Protect. <br/> - Observability. <br/><br/> **Account Configuration**: <br/> This architecture supports creating and configuring the foundational components of an IBM Cloud account. This includes IAM account settings, a trusted profile and associated access groups, and the resource groups in which all resources are provisioned. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-account-infrastructure-base/tree/main/docs/about.md)<br/> <br/> **Key Protect**:<br/> This architecture supports creating and configuring an IBM Key Protect instance, Key Rings, and Keys. For more details on Key Protect, [refer here](https://cloud.ibm.com/docs/key-protect/index.html). <br/><br/> **Observability**: <br/> This architecture supports configuring IBM Cloud Observability resources for logging, monitoring, and activity tracking.<br/>"
+                "description": "This solution deploys a watsonx.data instance on IBM Cloud, with optional integration of additional services to support enterprise-grade requirements. It enables KMS encryption by provisioning and configuring IBM Key Protect, including Key Rings and Keys, for secure key management. Additionally, the architecture supports IBM Cloud Observability to provide logging, monitoring, and activity tracking capabilities. This deployable architecture offers a secure, compliant, and operationally transparent foundation for building and managing watsonx.data workloads in the cloud. For more information on Key Protect, [see here](https://cloud.ibm.com/docs/key-protect/index.html)."
               }
             ]
           },
