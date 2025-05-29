@@ -28,7 +28,7 @@
       "features": [
         {
           "title": "watsonx.data",
-          "description": "Provision an instance of [IBM watsonx.data](https://cloud.ibm.com/watsonxdata#about)"
+          "description": "Provisions an instance of [IBM watsonx.data](https://cloud.ibm.com/watsonxdata#about)"
         },
         {
           "title": "Enable KMS Encryption in watsonx.data instance",
@@ -101,7 +101,7 @@
             "diagrams": [
               {
                 "diagram": {
-                  "caption": "IBM watsonx.data architecture",
+                  "caption": "watsonx.data on IBM Cloud",
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/reference-architecture/deployable-architecture-watsonx-data.svg",
                   "type": "image/svg+xml"
                 },
@@ -146,6 +146,7 @@
             {
               "key": "existing_resource_group_name",
               "display_name": "resource_group",
+              "default_value": "Default",
               "custom_config": {
                 "type": "resource_group",
                 "grouping": "deployment",
