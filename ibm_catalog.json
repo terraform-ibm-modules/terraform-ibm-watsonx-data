@@ -70,7 +70,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "hs-crypto",
-              "notes": "[Optional] Required if Hyper Protect Crypto Services (HPCS) encryption is enabled and is used for encryption."
+              "notes": "[Optional] Required if KMS encryption is enabled and Hyper Protect Crypto Services is used for encryption."
             },
             {
               "role_crns": [
