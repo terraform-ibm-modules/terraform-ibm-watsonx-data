@@ -223,7 +223,16 @@
             },
             {
               "key": "kms_endpoint_type",
-              "hidden": true
+              "options": [
+                {
+                  "displayname": "Public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "Private",
+                  "value": "private"
+                }
+              ]
             },
             {
               "key": "watsonx_data_key_ring_name"
