@@ -28,15 +28,15 @@
       "features": [
         {
           "title": "watsonx.data",
-          "description": "Provision and configure an instance of IBM watsonx Data. Explore more about IBM watsonx Data [here](https://www.ibm.com/products/watsonx-data)"
+          "description": "Provision and configure an instance of IBM watsonx Data. Explore more about IBM watsonx Data [here](https://www.ibm.com/products/watsonx-data)."
         },
         {
           "title": "Enable KMS Encryption in watsonx.data instance",
-          "description": "IBM watsonx.data instance can have KMS encryption enabled for the Enterprise plan using this deployable architecture. For more details on KMS encryption, [refer this](https://cloud.ibm.com/docs/key-protect?topic=key-protect-about)"
+          "description": "IBM watsonx.data instance can have KMS encryption enabled for the Enterprise plan using this deployable architecture. For more details on KMS encryption, [refer this](https://cloud.ibm.com/docs/key-protect?topic=key-protect-about)."
         },
         {
           "title": "Optional Integrations",
-          "description": "This solution can be integrated with [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing"
+          "description": "This solution can be integrated with [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing."
         }
       ],
       "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in that repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/issues). Please note this product is not supported via the IBM Cloud Support Center.",
@@ -222,7 +222,8 @@
               "key": "existing_kms_key_crn"
             },
             {
-              "key": "kms_endpoint_type"
+              "key": "kms_endpoint_type",
+              "hidden": true
             },
             {
               "key": "watsonx_data_key_ring_name"
