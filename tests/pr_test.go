@@ -227,7 +227,7 @@ func TestRunStandardUpgradeSolution(t *testing.T) {
 	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
 		Testing:       t,
 		TerraformDir:  standardSolutionTerraformDir,
-		Prefix:        "wxd-da-upg",
+		Prefix:        "wxda-upg",
 		Region:        region,
 		ResourceGroup: resourceGroup,
 	})
