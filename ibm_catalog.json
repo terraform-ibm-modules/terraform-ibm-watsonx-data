@@ -28,7 +28,7 @@
       "features": [
         {
           "title": "watsonx.data",
-          "description": "Provision and configure an instance of IBM watsonx Data. Explore more about IBM watsonx Data [here](https://www.ibm.com/products/watsonx-data)."
+          "description": "Provision and configure an instance of IBM watsonx Data. Explore more about IBM watsonx Data [here](https://www.ibm.com/products/watsonx-data)"
         },
         {
           "title": "Enable KMS Encryption in watsonx.data instance",
