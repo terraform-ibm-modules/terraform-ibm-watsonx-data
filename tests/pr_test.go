@@ -35,12 +35,12 @@ var permanentResources map[string]interface{}
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
 
-// Current supported regions
+// The region are selected as workaround due to https://github.ibm.com/GoldenEye/issues/issues/13522
 var validRegions = []string{
-	"us-south",
-	"eu-de",
+	"ca-tor",
 	"eu-gb",
 	"jp-tok",
+	"au-syd",
 }
 
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
