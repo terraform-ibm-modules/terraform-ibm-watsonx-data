@@ -35,7 +35,7 @@ variable "region" {
   description = "The region to provision the watsonx.data instance."
   default     = "us-south"
   validation {
-    condition     = contains(["eu-de", "us-east", "ca-tor", "us-south", "eu-gb", "jp-tok", "au-syd"], var.region)
+    condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok", "au-syd"], var.region)
     error_message = "You must specify 'eu-de', 'eu-gb', 'jp-tok', 'au-syd' or 'us-south' as the IBM Cloud region."
   }
 }
