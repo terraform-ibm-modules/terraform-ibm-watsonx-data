@@ -153,6 +153,7 @@
             },
             {
               "key": "service_plan",
+              "required": true,
               "options": [
                 {
                   "displayname": "Lite",
@@ -166,6 +167,7 @@
             },
             {
               "key": "lite_plan_use_case",
+              "required": true,
               "options": [
                 {
                   "displayname": "Generative AI",
