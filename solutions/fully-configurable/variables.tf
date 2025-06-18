@@ -73,11 +73,11 @@ variable "service_plan" {
   default     = "lakehouse-enterprise"
   validation {
     condition = anytrue([
-      var.service_plan == "lite" && contains(["eu-de", "us-east", "us-south", "jp-tok", "eu-gb"], var.region),
-      var.service_plan == "lakehouse-enterprise" && contains(["eu-de", "us-east", "us-south", "jp-tok", "eu-gb"], var.region),
+      var.service_plan == "lite" && contains(["us-south", "eu-de", "eu-gb", "jp-tok"], var.region),
+      var.service_plan == "lakehouse-enterprise" && contains(["us-south", "eu-de", "eu-gb", "jp-tok", "us-east"], var.region),
       var.service_plan == "lakehouse-enterprise-mcsp" && contains(["au-syd", "ca-tor"], var.region)
     ])
-    error_message = "Allowed plan-region combinations are: 'lite' and 'lakehouse-enterprise' (eu-de, us-east, us-south, jp-tok, eu-gb), 'lakehouse-enterprise-mcsp' (only in au-syd, ca-tor)."
+    error_message = "Allowed plan-region combinations are: 'lite' (eu-de, eu-gb, jp-tok, us-south), 'lakehouse-enterprise' (eu-de, eu-gb, jp-tok, us-south, us-east), 'lakehouse-enterprise-mcsp' (only in au-syd, ca-tor)."
   }
 }
 

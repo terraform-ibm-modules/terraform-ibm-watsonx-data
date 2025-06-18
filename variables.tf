@@ -35,10 +35,11 @@ variable "region" {
   description = "The region to provision the watsonx.data instance."
   default     = "us-south"
   validation {
-    condition     = contains(["eu-de", "us-south", "eu-gb", "jp-tok", "au-syd", "ca-tor"], var.region)
-    error_message = "You must specify 'eu-de', 'eu-gb', 'jp-tok', 'au-syd' or 'us-south' as the IBM Cloud region."
+    condition     = contains(["eu-de", "eu-gb", "jp-tok", "us-south", "us-east", "au-syd", "ca-tor"], var.region)
+    error_message = "You must specify one of the supported IBM Cloud regions: eu-de, eu-gb, jp-tok, us-south, us-east, au-syd, or ca-tor."
   }
 }
+
 
 variable "existing_watsonx_data_instance_crn" {
   type        = string
@@ -52,11 +53,11 @@ variable "plan" {
   default     = "lite"
   validation {
     condition = anytrue([
-      var.plan == "lite" && contains(["eu-de", "us-east", "us-south", "jp-tok", "eu-gb"], var.region),
-      var.plan == "lakehouse-enterprise" && contains(["eu-de", "us-east", "us-south", "jp-tok", "eu-gb"], var.region),
+      var.plan == "lite" && contains(["us-south", "eu-de", "eu-gb", "jp-tok"], var.region),
+      var.plan == "lakehouse-enterprise" && contains(["us-south", "eu-de", "eu-gb", "jp-tok", "us-east"], var.region),
       var.plan == "lakehouse-enterprise-mcsp" && contains(["au-syd", "ca-tor"], var.region)
     ])
-    error_message = "Allowed plan-region combinations are: 'lite' and 'lakehouse-enterprise' (eu-de, us-east, us-south, jp-tok, eu-gb), 'lakehouse-enterprise-mcsp' (only in au-syd, ca-tor)."
+    error_message = "Allowed plan-region combinations are: 'lite' (eu-de, eu-gb, jp-tok, us-south), 'lakehouse-enterprise' (eu-de, eu-gb, jp-tok, us-south, us-east), 'lakehouse-enterprise-mcsp' (only in au-syd, ca-tor)."
   }
 }
 
