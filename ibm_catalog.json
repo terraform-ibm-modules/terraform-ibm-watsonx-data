@@ -44,6 +44,7 @@
         {
           "label": "Fully configurable",
           "name": "fully-configurable",
+          "index": 1,
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
           "compliance": {
@@ -98,12 +99,8 @@
           "architecture": {
             "features": [
               {
-                "title": "watsonx.data instance",
-                "description": "Creates and configures an instance of watsonx.data."
-              },
-              {
-                "title": "KMS Keys and Key Rings",
-                "description": "Supports the creation of Keys and Key Rings for encrypting watsonx.data instances."
+                "title": " ",
+                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
               }
             ],
             "diagrams": [
