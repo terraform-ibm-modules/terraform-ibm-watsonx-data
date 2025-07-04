@@ -32,7 +32,7 @@
         },
         {
           "title": "Enable KMS Encryption",
-          "description": "Optionally you can enable Key Management Services (Key Protect) [encryption](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-mng_data) of the watsonx.data instance for the Enterprise plan using either a newly created key or an existing one."
+          "description": "Optionally you can enable Key Management Services (KMS) [encryption](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-mng_data) of the watsonx.data instance for the Enterprise plan using either a newly created key or an existing one."
         },
         {
           "title": "Observability",
@@ -242,6 +242,7 @@
             },
             {
               "key": "provider_visibility",
+              "hidden": true,
               "options": [
                 {
                   "displayname": "private",
