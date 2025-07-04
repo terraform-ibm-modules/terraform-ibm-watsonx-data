@@ -21,22 +21,22 @@
         "ai"
       ],
       "short_description": "Creates and configures an instance of IBM watsonx.data.",
-      "long_description": "IBM watsonx.data is a data management solution for collecting, storing, querying, and analyzing all your enterprise data with a single unified data platform. The Cloud automation for watsonx.data allows user to set up an instance of watsonx.data. For more details on watsonx.data, [refer here](https://cloud.ibm.com/docs/watsonxdata/index.html).",
+      "long_description": "IBM watsonx.data is a data management solution for collecting, storing, querying, and analyzing all your enterprise data with a single unified data platform. The Cloud automation for watsonx.data allows user to set up an instance of watsonx.data. For more details on watsonx.data, [Learn more](https://cloud.ibm.com/docs/watsonxdata/index.html).",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/blob/main/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/images/watsonx-data.svg",
       "provider_name": "IBM",
       "features": [
         {
           "title": "watsonx.data instance",
-          "description": "Get started with provisioning an instance of IBM watsonx.data. Explore more about IBM watsonx.data [here](https://www.ibm.com/products/watsonx-data)."
+          "description": "Get started with provisioning an instance of IBM watsonx.data. Explore more about IBM watsonx.data, [Learn more](https://www.ibm.com/products/watsonx-data)."
         },
         {
           "title": "Enable KMS Encryption",
-          "description": "IBM watsonx.data instance can have KMS encryption enabled for the Enterprise plan using this deployable architecture. For more details on KMS encryption, refer [this](https://cloud.ibm.com/docs/key-protect?topic=key-protect-about)."
+          "description": "Optionally you can enable Key Management Services (Key Protect or HPCS) [encryption](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-mng_data) of the watsonx.data instance for the Enterprise plan using either a newly created key or an existing one."
         },
         {
-          "title": "Optional Integrations",
-          "description": "This solution can be integrated with [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing."
+          "title": "Observability",
+          "description": "This solution can leverage [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing."
         }
       ],
       "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/issues). Please note this product is not supported via the IBM Cloud Support Center.",
@@ -59,6 +59,43 @@
           "iam_permissions": [
             {
               "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "lakehouse",
+              "notes": "Required for creating a new instance of watsonx.data"
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "All Account Management services",
+              "notes": "[Optional] Required when setting up foundational IBM Cloud account components such as IAM settings, trusted profiles, access groups, and resource groups."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Viewer"
+              ],
+              "service_name": "Resource group only",
+              "notes": "Viewer access is required in the resource group you want to provision in."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "kms",
+              "notes": "[Optional] Required if KMS encryption is enabled and Key protect is used for encryption."
+            },
+            {
+              "service_name": "atracker",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Writer",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required for configuring Activity Tracker event routing to cloud object storage bucket and cloud logs."
+            },
+            {
+              "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
@@ -72,28 +109,6 @@
               ],
               "service_name": "logs",
               "notes": "[Optional] Required if you are consuming the Observability deployable architecture which sets up Cloud Logs."
-            },
-            {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
-                "crn:v1:bluemix:public:iam::::role:Editor"
-              ],
-              "service_name": "kms",
-              "notes": "[Optional] Required if KMS encryption is enabled and Key protect is used for encryption."
-            },
-            {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
-              "service_name": "All Account Management services",
-              "notes": "[Optional] Required when setting up foundational IBM Cloud account components such as IAM settings, trusted profiles, access groups, and resource groups."
-            },
-            {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Editor"
-              ],
-              "service_name": "lakehouse",
-              "notes": "Required for creating a new instance of watsonx.data"
             }
           ],
           "architecture": {
