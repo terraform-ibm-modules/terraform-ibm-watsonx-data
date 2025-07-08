@@ -33,7 +33,7 @@ variable "resource_tags" {
 variable "region" {
   type        = string
   description = "The region to provision the watsonx.data instance."
-  default     = "us-south"
+  default     = "eu-de"
   validation {
     condition     = contains(["eu-de", "eu-gb", "jp-tok", "us-south", "us-east", "au-syd", "ca-tor"], var.region)
     error_message = "You must specify one of the supported IBM Cloud regions: eu-de, eu-gb, jp-tok, us-south, us-east, au-syd, or ca-tor."
