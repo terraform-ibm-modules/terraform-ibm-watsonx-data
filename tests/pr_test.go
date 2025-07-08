@@ -37,8 +37,11 @@ var sharedInfoSvc *cloudinfo.CloudInfoService
 
 // These regions are selected as a temporary workaround for issue https://github.ibm.com/GoldenEye/issues/issues/13522
 var validRegions = []string{
+	"us-south",
+	"eu-de",
 	"eu-gb",
 	"jp-tok",
+	"us-east",
 }
 
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests

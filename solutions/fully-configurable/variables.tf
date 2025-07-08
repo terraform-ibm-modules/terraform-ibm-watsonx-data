@@ -71,14 +71,6 @@ variable "service_plan" {
   type        = string
   description = "The plan required to provision the watsonx.data instance. Possible values are: `lite`, `lakehouse-enterprise`, or `lakehouse-enterprise-mcsp` (only for `au-syd` and `ca-tor` regions). [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started_1)."
   default     = "lakehouse-enterprise"
-  validation {
-    condition = anytrue([
-      var.service_plan == "lite" && contains(["us-south", "eu-de", "eu-gb", "jp-tok"], var.region),
-      var.service_plan == "lakehouse-enterprise" && contains(["us-south", "eu-de", "eu-gb", "jp-tok", "us-east"], var.region),
-      var.service_plan == "lakehouse-enterprise-mcsp" && contains(["au-syd", "ca-tor"], var.region)
-    ])
-    error_message = "Allowed plan-region combinations are: 'lite' (eu-de, eu-gb, jp-tok, us-south), 'lakehouse-enterprise' (eu-de, eu-gb, jp-tok, us-south, us-east), 'lakehouse-enterprise-mcsp' (only in au-syd, ca-tor)."
-  }
 }
 
 variable "lite_plan_use_case" {

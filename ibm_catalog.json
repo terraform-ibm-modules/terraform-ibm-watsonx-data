@@ -148,6 +148,14 @@
                 {
                   "displayname": "Tokyo (jp-tok)",
                   "value": "jp-tok"
+                },
+                {
+                  "displayname": "Washington DC (us-east)",
+                  "value": "us-east"
+                },
+                {
+                  "displayname": "Toronto (ca-tor)",
+                  "value": "ca-tor"
                 }
               ]
             },
@@ -162,6 +170,10 @@
                 {
                   "displayname": "Enterprise",
                   "value": "lakehouse-enterprise"
+                },
+                {
+                  "displayname": "Enterprise MCSP",
+                  "value": "lakehouse-enterprise-mcsp"
                 }
               ]
             },
