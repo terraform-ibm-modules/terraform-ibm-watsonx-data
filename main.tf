@@ -10,7 +10,9 @@ locals {
     "eu-gb"    = "ibm:eu-gb:lon",
     "eu-de"    = "ibm:eu-de:fra",
     "jp-tok"   = "ibm:jp-tok:tok",
-    "au-syd"   = "ibm:au-syd:syd"
+    "au-syd"   = "ibm:au-syd:syd",
+    "ca-tor"   = "ibm:ca-tor:tor",
+    "us-east"  = "ibm:us-east:wdc"
   }
 
   watsonx_data_datacenter = local.watsonx_data_datacenter_mapping[var.region]
@@ -22,7 +24,11 @@ locals {
   watsonx_data_plan_id    = var.existing_watsonx_data_instance_crn != null ? null : resource.ibm_resource_instance.data_instance[0].resource_plan_id
   # Temporary workaround for issue 13341[https://github.ibm.com/GoldenEye/issues/issues/13341]
   watsonx_data_dashboard_url = "https://cloud.ibm.com/services/lakehouse/${urlencode(local.watsonx_data_crn)}"
+
+  # Use lakehouse-enterprise-mcsp if region is au-syd or ca-tor with lakehouse-enterprise plan
+  effective_plan = (var.plan == "lakehouse-enterprise" && contains(["au-syd", "ca-tor"], var.region)) ? "lakehouse-enterprise-mcsp" : var.plan
 }
+
 
 module "crn_parser" {
   count   = var.existing_watsonx_data_instance_crn != null ? 1 : 0
@@ -41,7 +47,7 @@ module "kms_key_crn_parser" {
 # KMS values
 locals {
   # kms not applicable for plan - `lakehouse-enterprise-mcsp`
-  validate_kms_plan           = var.plan == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
+  validate_kms_plan           = local.effective_plan == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
   kms_service                 = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].service_name, null) : null
   kms_account_id              = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].account_id, null) : null
   kms_key_id                  = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].resource, null) : null
@@ -61,7 +67,7 @@ resource "ibm_resource_instance" "data_instance" {
   count             = var.existing_watsonx_data_instance_crn != null ? 0 : 1
   name              = var.watsonx_data_name
   service           = "lakehouse"
-  plan              = var.plan
+  plan              = local.effective_plan
   location          = var.region
   resource_group_id = var.resource_group_id
   tags              = var.resource_tags
