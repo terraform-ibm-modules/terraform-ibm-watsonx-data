@@ -35,8 +35,8 @@ variable "region" {
   description = "The region to provision the watsonx.data instance."
   default     = "eu-de"
   validation {
-    condition     = contains(["eu-de", "eu-gb", "jp-tok", "us-south", "us-east", "au-syd", "ca-tor"], var.region)
-    error_message = "You must specify one of the supported IBM Cloud regions: eu-de, eu-gb, jp-tok, us-south, us-east, au-syd, or ca-tor."
+    condition     = contains(["eu-de", "eu-gb", "jp-tok", "us-south", "us-east"], var.region)
+    error_message = "You must specify one of the supported IBM Cloud regions: eu-de, eu-gb, jp-tok, us-south or us-east."
   }
 }
 
@@ -49,15 +49,14 @@ variable "existing_watsonx_data_instance_crn" {
 
 variable "plan" {
   type        = string
-  description = "The plan that is required to provision the watsonx.data instance. Possible values are: 'lite', 'lakehouse-enterprise' and 'lakehouse-enterprise-mcsp'. 'lite' is available in eu-de, jp-tok and eu-gb. 'lakehouse-enterprise' is available only in eu-de, us-east, us-south, jp-tok, and eu-gb. 'lakehouse-enterprise-mcsp' is available only in au-syd and ca-tor. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
+  description = "The plan required to provision the watsonx.data instance. Possible values are: 'lite' or 'lakehouse-enterprise'. The 'lite' plan is available in `eu-de`, `jp-tok`, and `eu-gb` regions. The 'lakehouse-enterprise' plan is available only in `eu-de`, `us-east`, `us-south`, `jp-tok`, and `eu-gb` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
   default     = "lite"
   validation {
     condition = anytrue([
       var.plan == "lite" && contains(["eu-de", "eu-gb", "jp-tok"], var.region),
       var.plan == "lakehouse-enterprise" && contains(["us-south", "eu-de", "eu-gb", "jp-tok", "us-east"], var.region),
-      var.plan == "lakehouse-enterprise-mcsp" && contains(["au-syd", "ca-tor"], var.region)
     ])
-    error_message = "Allowed plan-region combinations are: 'lite' (eu-de, eu-gb, jp-tok), 'lakehouse-enterprise' (eu-de, eu-gb, jp-tok, us-south, us-east), 'lakehouse-enterprise-mcsp' (only in au-syd, ca-tor)."
+    error_message = "Allowed plan-region combinations are: 'lite' (eu-de, eu-gb, jp-tok), 'lakehouse-enterprise' (eu-de, eu-gb, jp-tok, us-south, us-east)."
   }
 }
 

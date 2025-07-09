@@ -11,8 +11,6 @@ locals {
     "eu-de"    = "ibm:eu-de:fra",
     "eu-gb"    = "ibm:eu-gb:lon",
     "jp-tok"   = "ibm:jp-tok:tok",
-    "au-syd"   = "ibm:au-syd:syd",
-    "ca-tor"   = "ibm:ca-tor:tor"
   }
 
   watsonx_data_datacenter = local.watsonx_data_datacenter_mapping[var.region]
