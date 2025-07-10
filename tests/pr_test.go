@@ -35,7 +35,6 @@ var permanentResources map[string]interface{}
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
 
-// These regions are selected as a temporary workaround for issue https://github.ibm.com/GoldenEye/issues/issues/13522
 var validRegions = []string{
 	"us-south",
 	"eu-de",
