@@ -65,9 +65,13 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
 	})
+	selectedRegion := validRegions[rand.Intn(len(validRegions))] // KMS encryption is only supported with the 'lakehouse-enterprise' plan. For regions 'au-syd' or 'ca-tor', the plan will switched to 'lakehouse-enterprise-mcsp'.
+	if selectedRegion == "au-syd" || selectedRegion == "ca-tor" {
+		selectedRegion = "us-south"
+	}
 	options.TerraformVars = map[string]interface{}{
 		"access_tags":    permanentResources["accessTags"],
-		"region":         validRegions[rand.Intn(len(validRegions))],
+		"region":         selectedRegion,
 		"prefix":         options.Prefix,
 		"resource_group": resourceGroup,
 		"resource_tags":  options.Tags,
