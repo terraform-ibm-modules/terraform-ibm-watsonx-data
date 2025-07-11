@@ -44,6 +44,6 @@ variable "resource_tags" {
 
 variable "plan" {
   type        = string
-  description = "The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' and 'lakehouse-enterprise'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
+  description = "The plan required to provision the watsonx.data instance. Possible values are: 'lite', 'lakehouse-enterprise', and 'lakehouse-enterprise-mcsp'. 'lite' plan is available in `eu-de`,` jp-tok`, and `eu-gb` regions. 'lakehouse-enterprise' plan is available only in `eu-de`,`us-east`, `us-south`,` jp-tok`, and `eu-gb` regions. 'lakehouse-enterprise-mcsp' plan is available only in `au-syd` and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
   default     = "lakehouse-enterprise"
 }

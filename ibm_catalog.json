@@ -142,12 +142,20 @@
                   "value": "eu-gb"
                 },
                 {
+                  "displayname": "Washington DC (us-east)",
+                  "value": "us-east"
+                },
+                {
                   "displayname": "Sydney (au-syd)",
                   "value": "au-syd"
                 },
                 {
                   "displayname": "Tokyo (jp-tok)",
                   "value": "jp-tok"
+                },
+                {
+                  "displayname": "Toronto (ca-tor)",
+                  "value": "ca-tor"
                 }
               ]
             },

@@ -35,10 +35,14 @@ var permanentResources map[string]interface{}
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
 
-// These regions are selected as a temporary workaround for issue https://github.ibm.com/GoldenEye/issues/issues/13522
 var validRegions = []string{
+	"us-south",
+	"eu-de",
 	"eu-gb",
 	"jp-tok",
+	"us-east",
+	"ca-tor",
+	"au-syd",
 }
 
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
@@ -61,9 +65,13 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
 	})
+	selectedRegion := validRegions[rand.Intn(len(validRegions))] // KMS encryption is only supported with the 'lakehouse-enterprise' plan. For regions 'au-syd' or 'ca-tor', the plan will switched to 'lakehouse-enterprise-mcsp'.
+	if selectedRegion == "au-syd" || selectedRegion == "ca-tor" {
+		selectedRegion = "us-south"
+	}
 	options.TerraformVars = map[string]interface{}{
 		"access_tags":    permanentResources["accessTags"],
-		"region":         validRegions[rand.Intn(len(validRegions))],
+		"region":         selectedRegion,
 		"prefix":         options.Prefix,
 		"resource_group": resourceGroup,
 		"resource_tags":  options.Tags,
