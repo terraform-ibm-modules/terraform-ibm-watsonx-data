@@ -88,7 +88,7 @@ variable "enable_kms_encryption" {
   type        = bool
   default     = false
   validation {
-    condition     = !var.enable_kms_encryption || local.effective_plan == "lakehouse-enterprise"
+    condition     = !var.enable_kms_encryption || local.enterprise_plan_type == "lakehouse-enterprise"
     error_message = "KMS encryption is only supported when the plan configured is 'lakehouse-enterprise'."
   }
 }
@@ -98,7 +98,7 @@ variable "watsonx_data_kms_key_crn" {
   type        = string
   default     = null
   validation {
-    condition     = local.effective_plan == "lakehouse-enterprise" || var.watsonx_data_kms_key_crn == null
+    condition     = local.enterprise_plan_type == "lakehouse-enterprise" || var.watsonx_data_kms_key_crn == null
     error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the plan configured is 'lakehouse-enterprise'."
   }
 }
