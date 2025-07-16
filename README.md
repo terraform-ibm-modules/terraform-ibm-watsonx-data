@@ -46,6 +46,9 @@ This module supports provisioning the following:
 
 * Provisioning watsonx.data instance with a selectable service plan
 
+
+**⚠️ Note:**  The module does not support the lite plan in the `au-syd` and `ca-tor` regions currently due to a known [limitation](https://github.com/IBM-Cloud/terraform-provider-ibm/issues/6358) with the Terraform provider.
+
 ### Usage
 
 ```hcl

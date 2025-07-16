@@ -52,7 +52,7 @@ variable "plan" {
   default     = "lite"
   validation {
     condition = anytrue([
-      var.plan == "lite" && contains(["eu-de", "eu-gb", "jp-tok"], var.region), # Provider issue regarding support for au-syd and ca-tor regions: https://github.com/IBM-Cloud/terraform-provider-ibm/issues/6358
+      var.plan == "lite" && contains(["eu-de", "eu-gb", "jp-tok"], var.region),
       var.plan == "lakehouse-enterprise" && contains(["us-south", "eu-de", "eu-gb", "jp-tok", "us-east", "au-syd", "ca-tor"], var.region)
     ])
     error_message = "Allowed plan-region combinations are: 'lite' (eu-de, eu-gb, jp-tok), 'lakehouse-enterprise' (eu-de, eu-gb, jp-tok, us-south, us-east), 'lakehouse-enterprise-mcsp' (only in au-syd, ca-tor)."
