@@ -8,9 +8,10 @@
         "ibm_created",
         "target_terraform",
         "terraform",
+        "solution",
         "watson",
         "ai",
-        "solution"
+        "converged_infra"
       ],
       "keywords": [
         "watsonx.data",
