@@ -45,6 +45,7 @@ var validRegions = []string{
 	// "au-syd",  Excluded regions (ca-tor, au-syd) as they are supported only in the lakehouse-enterprise-mcsp plan; this test targets enterprise plan with KMS.
 }
 
+// validMCSPRegion is a subset of validRegions that are supported for MCSP plans.
 var validMCSPRegion = []string{
 	"ca-tor",
 	"au-syd",
@@ -72,7 +73,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 	})
 	options.TerraformVars = map[string]interface{}{
 		"access_tags":           permanentResources["accessTags"],
-		"region":                validMCSPRegion,
+		"region":                validMCSPRegion[rand.Intn(len(validMCSPRegion))],
 		"prefix":                options.Prefix,
 		"resource_group":        resourceGroup,
 		"resource_tags":         options.Tags,
