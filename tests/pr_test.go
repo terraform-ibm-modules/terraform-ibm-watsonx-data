@@ -216,6 +216,7 @@ func TestRunStandardSolution(t *testing.T) {
 		"existing_resource_group_name": resourceGroup,
 		"provider_visibility":          "public",
 		"enable_kms_encryption":        true,
+		"kms_endpoint_type":            "public",
 		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
 
@@ -247,6 +248,7 @@ func TestRunStandardUpgradeSolution(t *testing.T) {
 		"existing_resource_group_name": resourceGroup,
 		"provider_visibility":          "public",
 		"enable_kms_encryption":        true,
+		"kms_endpoint_type":            "public",
 		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
 
