@@ -41,6 +41,11 @@ var validRegions = []string{
 	"eu-gb",
 	"jp-tok",
 	"us-east",
+	// "ca-tor",
+	// "au-syd",  Excluded regions (ca-tor, au-syd) as they are supported only in the lakehouse-enterprise-mcsp plan; this test targets enterprise plan with KMS.
+}
+
+var validMCSPRegion = []string{
 	"ca-tor",
 	"au-syd",
 }
@@ -65,16 +70,13 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
 	})
-	selectedRegion := validRegions[rand.Intn(len(validRegions))] // KMS encryption is only supported with the 'lakehouse-enterprise' plan. For regions 'au-syd' or 'ca-tor', the plan will switched to 'lakehouse-enterprise-mcsp'.
-	if selectedRegion == "au-syd" || selectedRegion == "ca-tor" {
-		selectedRegion = "us-south"
-	}
 	options.TerraformVars = map[string]interface{}{
-		"access_tags":    permanentResources["accessTags"],
-		"region":         selectedRegion,
-		"prefix":         options.Prefix,
-		"resource_group": resourceGroup,
-		"resource_tags":  options.Tags,
+		"access_tags":           permanentResources["accessTags"],
+		"region":                validMCSPRegion,
+		"prefix":                options.Prefix,
+		"resource_group":        resourceGroup,
+		"resource_tags":         options.Tags,
+		"enable_kms_encryption": false,
 	}
 	return options
 }
@@ -212,6 +214,7 @@ func TestRunStandardSolution(t *testing.T) {
 		"region":                       options.Region,
 		"existing_resource_group_name": resourceGroup,
 		"provider_visibility":          "public",
+		"enable_kms_encryption":        true,
 		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
 
@@ -242,6 +245,7 @@ func TestRunStandardUpgradeSolution(t *testing.T) {
 		"region":                       options.Region,
 		"existing_resource_group_name": resourceGroup,
 		"provider_visibility":          "public",
+		"enable_kms_encryption":        true,
 		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
 

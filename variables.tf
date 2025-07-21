@@ -84,12 +84,12 @@ variable "use_case" {
 }
 
 variable "enable_kms_encryption" {
-  description = "Flag to enable the KMS encryption."
+  description = "Flag to enable the KMS encryption when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'cat-tor'."
   type        = bool
   default     = false
   validation {
     condition     = !var.enable_kms_encryption || local.enterprise_plan_type == "lakehouse-enterprise"
-    error_message = "KMS encryption is only supported when the plan configured is 'lakehouse-enterprise'."
+    error_message = "KMS encryption is supported only when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'cat-tor'."
   }
 }
 
@@ -99,7 +99,7 @@ variable "watsonx_data_kms_key_crn" {
   default     = null
   validation {
     condition     = local.enterprise_plan_type == "lakehouse-enterprise" || var.watsonx_data_kms_key_crn == null
-    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the plan configured is 'lakehouse-enterprise'."
+    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the plan configured is 'lakehouse-enterprise' and the deployment region is not 'au-syd' and 'cat-tor'.."
   }
 }
 
