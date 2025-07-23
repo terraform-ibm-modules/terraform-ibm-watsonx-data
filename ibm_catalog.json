@@ -73,6 +73,189 @@
               "service_name": "logs",
               "notes": "(Optional) Access to configure an IBM Cloud Logs instance. Required if you're deploying Cloud automation for Observability, which includes IBM Cloud Logs."
             },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "kms",
+              "notes": "[Optional] Required if KMS encryption is enabled and Key protect is used for encryption."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "All Account Management services",
+              "notes": "[Optional] Required when setting up foundational IBM Cloud account components such as IAM settings, trusted profiles, access groups, and resource groups."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "lakehouse",
+              "notes": "Required for creating a new instance of watsonx.data"
+            }
+          ],
+          "architecture": {
+            "features": [
+              {
+                "title": "watsonx.data instance",
+                "description": "Creates and configures an instance of watsonx.data."
+              },
+              {
+                "title": "KMS Keys and Key Rings",
+                "description": "Supports the creation of Keys and Key Rings for encrypting watsonx.data instances."
+              }
+            ],
+            "diagrams": [
+              {
+                "diagram": {
+                  "caption": "watsonx.data on IBM Cloud",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/reference-architecture/deployable-architecture-watsonx-data.svg",
+                  "type": "image/svg+xml"
+                },
+                "description": "This solution deploys a watsonx.data instance on IBM Cloud, with optional integration of additional services to support enterprise-grade requirements.<br><br>It enables encryption for the watsonx.data instance by provisioning an IBM Key Protect service instance, where a Key Ring and associated Key are created to manage encryption through IBM Cloud Key Management Services (KMS). You can choose to provide an existing KMS instance details as well.<br><br>In addition, you have an option to integrate with Observability services. Cloud automation for Observability provides robust monitoring and logging capabilities to deliver deep operational insights into your watsonx.data deployment. You can use IBM Cloud Activity Tracker Event Routing to monitor how users and applications interact with watsonx.data, supporting compliance and auditability. Cloud logs can be enabled to collect, view, and analyze platform logs related to key watsonx.data components such as the metastore and query engine, and to gain visibility into usage patterns through active tasks and queries. Furthermore, IBM Cloud Monitoring captures essential metrics such as CPU and memory utilization, helping you proactively monitor system performance and resource consumption."
+              }
+            ]
+          },
+          "configuration": [
+            {
+              "key": "ibmcloud_api_key"
+            },
+            {
+              "key": "prefix",
+              "required": true
+            },
+            {
+              "key": "region",
+              "required": true,
+              "options": [
+                {
+                  "displayname": "Dallas (us-south)",
+                  "value": "us-south"
+                },
+                {
+                  "displayname": "Frankfurt (eu-de)",
+                  "value": "eu-de"
+                },
+                {
+                  "displayname": "London (eu-gb)",
+                  "value": "eu-gb"
+                },
+                {
+                  "displayname": "Sydney (au-syd)",
+                  "value": "au-syd"
+                },
+                {
+                  "displayname": "Tokyo (jp-tok)",
+                  "value": "jp-tok"
+                }
+              ]
+            },
+            {
+              "key": "service_plan",
+              "required": true,
+              "options": [
+                {
+                  "displayname": "Lite",
+                  "value": "lite"
+                },
+                {
+                  "displayname": "Enterprise",
+                  "value": "lakehouse-enterprise"
+                }
+              ]
+            },
+            {
+              "key": "lite_plan_use_case",
+              "required": true,
+              "options": [
+                {
+                  "displayname": "Generative AI",
+                  "value": "ai"
+                },
+                {
+                  "displayname": "Data Engineering",
+                  "value": "workloads"
+                },
+                {
+                  "displayname": "High Performance BI",
+                  "value": "performance"
+                }
+              ]
+            },
+            {
+              "key": "enable_platform_metrics",
+              "type": "string",
+              "default_value": "true",
+              "description": "When set to `true`, the IBM Cloud Monitoring instance will be configured to collect platform metrics from the provided region. You can configure 1 instance only of the IBM Cloud Monitoring service per region to collect platform metrics in that location. Check with the account or service administrator if another monitoring instance has already been configured. You may not have permissions to see all monitoring instances in the region. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-platform_metrics_enabling).",
+              "required": true,
+              "virtual": true,
+              "options": [
+                {
+                  "displayname": "true",
+                  "value": "true"
+                },
+                {
+                  "displayname": "false",
+                  "value": "false"
+                }
+              ]
+            },
+            {
+              "key": "logs_routing_tenant_regions",
+              "type": "list(string)",
+              "default_value": "[]",
+              "description": "To manage platform logs that are generated by IBM Cloud services in a region of IBM Cloud, you must create a tenant in each region that you operate. Pass a list of regions to create a tenant in. [Learn more](https://cloud.ibm.com/docs/logs-router?topic=logs-router-about-platform-logs).",
+              "required": true,
+              "virtual": true,
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "existing_resource_group_name",
+              "display_name": "resource_group",
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              }
+            },
+            {
+              "key": "provider_visibility",
+              "hidden": true
+            },
+            {
+              "key": "watsonx_data_instance_name"
+            },
+            {
+              "key": "resource_tags",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "access_tags",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
                 }
               }
             },
