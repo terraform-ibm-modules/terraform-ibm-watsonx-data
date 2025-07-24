@@ -29,22 +29,23 @@
       "features": [
         {
           "title": "watsonx.data instance",
-          "description": "Get started with provisioning an instance of IBM watsonx.data. Explore more about IBM watsonx.data [here](https://www.ibm.com/products/watsonx-data)."
+          "description": "Get started with provisioning an instance of IBM watsonx.data and discover more about its capabilities [here](https://www.ibm.com/products/watsonx-data)."
         },
         {
           "title": "Enable KMS Encryption",
-          "description": "IBM watsonx.data instance can have KMS encryption enabled for the Enterprise plan using this deployable architecture. For more details on KMS encryption, refer [this](https://cloud.ibm.com/docs/key-protect?topic=key-protect-about)."
+          "description": "Optionally you can enable Key Management Services (KMS) [encryption](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-mng_data) of the watsonx.data instance for the Enterprise plan using either a newly created key or an existing one."
         },
         {
-          "title": "Optional Integrations",
-          "description": "This solution can be integrated with [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing."
+          "title": "Observability",
+          "description": "This solution can leverage [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing."
         }
       ],
-      "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/issues). Please note this product is not supported via the IBM Cloud Support Center.",
+      "support_details": "This product is in the community registry, support is handled through the [original repo](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data). If you experience issues kindly open an issue [here](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/issues). Please note that this product is not currently supported through the IBM Cloud Support Center.",
       "flavors": [
         {
           "label": "Fully configurable",
           "name": "fully-configurable",
+          "index": 1,
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
           "compliance": {
@@ -58,20 +59,24 @@
           },
           "iam_permissions": [
             {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
-                "crn:v1:bluemix:public:iam::::role:Editor"
-              ],
-              "service_name": "sysdig-monitor",
-              "notes": "[Optional] Required if you are consuming the Observability deployable architecture which sets up Cloud Monitoring."
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Viewer"],
+              "service_name": "Resource group only",
+              "notes": "Viewer access is required in the resource group you want to provision in."
             },
             {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
-                "crn:v1:bluemix:public:iam::::role:Editor"
-              ],
-              "service_name": "logs",
-              "notes": "[Optional] Required if you are consuming the Observability deployable architecture which sets up Cloud Logs."
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
+              "service_name": "All Account Management services",
+              "notes": "[Optional] Required for consuming Account Configuration deployable architecture which creates resource group."
+            },
+            {
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
+              "service_name": "All Identity and Access enabled services",
+              "notes": "[Optional] Required for consuming Account Configuration deployable architecture which creates resource group with account setting."
+            },
+            {
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Editor"],
+              "service_name": "lakehouse",
+              "notes": "Required for creating a new instance of watsonx.data"
             },
             {
               "role_crns": [
@@ -79,32 +84,54 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "kms",
-              "notes": "[Optional] Required if KMS encryption is enabled and Key protect is used for encryption."
+              "notes": "[Optional] Required for enabling KMS encryption in Event Routing, Cloud Logs deployable architecture, and for encrypting the Watsonx Data instance using Key Protect."
             },
             {
+              "service_name": "hs-crypto",
               "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
-              "service_name": "All Account Management services",
-              "notes": "[Optional] Required when setting up foundational IBM Cloud account components such as IAM settings, trusted profiles, access groups, and resource groups."
-            },
-            {
-              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "service_name": "lakehouse",
-              "notes": "Required for creating a new instance of watsonx.data"
+              "notes": "[Optional] Required for enabling Hyper Protect Crypto Services in Event Routing, Cloud Logs deployable architecture, and for encrypting the Watsonx Data instance using Hyper Protect Crypto Services."
+            },
+            {
+              "service_name": "atracker",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Writer",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required for configuring Activity Tracker event routing to cloud object storage bucket and cloud logs."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "sysdig-monitor",
+              "notes": "[Optional] Required for creating a new instance of cloud monitoring."
+            },
+            {
+              "service_name": "logs",
+              "notes": "[Optional] Required for creating a new instance of cloud logs.",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ]
+            },
+            {
+              "service_name": "cloud-object-storage",
+              "notes": "[Optional] Required for enabling COS in Event Routing and Cloud Logs deployable architecture.",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Viewer"
+              ]
             }
           ],
           "architecture": {
             "features": [
               {
-                "title": "watsonx.data instance",
-                "description": "Creates and configures an instance of watsonx.data."
-              },
-              {
-                "title": "KMS Keys and Key Rings",
-                "description": "Supports the creation of Keys and Key Rings for encrypting watsonx.data instances."
+                "title": " ",
+                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
               }
             ],
             "diagrams": [
@@ -194,30 +221,20 @@
             },
             {
               "key": "enable_platform_metrics",
-              "type": "string",
-              "default_value": "true",
+              "type": "boolean",
+              "default_value": true,
               "description": "When set to `true`, the IBM Cloud Monitoring instance will be configured to collect platform metrics from the provided region. You can configure 1 instance only of the IBM Cloud Monitoring service per region to collect platform metrics in that location. Check with the account or service administrator if another monitoring instance has already been configured. You may not have permissions to see all monitoring instances in the region. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-platform_metrics_enabling).",
               "required": true,
-              "virtual": true,
-              "options": [
-                {
-                  "displayname": "true",
-                  "value": "true"
-                },
-                {
-                  "displayname": "false",
-                  "value": "false"
-                }
-              ]
+              "virtual": true
             },
             {
               "key": "logs_routing_tenant_regions",
-              "type": "list(string)",
-              "default_value": "[]",
               "description": "To manage platform logs that are generated by IBM Cloud services in a region of IBM Cloud, you must create a tenant in each region that you operate. Pass a list of regions to create a tenant in. [Learn more](https://cloud.ibm.com/docs/logs-router?topic=logs-router-about-platform-logs).",
               "required": true,
+              "default_value": "[]",
               "virtual": true,
               "custom_config": {
+                "type": "array",
                 "grouping": "deployment",
                 "original_grouping": "deployment",
                 "config_constraints": {
@@ -239,7 +256,21 @@
             },
             {
               "key": "provider_visibility",
-              "hidden": true
+              "hidden": true,
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
             },
             {
               "key": "watsonx_data_instance_name"
@@ -325,12 +356,10 @@
             },
             {
               "name": "deploy-arch-ibm-kms",
-              "description": "Enable Cloud Automation for Key Protect when you want services to use your own managed encryption keys. If disabled, it will fall back on IBM Cloud's default service-managed encryption.",
+              "description": "Enable when you want to use your own managed encryption keys. If disabled, it will fall back on IBM Cloud's default service-managed encryption.",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
               "version": "v5.1.4",
-              "flavors": [
-                "fully-configurable"
-              ],
+              "flavors": ["fully-configurable"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
@@ -361,16 +390,43 @@
               ]
             },
             {
-              "name": "deploy-arch-ibm-observability",
-              "description": "Configure IBM Cloud Logs, Cloud Monitoring and Activity Tracker event routing for analysing logs and metrics generated by the watsonx.data instance.",
-              "id": "a3137d28-79e0-479d-8a24-758ebd5a0eab-global",
-              "version": "v3.0.3",
-              "flavors": [
-                "instances"
-              ],
+              "name": "deploy-arch-ibm-cloud-logs",
+              "description": "Provision and configure IBM Cloud Logs for analysing logs generated by the Watsonx data instance.",
+              "flavors": ["fully-configurable"],
+              "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_kms_instance_crn",
+                  "version_input": "existing_kms_instance_crn",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "logs_routing_tenant_regions",
+                  "version_input": "logs_routing_tenant_regions",
+                  "reference_version": true
+                }
+              ],
               "optional": true,
               "on_by_default": true,
+              "version": "v1.5.6"
+            },
+            {
+              "name": "deploy-arch-ibm-cloud-monitoring",
+              "description": "Provision and configure IBM Cloud Monitoring for metrics generated by the Watsonx data instance.",
+              "flavors": ["fully-configurable"],
+              "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "input_mapping": [
                 {
                   "dependency_input": "prefix",
@@ -386,13 +442,38 @@
                   "dependency_input": "enable_platform_metrics",
                   "version_input": "enable_platform_metrics",
                   "reference_version": true
+                }
+              ],
+              "optional": true,
+              "on_by_default": true,
+              "version": "v1.3.0"
+            },
+            {
+              "name": "deploy-arch-ibm-activity-tracker",
+              "description": "Configure a new IBM Cloud Logs instance for viewing activity tracking events generated by the Watsonx data instance.",
+              "flavors": ["fully-configurable"],
+              "id": "918453c3-4f97-4583-8c4a-83ef12fc7916-global",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
                 },
                 {
-                  "dependency_input": "logs_routing_tenant_regions",
-                  "version_input": "logs_routing_tenant_regions",
+                  "dependency_input": "existing_kms_instance_crn",
+                  "version_input": "existing_kms_instance_crn",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
                   "reference_version": true
                 }
-              ]
+              ],
+              "optional": true,
+              "on_by_default": true,
+              "version": "v1.1.4"
             }
           ],
           "dependency_version_2": true,
