@@ -44,6 +44,12 @@ variable "resource_tags" {
 
 variable "plan" {
   type        = string
-  description = "The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' and 'lakehouse-enterprise'. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
+  description = "The plan required to provision the watsonx.data instance. Possible values are: 'Lite' and 'Enterprise'. The 'Lite' plan is available in the `eu-de`, `jp-tok`, and `eu-gb` regions. The 'Enterprise' plan is available in the `eu-de`, `us-east`, `us-south`, `jp-tok`, `eu-gb`, `au-syd`, and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
   default     = "lakehouse-enterprise"
+}
+
+variable "enable_kms_encryption" {
+  description = "Flag to enable the KMS encryption."
+  type        = bool
+  default     = true
 }
