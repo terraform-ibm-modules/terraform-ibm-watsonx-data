@@ -46,6 +46,9 @@ This module supports provisioning the following:
 
 * Provisioning watsonx.data instance with a selectable service plan
 
+
+**⚠️ Note:**  The module does not support the lite plan in the `au-syd` and `ca-tor` regions currently due to a known [limitation](https://github.com/IBM-Cloud/terraform-provider-ibm/issues/6358) with the Terraform provider.
+
 ### Usage
 
 ```hcl
@@ -109,10 +112,10 @@ To attach access management tags to resources in this module, you need the follo
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access tags to apply to the watsonx.data instance created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial. | `list(string)` | `[]` | no |
-| <a name="input_enable_kms_encryption"></a> [enable\_kms\_encryption](#input\_enable\_kms\_encryption) | Flag to enable the KMS encryption. | `bool` | `false` | no |
+| <a name="input_enable_kms_encryption"></a> [enable\_kms\_encryption](#input\_enable\_kms\_encryption) | Flag to enable the KMS encryption when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'cat-tor'. | `bool` | `false` | no |
 | <a name="input_existing_watsonx_data_instance_crn"></a> [existing\_watsonx\_data\_instance\_crn](#input\_existing\_watsonx\_data\_instance\_crn) | The CRN of an existing watsonx.data instance.If not provided, a new instance will be provisioned. | `string` | `null` | no |
-| <a name="input_plan"></a> [plan](#input\_plan) | The plan that is required to provision the watsonx.data instance. Possible values are: 'lite' , 'lakehouse-enterprise' and `lakehouse-enterprise-mcsp` (only for au-syd region). [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started) | `string` | `"lite"` | no |
-| <a name="input_region"></a> [region](#input\_region) | The region to provision the watsonx.data instance. | `string` | `"us-south"` | no |
+| <a name="input_plan"></a> [plan](#input\_plan) | The plan required to provision the watsonx.data instance. Possible values are: 'Lite' and 'Enterprise'. The 'Lite' plan is available in the `eu-de`, `jp-tok`, and `eu-gb` regions. The 'Enterprise' plan is available in the `eu-de`, `us-east`, `us-south`, `jp-tok`, `eu-gb`, `au-syd`, and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started) | `string` | `"lite"` | no |
+| <a name="input_region"></a> [region](#input\_region) | The region to provision the watsonx.data instance. | `string` | `"eu-de"` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the watsonx.data instance will be grouped. Required when creating a new instance. | `string` | `null` | no |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Optional list of tags to describe the watsonx.data instance created by the module. | `list(string)` | `[]` | no |
 | <a name="input_skip_iam_authorization_policy"></a> [skip\_iam\_authorization\_policy](#input\_skip\_iam\_authorization\_policy) | Whether to create an IAM authorization policy that permits the watsonx.data instance to read the encryption key from the KMS instance.  Set to `true` to avoid creating the policy. | `bool` | `false` | no |

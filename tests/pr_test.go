@@ -35,10 +35,20 @@ var permanentResources map[string]interface{}
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
 
-// These regions are selected as a temporary workaround for issue https://github.ibm.com/GoldenEye/issues/issues/13522
 var validRegions = []string{
+	"us-south",
+	"eu-de",
 	"eu-gb",
 	"jp-tok",
+	"us-east",
+	// "ca-tor",
+	// "au-syd",  Excluded regions (ca-tor, au-syd) as they are supported only in the lakehouse-enterprise-mcsp plan; this test targets enterprise plan with KMS.
+}
+
+// validMCSPRegion is a subset of validRegions that are supported for MCSP plans.
+var validMCSPRegion = []string{
+	"ca-tor",
+	"au-syd",
 }
 
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
@@ -62,11 +72,12 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		ResourceGroup: resourceGroup,
 	})
 	options.TerraformVars = map[string]interface{}{
-		"access_tags":    permanentResources["accessTags"],
-		"region":         validRegions[rand.Intn(len(validRegions))],
-		"prefix":         options.Prefix,
-		"resource_group": resourceGroup,
-		"resource_tags":  options.Tags,
+		"access_tags":           permanentResources["accessTags"],
+		"region":                validMCSPRegion[rand.Intn(len(validMCSPRegion))],
+		"prefix":                options.Prefix,
+		"resource_group":        resourceGroup,
+		"resource_tags":         options.Tags,
+		"enable_kms_encryption": false,
 	}
 	return options
 }
@@ -204,6 +215,8 @@ func TestRunStandardSolution(t *testing.T) {
 		"region":                       options.Region,
 		"existing_resource_group_name": resourceGroup,
 		"provider_visibility":          "public",
+		"enable_kms_encryption":        true,
+		"kms_endpoint_type":            "public",
 		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
 
@@ -234,6 +247,8 @@ func TestRunStandardUpgradeSolution(t *testing.T) {
 		"region":                       options.Region,
 		"existing_resource_group_name": resourceGroup,
 		"provider_visibility":          "public",
+		"enable_kms_encryption":        true,
+		"kms_endpoint_type":            "public",
 		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
 	}
 
