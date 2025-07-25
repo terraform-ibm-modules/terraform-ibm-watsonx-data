@@ -32,7 +32,7 @@ variable "resource_tags" {
 
 variable "region" {
   type        = string
-  description = "The region to provision the watsonx.data instance."
+  description = "Region where the watsonx.data instance is provisioned."
   default     = "eu-de"
   validation {
     condition     = contains(["eu-de", "eu-gb", "jp-tok", "us-south", "us-east", "au-syd", "ca-tor"], var.region)
@@ -48,14 +48,14 @@ variable "existing_watsonx_data_instance_crn" {
 
 variable "plan" {
   type        = string
-  description = "The plan required to provision the watsonx.data instance. Possible values are: 'Lite' and 'Enterprise'. The 'Lite' plan is available in the `eu-de`, `jp-tok`, and `eu-gb` regions. The 'Enterprise' plan is available in the `eu-de`, `us-east`, `us-south`, `jp-tok`, `eu-gb`, `au-syd`, and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
+  description = "The plan required to provision the watsonx.data instance. Possible values are: `Lite` and `Enterprise`. The `Lite` plan is available in the `eu-de`, `jp-tok`, and `eu-gb` regions. The `Enterprise` plan is available in the `eu-de`, `us-east`, `us-south`, `jp-tok`, `eu-gb`, `au-syd`, and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
   default     = "lite"
   validation {
     condition = anytrue([
       var.plan == "lite" && contains(["eu-de", "eu-gb", "jp-tok"], var.region),
       var.plan == "lakehouse-enterprise" && contains(["us-south", "eu-de", "eu-gb", "jp-tok", "us-east", "au-syd", "ca-tor"], var.region)
     ])
-    error_message = "Allowed plan-region combinations are: 'lite' (eu-de, eu-gb, jp-tok), 'lakehouse-enterprise' (eu-de, eu-gb, jp-tok, us-south, us-east), 'lakehouse-enterprise-mcsp' (only in au-syd, ca-tor)."
+    error_message = "Possible plan and region combinations are: `lite` (eu-de, eu-gb, jp-tok), `lakehouse-enterprise` (eu-de, eu-gb, jp-tok, us-south, us-east), `lakehouse-enterprise-mcsp` (only in au-syd, ca-tor)."
   }
 }
 
