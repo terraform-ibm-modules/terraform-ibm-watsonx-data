@@ -331,7 +331,6 @@
               "key": "cloud_logs_instance_name",
               "type": "string",
               "description": "Name of the cloud logs instance to be created.",
-              "required": true,
               "virtual": true,
               "type_metadata": "string",
               "default_value": "__NOT_SET__"
