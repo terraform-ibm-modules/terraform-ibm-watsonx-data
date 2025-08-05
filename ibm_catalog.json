@@ -92,7 +92,7 @@
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "notes": "[Optional] Required for enabling Hyper Protect Crypto Services in Event Routing, Cloud Logs deployable architecture, and for encrypting the Watsonx Data instance using Hyper Protect Crypto Services."
+              "notes": "[Optional] Required for enabling Hyper Protect Crypto Services in Event Routing, Cloud Logs deployable architecture, and for encrypting the watsonx.data instance using Hyper Protect Crypto Services."
             },
             {
               "service_name": "atracker",
