@@ -100,7 +100,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "atracker",
-              "notes": "Required for configuring Activity Tracker event routing to cloud object storage bucket and cloud logs."
+              "notes": "[Optional] Required for configuring Activity Tracker event routing to Cloud Object Storage bucket and Cloud Logs."
             },
             {
               "role_crns": [
@@ -108,7 +108,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "sysdig-monitor",
-              "notes": "[Optional] Required for creating a new instance of cloud monitoring."
+              "notes": "[Optional] Required for creating a new instance of Cloud monitoring."
             },
             {
               "role_crns": [
@@ -116,7 +116,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "logs",
-              "notes": "[Optional] Required for creating a new instance of cloud logs."
+              "notes": "[Optional] Required for creating a new instance of Cloud logs."
             },
             {
               "role_crns": [
