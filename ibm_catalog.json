@@ -108,7 +108,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "sysdig-monitor",
-              "notes": "[Optional] Required for creating a new instance of Cloud monitoring."
+              "notes": "[Optional] Required for creating a new instance of Cloud Monitoring."
             },
             {
               "role_crns": [
@@ -116,7 +116,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "logs",
-              "notes": "[Optional] Required for creating a new instance of Cloud logs."
+              "notes": "[Optional] Required for creating a new instance of Cloud Logs."
             },
             {
               "role_crns": [
