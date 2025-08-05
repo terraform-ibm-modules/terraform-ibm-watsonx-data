@@ -120,7 +120,7 @@
             },
             {
               "service_name": "cloud-object-storage",
-              "notes": "[Optional] Required for enabling COS in Event Routing and Cloud Logs deployable architecture.",
+              "notes": "[Optional] Required if you are deploying Cloud automation for Object Storage.",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
