@@ -76,7 +76,7 @@
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Editor"],
               "service_name": "lakehouse",
-              "notes": "Required for creating a new instance of watsonx.data"
+              "notes": "Required to create an instance of watsonx.data"
             },
             {
               "role_crns": [
