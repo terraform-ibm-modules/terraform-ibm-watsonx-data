@@ -20,6 +20,7 @@ import (
 
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testaddons"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 )
 
@@ -259,4 +260,49 @@ func TestRunStandardUpgradeSolution(t *testing.T) {
 	}
 
 	cleanupResources(t, existingTerraformOptions, prefixKMSKey)
+}
+
+func TestWatsonxDataDefaultConfiguration(t *testing.T) {
+	t.Parallel()
+
+	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
+		Testing:       t,
+		Prefix:        "data-def",
+		ResourceGroup: resourceGroup,
+		QuietMode:     true, // Suppress logs except on failure
+	})
+
+	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
+		options.Prefix,
+		"deploy-arch-ibm-watsonx-data",
+		"fully-configurable",
+		map[string]interface{}{
+			"prefix": options.Prefix,
+			"region": validRegions[rand.Intn(len(validRegions))],
+		},
+	)
+
+	err := options.RunAddonTest()
+	require.NoError(t, err)
+}
+
+// TestDependencyPermutations runs dependency permutations for the Event Notifications and all its dependencies
+func TestWatsonxDataDependencyPermutations(t *testing.T) {
+	t.Skip("Skipping dependency permutations until the test is fixed")
+	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
+		Testing: t,
+		Prefix:  "data-perm",
+		AddonConfig: cloudinfo.AddonConfig{
+			OfferingName:   "deploy-arch-ibm-watsonx-data",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"prefix":                       "data-perm",
+				"region":                       validRegions[rand.Intn(len(validRegions))],
+				"existing_resource_group_name": resourceGroup,
+			},
+		},
+	})
+
+	err := options.RunAddonPermutationTest()
+	assert.NoError(t, err, "Dependency permutation test should not fail")
 }

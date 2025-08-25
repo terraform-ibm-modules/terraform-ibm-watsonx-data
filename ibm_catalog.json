@@ -32,12 +32,12 @@
           "description": "Get started with watsonx.data by creating and configuring an instance. [Learn more](https://cloud.ibm.com/docs/watsonxdata/index.html)."
         },
         {
-          "title": "Optional encryption with Key Protect",
+          "title": "Encryption with Key Protect",
           "description": "Use watsonx.data with Key Protect, which encrypts and secures your enterprise data. [Learn more](https://cloud.ibm.com/docs/key-protect?topic=key-protect-about)."
         },
         {
-          "title": "Optional observability tools",
-          "description": "Use watsonx.data with [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global), which provides monitoring and logging capabilities to deliver deep operational insights into your watsonx.data deployment."
+          "title": "Optional Integrations",
+          "description": "This solution can be integrated with [Cloud automation for Cloud Monitoring](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cloud-monitoring-73debdbf-894f-4c14-81c7-5ece3a70b67d-global) for monitoring, [Cloud automation for Cloud Logs](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cloud-logs-63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global) for collecting platform logs and [Cloud automation for Activity Tracker Event Routing](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-activity-tracker-918453c3-4f97-4583-8c4a-83ef12fc7916-global) to deliver deep operational insights into your watsonx.data deployment."
         }
       ],
       "support_details": "This product is in the community registry, support is handled through the [original repo](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data). If you experience issues kindly open an issue [here](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/issues). Please note that this product is not currently supported through the IBM Cloud Support Center.",
@@ -84,7 +84,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "kms",
-              "notes": "[Optional] Required for enabling KMS encryption in Observability deployable architecture and for encrypting the watsonx.data instance using Key Protect."
+              "notes": "[Optional] Required to enable KMS encryption for cloud automation for Activity Tracker Event Routing, Cloud Logs, and for encrypting the watsonx.data instance."
             },
             {
               "role_crns": [
@@ -92,7 +92,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "hs-crypto",
-              "notes": "[Optional] Required for enabling Hyper Protect Crypto Services in Observability deployable architecture and for encrypting the watsonx.data instance using Hyper Protect Crypto Services."
+              "notes": "[Optional] Required to enable Hyper Protect Crypto Services for cloud automation for Activity Tracker Event Routing, Cloud Logs, and for encrypting the watsonx.data instance."
             },
             {
               "role_crns": [
@@ -100,7 +100,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "atracker",
-              "notes": "[Optional] Required for configuring Activity Tracker event routing to Cloud Object Storage bucket and Cloud Logs."
+              "notes": "[Optional] Required when enabling the Activity Tracker Event Routing."
             },
             {
               "role_crns": [
@@ -108,7 +108,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "sysdig-monitor",
-              "notes": "[Optional] Required for creating a new instance of Cloud Monitoring."
+              "notes": "[Optional] Required to create an instance of Cloud Monitoring."
             },
             {
               "role_crns": [
@@ -116,7 +116,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "logs",
-              "notes": "[Optional] Required for creating a new instance of Cloud Logs."
+              "notes": "[Optional] Required to create an instance of Cloud Logs."
             },
             {
               "role_crns": [
@@ -368,7 +368,7 @@
               "name": "deploy-arch-ibm-kms",
               "description": "Enable Cloud automation for Key Protect to use your own managed encryption keys. If disabled, IBM Cloud's default service-managed encryption is used.",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
-              "version": "v5.1.4",
+              "version": "v5.1.19",
               "flavors": ["fully-configurable"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
@@ -400,11 +400,70 @@
               ]
             },
             {
-              "name": "deploy-arch-ibm-observability",
-              "description": "Configure IBM Cloud Logs, IBM Cloud Monitoring and IBM Cloud Activity Tracker Event Routing for analyzing logs and metrics generated by the watsonx.data instance.",
-              "id": "a3137d28-79e0-479d-8a24-758ebd5a0eab-global",
-              "version": "v3.0.3",
-              "flavors": ["instances"],
+              "name": "deploy-arch-ibm-cloud-logs",
+              "description": "Provision and configure IBM Cloud Logs (ICL) instance which can be used for analysing logs generated by App Configuration instance. ",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "flavors": ["fully-configurable"],
+              "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
+              "version": "v1.6.11",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "logs_routing_tenant_regions",
+                  "version_input": "logs_routing_tenant_regions",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-cloud-monitoring",
+              "description": "Provision and configure IBM Cloud Monitoring for metrics generated by the App Configuration instance.",
+              "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
+              "version": "v1.6.4",
+              "flavors": ["fully-configurable"],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "enable_platform_metrics",
+                  "version_input": "enable_platform_metrics",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-activity-tracker",
+              "description": "Provision and configure Activity Tracker event routing for routing cloud events generated by the App Configuration instance to a Cloud logs target instance.",
+              "id": "918453c3-4f97-4583-8c4a-83ef12fc7916-global",
+              "version": "v1.2.12",
+              "flavors": ["fully-configurable"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
@@ -417,16 +476,6 @@
                 {
                   "dependency_input": "region",
                   "version_input": "region",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "enable_platform_metrics",
-                  "version_input": "enable_platform_metrics",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "logs_routing_tenant_regions",
-                  "version_input": "logs_routing_tenant_regions",
                   "reference_version": true
                 }
               ]
