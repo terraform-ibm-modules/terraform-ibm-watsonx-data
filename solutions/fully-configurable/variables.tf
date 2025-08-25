@@ -21,8 +21,8 @@ variable "provider_visibility" {
 
 variable "existing_resource_group_name" {
   type        = string
-  description = "The name of an existing resource group to provision the watsonx.data in."
-  default     = "Default"
+  description = "The name of an existing resource group to provision the resources. If not provided the default resource group will be used."
+  default     = null
 }
 
 variable "prefix" {
@@ -50,7 +50,7 @@ variable "watsonx_data_instance_name" {
 }
 
 variable "region" {
-  description = "The region where you want to deploy your instance."
+  description = "The region to provision all resources in. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/region) about how to select different regions for different services."
   type        = string
   default     = "us-south"
 }
