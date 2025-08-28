@@ -73,9 +73,9 @@ resource "ibm_resource_instance" "data_instance" {
   tags              = var.resource_tags
 
   timeouts {
-    create = "15m"
-    update = "15m"
-    delete = "15m"
+    create = "60m"
+    update = "60m"
+    delete = "60m"
   }
 
   parameters = {
