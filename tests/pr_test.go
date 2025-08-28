@@ -286,9 +286,7 @@ func TestWatsonxDataDefaultConfiguration(t *testing.T) {
 	require.NoError(t, err)
 }
 
-// TestDependencyPermutations runs dependency permutations for the Event Notifications and all its dependencies
 func TestWatsonxDataDependencyPermutations(t *testing.T) {
-	t.Skip("Skipping dependency permutations until the test is fixed")
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing: t,
 		Prefix:  "data-perm",
