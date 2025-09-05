@@ -277,8 +277,8 @@ func TestWatsonxDataDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-watsonx-data",
 		"fully-configurable",
 		map[string]interface{}{
-			"prefix": options.Prefix,
-			"region": validRegions[rand.Intn(len(validRegions))],
+			"prefix":                       options.Prefix,
+			"existing_resource_group_name": resourceGroup,
 		},
 	)
 
@@ -286,6 +286,7 @@ func TestWatsonxDataDefaultConfiguration(t *testing.T) {
 	require.NoError(t, err)
 }
 
+// TestDependencyPermutations runs dependency permutations for watsonx.data and all its dependencies
 func TestDependencyPermutations(t *testing.T) {
 	t.Skip("Skipping dependency permutations until the test is fixed")
 	t.Parallel()
@@ -297,7 +298,6 @@ func TestDependencyPermutations(t *testing.T) {
 			OfferingFlavor: "fully-configurable",
 			Inputs: map[string]interface{}{
 				"prefix":                       "data-perm",
-				"region":                       validRegions[rand.Intn(len(validRegions))],
 				"existing_resource_group_name": resourceGroup,
 			},
 		},
