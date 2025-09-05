@@ -286,7 +286,7 @@ func TestWatsonxDataDefaultConfiguration(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestWatsonxDataDependencyPermutations(t *testing.T) {
+func TestDependencyPermutations(t *testing.T) {
 	t.Skip("Skipping dependency permutations until the test is fixed")
 	t.Parallel()
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
