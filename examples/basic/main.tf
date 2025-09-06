@@ -48,7 +48,7 @@ module "watsonx_data" {
   source                        = "../../"
   region                        = var.region
   watsonx_data_name             = "${var.prefix}-data-instance"
-  plan                          = var.plan
+  plan                          = "lakehouse-enterprise"
   resource_group_id             = module.resource_group.resource_group_id
   use_case                      = "ai"
   resource_tags                 = var.resource_tags
