@@ -90,17 +90,18 @@ variable "enable_kms_encryption" {
   default     = false
 
   validation {
-    condition = var.enable_kms_encryption ? (
-      (var.existing_kms_instance_crn != null || var.existing_kms_key_crn != null) &&
-      !(var.existing_kms_instance_crn != null && var.existing_kms_key_crn != null)
-    ) : (
-      var.existing_kms_instance_crn == null && var.existing_kms_key_crn == null
-    )
-    error_message = <<-EOT
-      KMS encryption configuration error:
-      - When 'enable_kms_encryption' is true: must provide either 'existing_kms_instance_crn' OR 'existing_kms_key_crn' (not both)
-      - When 'enable_kms_encryption' is false: cannot specify 'existing_kms_instance_crn' or 'existing_kms_key_crn'
-    EOT
+    condition     = var.enable_kms_encryption ? (var.existing_kms_instance_crn != null || var.existing_kms_key_crn != null) : true
+    error_message = "When 'enable_kms_encryption' is true, you must provide either 'existing_kms_instance_crn' or 'existing_kms_key_crn'."
+  }
+
+  validation {
+    condition     = var.enable_kms_encryption ? !(var.existing_kms_instance_crn != null && var.existing_kms_key_crn != null) : true
+    error_message = "When 'enable_kms_encryption' is true, you cannot provide both 'existing_kms_instance_crn' and 'existing_kms_key_crn'. Choose only one."
+  }
+
+  validation {
+    condition     = !var.enable_kms_encryption ? (var.existing_kms_instance_crn == null && var.existing_kms_key_crn == null) : true
+    error_message = "When 'enable_kms_encryption' is false, you cannot specify 'existing_kms_instance_crn' or 'existing_kms_key_crn'."
   }
 }
 

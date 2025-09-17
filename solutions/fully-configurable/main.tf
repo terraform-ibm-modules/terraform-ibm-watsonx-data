@@ -27,16 +27,16 @@ module "resource_group" {
 # KMS Key
 #######################################################################################################################
 
-# parse KMS details from the existing KMS instance CRN (only when we need to create KMS resources)
+# parse KMS details from the existing KMS instance CRN
 module "existing_kms_crn_parser" {
-  count   = var.enable_kms_encryption && var.existing_kms_key_crn == null ? 1 : 0
+  count   = var.existing_kms_instance_crn == null ? 0 : 1
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
   version = "1.2.0"
   crn     = var.existing_kms_instance_crn
 }
 
 module "kms" {
-  count                       = var.enable_kms_encryption && var.existing_kms_key_crn == null ? 1 : 0 # create KMS resources only when encryption is enabled and no existing key is provided
+  count                       = var.enable_kms_encryption && var.existing_kms_instance_crn != null && var.existing_kms_key_crn == null ? 1 : 0 # no need to create any KMS resources if passing an existing key
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
   version                     = "5.1.26"
   create_key_protect_instance = false
