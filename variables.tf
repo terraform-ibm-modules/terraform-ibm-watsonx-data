@@ -84,17 +84,17 @@ variable "use_case" {
 }
 
 variable "enable_kms_encryption" {
-  description = "Flag to enable the KMS encryption when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'cat-tor'."
+  description = "Flag to enable key management service encryption when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'cat-tor'."
   type        = bool
   default     = false
   validation {
     condition     = !var.enable_kms_encryption || local.enterprise_plan_type == "lakehouse-enterprise"
-    error_message = "KMS encryption is supported only when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'cat-tor'."
+    error_message = "Key management service encryption is supported only when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'cat-tor'."
   }
 }
 
 variable "watsonx_data_kms_key_crn" {
-  description = "The CRN of the KMS key used to encrypt the watsonx.data instance."
+  description = "The CRN of the key management service key used to encrypt the watsonx.data instance."
   type        = string
   default     = null
   validation {
@@ -105,6 +105,6 @@ variable "watsonx_data_kms_key_crn" {
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Whether to create an IAM authorization policy that permits the watsonx.data instance to read the encryption key from the KMS instance. Set to `true` to avoid creating the policy."
+  description = "Whether to create an IAM authorization policy that permits the watsonx.data instance to read the encryption key from the key management service instance. Set to `true` to avoid creating the policy."
   default     = false
 }
