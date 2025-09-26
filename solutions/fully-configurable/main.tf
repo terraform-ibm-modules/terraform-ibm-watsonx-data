@@ -36,7 +36,7 @@ module "existing_kms_crn_parser" {
 }
 
 module "kms" {
-  count                       = var.enable_kms_encryption && var.existing_kms_instance_crn != null ? 1 : 0 # no need to create any KMS resources if passing an existing key
+  count                       = var.enable_kms_encryption && var.existing_kms_key_crn == null ? 1 : 0 # create KMS resources only when encryption is enabled and no existing key is provided
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
   version                     = "5.2.0"
   create_key_protect_instance = false
