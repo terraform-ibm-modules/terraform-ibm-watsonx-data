@@ -140,7 +140,7 @@ func TestRunAdvancedExample(t *testing.T) {
 	t.Parallel()
 
 	options := setupOptions(t, "wxd-advanced", advancedExampleDir)
-	options.TerraformVars["enable_kms_encryption"] = false
+	options.TerraformVars["region"] = validRegions[rand.Intn(len(validRegions))]
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
