@@ -27,6 +27,7 @@ import (
 // Use existing resource group
 const resourceGroup = "geretain-test-resources"
 const basicExampleDir = "examples/basic"
+const advancedExampleDir = "examples/advanced"
 const existingExampleDir = "examples/existing-instance"
 const standardSolutionTerraformDir = "solutions/fully-configurable"
 
@@ -73,12 +74,11 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		ResourceGroup: resourceGroup,
 	})
 	options.TerraformVars = map[string]interface{}{
-		"access_tags":           permanentResources["accessTags"],
-		"region":                validMCSPRegion[rand.Intn(len(validMCSPRegion))],
-		"prefix":                options.Prefix,
-		"resource_group":        resourceGroup,
-		"resource_tags":         options.Tags,
-		"enable_kms_encryption": false,
+		"access_tags":    permanentResources["accessTags"],
+		"region":         validMCSPRegion[rand.Intn(len(validMCSPRegion))],
+		"prefix":         options.Prefix,
+		"resource_group": resourceGroup,
+		"resource_tags":  options.Tags,
 	}
 	return options
 }
@@ -130,6 +130,17 @@ func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
 	options := setupOptions(t, "wxd-basic", basicExampleDir)
+
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
+}
+
+func TestRunAdvancedExample(t *testing.T) {
+	t.Parallel()
+
+	options := setupOptions(t, "wxd-advanced", advancedExampleDir)
+	options.TerraformVars["region"] = validRegions[rand.Intn(len(validRegions))]
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")

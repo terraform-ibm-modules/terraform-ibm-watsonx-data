@@ -48,14 +48,14 @@ variable "existing_watsonx_data_instance_crn" {
 
 variable "plan" {
   type        = string
-  description = "The plan required to provision the watsonx.data instance. Possible values are: `Lite` and `Enterprise`. The `Lite` plan is available in the `eu-de`, `jp-tok`, and `eu-gb` regions. The `Enterprise` plan is available in the `eu-de`, `us-east`, `us-south`, `jp-tok`, `eu-gb`, `au-syd`, and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
+  description = "The plan required to provision the watsonx.data instance. Possible values are: `Lite` and `Enterprise`. The `Lite` plan is available in the `eu-de`, `us-south`, `jp-tok`, and `eu-gb` regions. The `Enterprise` plan is available in the `eu-de`, `us-east`, `us-south`, `jp-tok`, `eu-gb`, `au-syd`, and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
   default     = "lite"
   validation {
     condition = anytrue([
-      var.plan == "lite" && contains(["eu-de", "eu-gb", "jp-tok"], var.region),
+      var.plan == "lite" && contains(["us-south", "eu-de", "eu-gb", "jp-tok"], var.region),
       var.plan == "lakehouse-enterprise" && contains(["us-south", "eu-de", "eu-gb", "jp-tok", "us-east", "au-syd", "ca-tor"], var.region)
     ])
-    error_message = "Possible plan and region combinations are: `lite` (eu-de, eu-gb, jp-tok), `lakehouse-enterprise` (eu-de, eu-gb, jp-tok, us-south, us-east), `lakehouse-enterprise-mcsp` (only in au-syd, ca-tor)."
+    error_message = "Possible plan and region combinations are: `lite` (eu-de, eu-gb, jp-tok, us-south), `lakehouse-enterprise` (eu-de, eu-gb, jp-tok, us-south, us-east), `lakehouse-enterprise-mcsp` (only in au-syd, ca-tor)."
   }
 }
 
@@ -84,12 +84,12 @@ variable "use_case" {
 }
 
 variable "enable_kms_encryption" {
-  description = "Flag to enable key management service encryption when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'cat-tor'."
+  description = "Flag to enable key management service encryption when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'ca-tor'."
   type        = bool
   default     = false
   validation {
     condition     = !var.enable_kms_encryption || local.enterprise_plan_type == "lakehouse-enterprise"
-    error_message = "Key management service encryption is supported only when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'cat-tor'."
+    error_message = "Key management service encryption is supported only when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'ca-tor'."
   }
 }
 
@@ -99,7 +99,7 @@ variable "watsonx_data_kms_key_crn" {
   default     = null
   validation {
     condition     = local.enterprise_plan_type == "lakehouse-enterprise" || var.watsonx_data_kms_key_crn == null
-    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the plan configured is 'lakehouse-enterprise' and the deployment region is not 'au-syd' and 'cat-tor'.."
+    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the plan configured is 'lakehouse-enterprise' and the deployment region is not 'au-syd' and 'ca-tor'.."
   }
 }
 
