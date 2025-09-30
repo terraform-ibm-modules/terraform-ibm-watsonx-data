@@ -41,3 +41,9 @@ variable "resource_tags" {
   description = "Optional list of tags to be added to the created resources."
   default     = []
 }
+
+variable "enable_kms_encryption" {
+  description = "Flag to enable the KMS encryption."
+  type        = bool
+  default     = true
+}
