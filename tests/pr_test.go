@@ -216,9 +216,13 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
-		Testing:          t,
-		TemplateFolder:   fullyConfigurableSolutionTerraformDir,
-		Prefix:           prefix,
+		Testing:        t,
+		TemplateFolder: fullyConfigurableSolutionTerraformDir,
+		Prefix:         prefix,
+		TarIncludePatterns: []string{
+			"*.tf",
+			fullyConfigurableSolutionTerraformDir + "/*.tf",
+		},
 		Region:           region,
 		ResourceGroup:    resourceGroup,
 		TerraformVersion: terraformVersion,
