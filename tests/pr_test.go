@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/IBM/go-sdk-core/core"
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -22,6 +23,7 @@ import (
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testaddons"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
 // Use existing resource group
@@ -29,7 +31,8 @@ const resourceGroup = "geretain-test-resources"
 const basicExampleDir = "examples/basic"
 const advancedExampleDir = "examples/advanced"
 const existingExampleDir = "examples/existing-instance"
-const standardSolutionTerraformDir = "solutions/fully-configurable"
+const fullyConfigurableSolutionTerraformDir = "solutions/fully-configurable"
+const terraformVersion = "terraform_v1.10" // This should match the version in the ibm_catalog.json
 
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 
@@ -206,71 +209,57 @@ func TestRunExistingResourcesExample(t *testing.T) {
 	cleanupResources(t, existingTerraformOptions, "")
 }
 
-func TestRunStandardSolution(t *testing.T) {
-	t.Parallel()
-
+func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
 	var region = validRegions[rand.Intn(len(validRegions))]
-	prefixKMSKey := "wxd-da-key"
+	prefixKMSKey := fmt.Sprintf("%s-key", prefix)
 	prefixKMSKey += strconv.Itoa(rand.Intn(1000))
-
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
 
-	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
-		Testing:       t,
-		TerraformDir:  standardSolutionTerraformDir,
-		Prefix:        "wxd-da",
-		Region:        region,
-		ResourceGroup: resourceGroup,
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing:        t,
+		TemplateFolder: fullyConfigurableSolutionTerraformDir,
+		Prefix:         prefix,
+		TarIncludePatterns: []string{
+			"*.tf",
+			fullyConfigurableSolutionTerraformDir + "/*.tf",
+		},
+		Region:           region,
+		ResourceGroup:    resourceGroup,
+		TerraformVersion: terraformVersion,
 	})
-	options.TerraformVars = map[string]interface{}{
-		"prefix":                       options.Prefix,
-		"region":                       options.Region,
-		"existing_resource_group_name": resourceGroup,
-		"provider_visibility":          "public",
-		"enable_kms_encryption":        true,
-		"kms_endpoint_type":            "public",
-		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
+
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
+		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
+		{Name: "provider_visibility", Value: "private", DataType: "string"},
+		{Name: "enable_kms_encryption", Value: true, DataType: "bool"},
+		{Name: "kms_endpoint_type", Value: "private", DataType: "string"},
+		{Name: "existing_kms_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "key_protect_crn"), DataType: "string"},
 	}
-
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
-
-	cleanupResources(t, existingTerraformOptions, prefixKMSKey)
+	return options
 }
 
-func TestRunStandardUpgradeSolution(t *testing.T) {
+func TestRunFullyConfigurableSolutionSchematics(t *testing.T) {
 	t.Parallel()
 
-	var region = validRegions[rand.Intn(len(validRegions))]
-	prefixKMSKey := "wxd-da-key-upg"
-	prefixKMSKey += strconv.Itoa(rand.Intn(1000))
-	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
+	options := setupFullyConfigurableOptions(t, "wxda-da")
 
-	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
-		Testing:       t,
-		TerraformDir:  standardSolutionTerraformDir,
-		Prefix:        "wxda-upg",
-		Region:        region,
-		ResourceGroup: resourceGroup,
-	})
-	options.TerraformVars = map[string]interface{}{
-		"prefix":                       options.Prefix,
-		"region":                       options.Region,
-		"existing_resource_group_name": resourceGroup,
-		"provider_visibility":          "public",
-		"enable_kms_encryption":        true,
-		"kms_endpoint_type":            "public",
-		"existing_kms_instance_crn":    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
-	}
+	err := options.RunSchematicTest()
+	assert.Nil(t, err, "This should not have errored")
+}
 
-	output, err := options.RunTestUpgrade()
+func TestRunFullyConfigurableUpgradeSolutionSchematics(t *testing.T) {
+	t.Parallel()
+
+	options := setupFullyConfigurableOptions(t, "wxda-up")
+	options.CheckApplyResultForUpgrade = true
+
+	err := options.RunSchematicUpgradeTest()
 	if !options.UpgradeTestSkipped {
 		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
 	}
-
-	cleanupResources(t, existingTerraformOptions, prefixKMSKey)
 }
 
 func TestWatsonxDataDefaultConfiguration(t *testing.T) {
@@ -292,28 +281,26 @@ func TestWatsonxDataDefaultConfiguration(t *testing.T) {
 			"existing_resource_group_name": resourceGroup,
 		},
 	)
+	// Disable target / route creation to prevent hitting quota in account
+	options.AddonConfig.Dependencies = []cloudinfo.AddonConfig{
+		{
+			OfferingName:   "deploy-arch-ibm-cloud-monitoring",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"enable_metrics_routing_to_cloud_monitoring": false,
+			},
+			Enabled: core.BoolPtr(true),
+		},
+		{
+			OfferingName:   "deploy-arch-ibm-activity-tracker",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"enable_activity_tracker_event_routing_to_cloud_logs": false,
+			},
+			Enabled: core.BoolPtr(true),
+		},
+	}
 
 	err := options.RunAddonTest()
 	require.NoError(t, err)
-}
-
-// TestDependencyPermutations runs dependency permutations for watsonx.data and all its dependencies
-func TestDependencyPermutations(t *testing.T) {
-	t.Skip("Skipping dependency permutations until the test is fixed")
-	t.Parallel()
-	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing: t,
-		Prefix:  "data-perm",
-		AddonConfig: cloudinfo.AddonConfig{
-			OfferingName:   "deploy-arch-ibm-watsonx-data",
-			OfferingFlavor: "fully-configurable",
-			Inputs: map[string]interface{}{
-				"prefix":                       "data-perm",
-				"existing_resource_group_name": resourceGroup,
-			},
-		},
-	})
-
-	err := options.RunAddonPermutationTest()
-	assert.NoError(t, err, "Dependency permutation test should not fail")
 }
