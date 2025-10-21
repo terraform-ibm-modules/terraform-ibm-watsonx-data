@@ -354,7 +354,7 @@
             },
             {
               "key": "existing_kms_key_crn",
-               "value_constraints": [
+              "value_constraints": [
                 {
                   "type": "regex",
                   "description": "The value provided for 'existing_kms_key_crn' in not valid.",
