@@ -32,7 +32,7 @@ const basicExampleDir = "examples/basic"
 const advancedExampleDir = "examples/advanced"
 const existingExampleDir = "examples/existing-instance"
 const fullyConfigurableSolutionTerraformDir = "solutions/fully-configurable"
-const terraformVersion = "terraform_v1.10" // This should match the version in the ibm_catalog.json
+const terraformVersion = "terraform_v1.12.2" // This should match the version in the ibm_catalog.json
 
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 
