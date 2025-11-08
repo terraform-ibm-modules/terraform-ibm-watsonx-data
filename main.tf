@@ -33,14 +33,14 @@ locals {
 module "crn_parser" {
   count   = var.existing_watsonx_data_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.2.0"
+  version = "1.3.0"
   crn     = var.existing_watsonx_data_instance_crn
 }
 
 module "kms_key_crn_parser" {
   count   = var.enable_kms_encryption ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.2.0"
+  version = "1.3.0"
   crn     = var.watsonx_data_kms_key_crn
 }
 
