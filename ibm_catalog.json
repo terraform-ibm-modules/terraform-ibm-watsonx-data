@@ -326,35 +326,45 @@
             {
               "key": "existing_kms_instance_crn",
               "type": "string",
-              "description": "Select a KMS instance",
+              "default_value": "",
+              "description": "a kms instance representation",
               "required": false,
               "custom_config": {
-                "type": "platform_resource",
-                "config_constraints": {
-                  "resourceType": "kms",
-                  "selection": "single_select",
-                  "valueType": "crn"
-                }
-              }
+                  "type": "platform_resource",
+                  "grouping": "deployment",
+                  "original_grouping": "deployment",
+                  "config_constraints": {
+                      "resourceType": "kms",
+                      "selection": "single_select",
+                      "valueType": "crn"
+                  }
+              },
+              "virtual": false
             },
             {
               "key": "existing_kms_key_crn",
               "type": "string",
-              "description": "Select a key from the chosen KMS instance",
+              "default_value": "",
+              "description": "a kms key",
               "required": false,
               "custom_config": {
-                "type": "kms_key",
-                "config_constraints": {
-                  "valueType": "id"
-                },
-                "associations": {
-                  "parameters": [
-                    { "name": "existing_kms_instance_crn", "optionsRefresh": true }
-                  ]
-                }
-              }
+                  "type": "kms_key",
+                  "grouping": "deployment",
+                  "original_grouping": "deployment",
+                  "config_constraints": {
+                      "valueType": "id"
+                  },
+                  "associations": {
+                      "parameters": [
+                          {
+                              "name": "existing_kms_instance_crn",
+                              "optionsRefresh": true
+                          }
+                      ]
+                  }
+              },
+              "virtual": false
             },
-            
             {
               "key": "kms_endpoint_type",
               "hidden": true,
