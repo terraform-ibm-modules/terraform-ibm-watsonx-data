@@ -324,11 +324,37 @@
               "key": "enable_kms_encryption"
             },
             {
-              "key": "existing_kms_instance_crn"
+              "key": "existing_kms_instance_crn",
+              "type": "string",
+              "description": "Select a KMS instance",
+              "required": false,
+              "custom_config": {
+                "type": "platform_resource",
+                "config_constraints": {
+                  "resourceType": "kms",
+                  "selection": "single_select",
+                  "valueType": "crn"
+                }
+              }
             },
             {
-              "key": "existing_kms_key_crn"
+              "key": "existing_kms_key_crn",
+              "type": "string",
+              "description": "Select a key from the chosen KMS instance",
+              "required": false,
+              "custom_config": {
+                "type": "kms_key",
+                "config_constraints": {
+                  "valueType": "id"
+                },
+                "associations": {
+                  "parameters": [
+                    { "name": "existing_kms_instance_crn", "optionsRefresh": true }
+                  ]
+                }
+              }
             },
+            
             {
               "key": "kms_endpoint_type",
               "hidden": true,
