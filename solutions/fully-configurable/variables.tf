@@ -86,7 +86,7 @@ variable "lite_plan_use_case" {
 
 
 variable "enable_kms_encryption" {
-  description = "Flag to enable KMS encryption. If set to true, both KMS instance CRN and key CRN must be provided. This is applicable only for the Enterprise plan."
+  description = "Flag to enable KMS encryption. If set to true, a value must be passed for either `existing_kms_instance_crn` or `existing_kms_key_crn`. This is applicable only for Enterprise plan."
   type        = bool
   default     = false
 
