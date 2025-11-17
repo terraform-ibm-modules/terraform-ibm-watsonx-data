@@ -344,7 +344,6 @@
             {
               "key": "existing_kms_key_crn",
               "type": "string",
-              "default_value": "",
               "description": "a kms key",
               "required": false,
               "custom_config": {
