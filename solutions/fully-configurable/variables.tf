@@ -85,17 +85,23 @@ variable "lite_plan_use_case" {
 }
 
 variable "enable_kms_encryption" {
-  description = "Flag to enable KMS encryption. If set to true, both values must be passed for `existing_kms_instance_crn` and `existing_kms_key_crn`. This is applicable only for Enterprise plan."
+  description = "Flag to enable KMS encryption. If set to true, a value must be passed for either `existing_kms_instance_crn` or `existing_kms_key_crn`. This is applicable only for Enterprise plan."
   type        = bool
   default     = false
 
-   validation {
-    condition = !var.enable_kms_encryption ? (
-      var.existing_kms_instance_crn == null && var.existing_kms_key_crn == null
-    ) : (
-      var.existing_kms_instance_crn != null && var.existing_kms_key_crn != null
-    )
-    error_message = "When 'enable_kms_encryption' is true, both 'existing_kms_instance_crn' and 'existing_kms_key_crn' must be provided. When it's false, neither should be set."
+  validation {
+    condition     = var.enable_kms_encryption ? (var.existing_kms_instance_crn != null || var.existing_kms_key_crn != null) : true
+    error_message = "When 'enable_kms_encryption' is true, you must provide either 'existing_kms_instance_crn' or 'existing_kms_key_crn'."
+  }
+
+  validation {
+    condition     = var.enable_kms_encryption ? !(var.existing_kms_instance_crn != null && var.existing_kms_key_crn != null) : true
+    error_message = "When 'enable_kms_encryption' is true, you cannot provide both 'existing_kms_instance_crn' and 'existing_kms_key_crn'. Choose only one."
+  }
+
+  validation {
+    condition     = !var.enable_kms_encryption ? (var.existing_kms_instance_crn == null && var.existing_kms_key_crn == null) : true
+    error_message = "When 'enable_kms_encryption' is false, you cannot specify 'existing_kms_instance_crn' or 'existing_kms_key_crn'."
   }
 }
 
