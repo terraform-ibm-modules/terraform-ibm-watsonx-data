@@ -31,14 +31,14 @@ module "resource_group" {
 module "existing_kms_crn_parser" {
   count   = var.existing_kms_instance_crn == null ? 0 : 1
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.2.0"
+  version = "1.3.0"
   crn     = var.existing_kms_instance_crn
 }
 
 module "kms" {
   count                       = var.enable_kms_encryption && var.existing_kms_key_crn == null ? 1 : 0 # create KMS resources only when encryption is enabled and no existing key is provided
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "5.4.4"
+  version                     = "5.4.10"
   create_key_protect_instance = false
   region                      = local.kms_region
   existing_kms_instance_crn   = var.existing_kms_instance_crn

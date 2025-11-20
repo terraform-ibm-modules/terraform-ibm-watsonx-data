@@ -56,15 +56,6 @@
           "index": 1,
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
-          "compliance": {
-            "authority": "scc-v3",
-            "profiles": [
-              {
-                "profile_name": "AI Security Guardrails 2.0",
-                "profile_version": "1.1.0"
-              }
-            ]
-          },
           "iam_permissions": [
             {
               "role_crns": [
@@ -547,7 +538,8 @@
             }
           ],
           "dependency_version_2": true,
-          "terraform_version": "1.10.5"
+          "terraform_version": "1.12.2",
+          "ignore_readme": true
         }
       ]
     }
