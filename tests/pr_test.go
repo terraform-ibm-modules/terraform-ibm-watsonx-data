@@ -4,13 +4,12 @@ package test
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"strconv"
 	"strings"
 	"testing"
 
-	"github.com/IBM/go-sdk-core/core"
+	"github.com/IBM/go-sdk-core/v5/core"
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -78,7 +77,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 	})
 	options.TerraformVars = map[string]interface{}{
 		"access_tags":    permanentResources["accessTags"],
-		"region":         validMCSPRegion[rand.Intn(len(validMCSPRegion))],
+		"region":         validMCSPRegion[common.CryptoIntn(len(validMCSPRegion))],
 		"prefix":         options.Prefix,
 		"resource_group": resourceGroup,
 		"resource_tags":  options.Tags,
@@ -143,7 +142,7 @@ func TestRunAdvancedExample(t *testing.T) {
 	t.Parallel()
 
 	options := setupOptions(t, "wxd-advanced", advancedExampleDir)
-	options.TerraformVars["region"] = validRegions[rand.Intn(len(validRegions))]
+	options.TerraformVars["region"] = validRegions[common.CryptoIntn(len(validRegions))]
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
@@ -173,7 +172,7 @@ func TestRunExistingResourcesExample(t *testing.T) {
 		TerraformDir: tempTerraformDir + "/tests/existing-resources",
 		Vars: map[string]interface{}{
 			"prefix":        prefix,
-			"region":        validRegions[rand.Intn(len(validRegions))],
+			"region":        validRegions[common.CryptoIntn(len(validRegions))],
 			"resource_tags": tags,
 			"access_tags":   permanentResources["accessTags"],
 		},
@@ -210,9 +209,9 @@ func TestRunExistingResourcesExample(t *testing.T) {
 }
 
 func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
-	var region = validRegions[rand.Intn(len(validRegions))]
+	var region = validRegions[common.CryptoIntn(len(validRegions))]
 	prefixKMSKey := fmt.Sprintf("%s-key", prefix)
-	prefixKMSKey += strconv.Itoa(rand.Intn(1000))
+	prefixKMSKey += strconv.Itoa(common.CryptoIntn(1000))
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
