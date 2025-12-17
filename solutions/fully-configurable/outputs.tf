@@ -38,7 +38,7 @@ output "next_steps_text" {
 }
 
 output "next_step_primary_label" {
-  value       = "Go to the IBM watsonx.data dashboard"
+  value       = "Go to the watsonx.data dashboard"
   description = "Primary label"
 }
 
@@ -48,7 +48,7 @@ output "next_step_primary_url" {
 }
 
 output "next_step_secondary_label" {
-  value       = "Learn more about IBM watsonx.data"
+  value       = "Learn more about watsonx.data"
   description = "Secondary label"
 }
 
