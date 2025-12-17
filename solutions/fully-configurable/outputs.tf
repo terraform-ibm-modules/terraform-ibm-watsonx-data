@@ -53,6 +53,6 @@ output "next_step_secondary_label" {
 }
 
 output "next_step_secondary_url" {
-  value       = "https://www.ibm.com/docs/en/watsonxdata/standard/2.3.x?topic=overview"
+  value       = "https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-wxd_ov"
   description = "Secondary URL"
 }
