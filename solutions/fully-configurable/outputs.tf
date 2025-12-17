@@ -31,3 +31,28 @@ output "dashboard_url" {
   description = "The dashboard URL of the watsonx.data instance."
   value       = module.watsonx_data.dashboard_url
 }
+
+output "next_steps_text" {
+  value       = "You can now use watsonx.data to integrate and analyze all your data through a single, unified data platform."
+  description = "Next steps text"
+}
+
+output "next_step_primary_label" {
+  value       = "Go to the IBM watsonx.data dashboard"
+  description = "Primary label"
+}
+
+output "next_step_primary_url" {
+  value       = module.watsonx_data.dashboard_url
+  description = "Primary URL"
+}
+
+output "next_step_secondary_label" {
+  value       = "Learn more about IBM watsonx.data"
+  description = "Secondary label"
+}
+
+output "next_step_secondary_url" {
+  value       = "https://www.ibm.com/docs/en/watsonxdata/standard/2.3.x?topic=overview"
+  description = "Secondary URL"
+}
