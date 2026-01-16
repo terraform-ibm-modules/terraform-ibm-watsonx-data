@@ -23,7 +23,8 @@
       ],
       "short_description": "Creates and configures an instance of IBM watsonx.data.",
       "long_description": "With [IBM watsonx.data](https://www.ibm.com/products/watsonx-data), you can manage and analyze all of your enterprise data, regardless of format, in a unified platform. It's support for open data formats and machine learning libraries makes that data directly accessible for AI workloads. In addition to watsonx.data, this deployable architecture includes optional tools for key encryption and observability, giving you everything you need to manage your watsonx.data deployment. \n\nLeverage [Terraform IBM Modules](https://github.com/terraform-ibm-modules) to shape and scale your solutions. You can integrate Terraform IBM Modules (TIM) to extend functionality and design a solution tailored to your environment and operations needs. These modules offer reusable, customizable elements that follow IBM Cloud's recommended practices. You can access the [source code and documentation](https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data) and use it to extend your current architecture or create new solutions.",
-      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/blob/main/README.md",
+      "offering_docs_url": "https://cloud.ibm.com/docs/ibm-cloud-provider-for-terraform?topic=ibm-cloud-provider-for-terraform-about-tim",
+      "release_notes_url": "https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/releases",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-watsonx-data/main/images/watsonx-data.svg",
       "provider_name": "IBM",
       "features": [
