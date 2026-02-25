@@ -57,13 +57,13 @@ variable "region" {
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to describe the newly created watsonx.data instance."
+  description = "Add user resource tags to the Watsonx Data instance to organize, track, and manage costs. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#tag-types)."
   default     = []
 }
 
 variable "access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the watsonx.data instance. [Learn more](https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial)."
+  description = "Add access management tags to the Watsonx Data instance to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console)."
   default     = []
 }
 

@@ -32,12 +32,12 @@ variable "prefix" {
 
 variable "access_tags" {
   type        = list(string)
-  description = "Optional list of access management tags to add to the watsonx.data instance"
+  description = "Add access management tags to the Watsonx Data instance to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console)."
   default     = []
 }
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to the created resources."
+  description = "Add user resource tags to the Watsonx Data instance to organize, track, and manage costs. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#tag-types)."
   default     = []
 }

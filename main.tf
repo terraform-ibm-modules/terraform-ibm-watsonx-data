@@ -92,7 +92,13 @@ resource "ibm_resource_instance" "data_instance" {
 # Attach Access Tags
 ##############################################################################
 
+data "ibm_iam_access_tag" "access_tag" {
+  for_each = length(var.access_tags) != 0 ? toset(var.access_tags) : []
+  name     = each.value
+}
+
 resource "ibm_resource_tag" "watsonx_data_tag" {
+  depends_on  = [data.ibm_iam_access_tag.access_tag]
   count       = length(var.access_tags) != 0 ? 1 : 0
   resource_id = local.watsonx_data_crn
   tags        = var.access_tags
