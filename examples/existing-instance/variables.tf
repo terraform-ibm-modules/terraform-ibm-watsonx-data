@@ -15,6 +15,6 @@ variable "existing_watsonx_data_instance_crn" {
 
 variable "access_tags" {
   type        = list(string)
-  description = "Optional list of access management tags to add to the watsonx.data instance"
+  description = "Add access management tags to the Watsonx Data instance to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console)."
   default     = []
 }
