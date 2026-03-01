@@ -25,8 +25,6 @@ locals {
   # Temporary workaround for issue 13341[https://github.ibm.com/GoldenEye/issues/issues/13341]
   watsonx_data_dashboard_url = "https://cloud.ibm.com/services/lakehouse/${urlencode(local.watsonx_data_crn)}"
 
-  # Use lakehouse-enterprise-mcsp if region is au-syd or ca-tor with lakehouse-enterprise plan
-  enterprise_plan_type = (var.plan == "lakehouse-enterprise" && contains(["au-syd", "ca-tor"], var.region)) ? "lakehouse-enterprise-mcsp" : var.plan
 }
 
 
@@ -46,12 +44,10 @@ module "kms_key_crn_parser" {
 
 # KMS values
 locals {
-  # kms not applicable for plan - `lakehouse-enterprise-mcsp`
-  validate_kms_plan           = local.enterprise_plan_type == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
-  kms_service                 = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].service_name, null) : null
-  kms_account_id              = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].account_id, null) : null
-  kms_key_id                  = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].resource, null) : null
-  target_resource_instance_id = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].service_instance, null) : null
+  kms_service                 = var.enable_kms_encryption ? module.kms_key_crn_parser[0].service_name : null
+  kms_account_id              = var.enable_kms_encryption ? module.kms_key_crn_parser[0].account_id : null
+  kms_key_id                  = var.enable_kms_encryption ? module.kms_key_crn_parser[0].resource : null
+  target_resource_instance_id = var.enable_kms_encryption ? module.kms_key_crn_parser[0].service_instance : null
 
 }
 ########################################################################################################################
@@ -67,7 +63,7 @@ resource "ibm_resource_instance" "data_instance" {
   count             = var.existing_watsonx_data_instance_crn != null ? 0 : 1
   name              = var.watsonx_data_name
   service           = "lakehouse"
-  plan              = local.enterprise_plan_type
+  plan              = var.plan
   location          = var.region
   resource_group_id = var.resource_group_id
   tags              = var.resource_tags
