@@ -5,6 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 )
 
@@ -28,7 +29,8 @@ func setupOptions(t *testing.T, prefix string, dir string, region string) *testh
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wxd-basic", basicExampleDir, "us-south")
+	region := validRegions[common.CryptoIntn(len(validRegions))]
+	options := setupOptions(t, "wxd-basic", basicExampleDir, region)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
@@ -38,7 +40,8 @@ func TestRunBasicExample(t *testing.T) {
 func TestRunAdvancedExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wxd-advanced", advancedExampleDir, "au-syd")
+	region := validRegions[common.CryptoIntn(len(validRegions))]
+	options := setupOptions(t, "wxd-advanced", advancedExampleDir, region)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")

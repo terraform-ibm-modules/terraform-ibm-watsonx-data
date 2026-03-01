@@ -39,6 +39,16 @@ var permanentResources map[string]interface{}
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
 
+var validRegions = []string{
+	"us-south",
+	"eu-de",
+	"eu-gb",
+	"jp-tok",
+	"us-east",
+	"ca-tor",
+	"au-syd",
+}
+
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
 func TestMain(m *testing.M) {
 	var err error
@@ -158,7 +168,7 @@ func TestRunExistingResourcesExample(t *testing.T) {
 }
 
 func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
-	var region = "us-south"
+	var region = validRegions[common.CryptoIntn(len(validRegions))]
 	prefixKMSKey := fmt.Sprintf("%s-key", prefix)
 	prefixKMSKey += strconv.Itoa(common.CryptoIntn(1000))
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
