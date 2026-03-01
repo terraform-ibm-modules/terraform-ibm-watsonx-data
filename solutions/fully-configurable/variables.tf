@@ -70,7 +70,7 @@ variable "access_tags" {
 variable "service_plan" {
   type        = string
   description = "The plan required to provision the watsonx.data instance.[Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
-  default     = "lakehouse-enterprise"
+  default     = "enterprise"
 }
 
 variable "lite_plan_use_case" {

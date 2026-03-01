@@ -48,7 +48,7 @@ variable "existing_watsonx_data_instance_crn" {
 
 variable "plan" {
   type        = string
-  description = "The plan required to provision the watsonx.data instance. Possible values are: `lite`, `lakehouse-enterprise` and `lakehouse-enterprise-mcsp`. The `lite` plan is available in the `eu-de`, `us-south`, `jp-tok`. The `lakehouse-enterprise` plan is available in the `eu-de`, `us-east`, `us-south`, `jp-tok` and `eu-gb` regions. The `lakehouse-enterprise-mcsp` plan is available in the `au-syd` and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
+  description = "The plan required to provision the watsonx.data instance. Possible values are: `lite`, and `enterprise`. The `lite` plan is available in the `eu-de`, `us-south`, `jp-tok`. The `enterprise` plan is available in the `eu-de`, `us-east`, `us-south`, `jp-tok`, `eu-gb`, `au-syd` and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
   default     = "lite"
 }
 
