@@ -38,6 +38,6 @@ variable "resource_tags" {
 
 variable "access_tags" {
   type        = list(string)
-  description = "Optional list of access management tags to add to the watsonx.data instance"
+  description = "Optional list of access management tags to apply to the watsonx.data instance. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
   default     = []
 }
