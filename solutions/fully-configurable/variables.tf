@@ -69,8 +69,8 @@ variable "access_tags" {
 
 variable "service_plan" {
   type        = string
-  description = "The plan required to provision the watsonx.data instance.[Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started)"
-  default     = "lakehouse-enterprise"
+  description = "The plan required to provision the watsonx.data instance.[Learn more](https://cloud.ibm.com/watsonxdata)"
+  default     = "enterprise"
 }
 
 variable "lite_plan_use_case" {
@@ -85,7 +85,7 @@ variable "lite_plan_use_case" {
 }
 
 variable "enable_kms_encryption" {
-  description = "Flag to enable KMS encryption. If set to true, a value must be passed for either `existing_kms_instance_crn` or `existing_kms_key_crn`. This is applicable only for Enterprise plan."
+  description = "Flag to enable KMS encryption. If set to true, a value must be passed for either `existing_kms_instance_crn` or `existing_kms_key_crn`."
   type        = bool
   default     = false
 
