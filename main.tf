@@ -24,9 +24,6 @@ locals {
   watsonx_data_plan_id    = var.existing_watsonx_data_instance_crn != null ? null : resource.ibm_resource_instance.data_instance[0].resource_plan_id
   # Temporary workaround for issue 13341[https://github.ibm.com/GoldenEye/issues/issues/13341]
   watsonx_data_dashboard_url = "https://cloud.ibm.com/services/lakehouse/${urlencode(local.watsonx_data_crn)}"
-
-  # Use lakehouse-enterprise-mcsp if region is au-syd or ca-tor with lakehouse-enterprise plan
-  enterprise_plan_type = (var.plan == "enterprise" && contains(["au-syd", "ca-tor"], var.region)) ? "lakehouse-enterprise-mcsp" : "lakehouse-enterprise"
 }
 
 
@@ -65,7 +62,7 @@ resource "ibm_resource_instance" "data_instance" {
   count             = var.existing_watsonx_data_instance_crn != null ? 0 : 1
   name              = var.watsonx_data_name
   service           = "lakehouse"
-  plan              = local.enterprise_plan_type
+  plan              = var.plan
   location          = var.region
   resource_group_id = var.resource_group_id
   tags              = var.resource_tags

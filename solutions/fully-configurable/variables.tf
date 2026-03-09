@@ -69,8 +69,8 @@ variable "access_tags" {
 
 variable "service_plan" {
   type        = string
-  description = "The plan required to provision the watsonx.data instance.[Learn more](https://cloud.ibm.com/watsonxdata)"
-  default     = "enterprise"
+  description = "The plan required to provision the watsonx.data instance. Possible values are: `lite`, `lakehouse-enterprise` and `lakehouse-enterprise-mcsp`. The `lite` plan is available in the `eu-de`, `jp-tok` and `us-south`. The `lakehouse-enterprise` plan is available in the `eu-de`, `eu-gb`, `jp-tok`, `us-east` and `us-south` regions. The `lakehouse-enterprise-mcsp` plan is available in `au-syd` and `ca-tor`. [Learn more](https://cloud.ibm.com/watsonxdata)"
+  default     = "lakehouse-enterprise"
 }
 
 variable "lite_plan_use_case" {
