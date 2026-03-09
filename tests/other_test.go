@@ -31,7 +31,7 @@ func setupOptions(t *testing.T, prefix string, dir string, region string, plan s
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	region := validRegions[common.CryptoIntn(len(validRegions))]
+	region := validRegionsLite[common.CryptoIntn(len(validRegionsLite))]
 	plan := "lite"
 	options := setupOptions(t, "wxd-basic", basicExampleDir, region, plan)
 
@@ -44,7 +44,7 @@ func TestRunBasicExample(t *testing.T) {
 func TestRunAdvancedExample(t *testing.T) {
 	t.Parallel()
 
-	region := validRegions[common.CryptoIntn(len(validRegions))]
+	region := validRegionsEnterprise[common.CryptoIntn(len(validRegionsEnterprise))]
 	plan := "lakehouse-enterprise"
 	if region == "au-syd" || region == "ca-tor" {
 		plan = "lakehouse-enterprise-mcsp"

@@ -39,7 +39,7 @@ var permanentResources map[string]interface{}
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
 
-var validRegions = []string{
+var validRegionsEnterprise = []string{
 	"us-south",
 	"eu-de",
 	"eu-gb",
@@ -47,6 +47,12 @@ var validRegions = []string{
 	"us-east",
 	"ca-tor",
 	"au-syd",
+}
+
+var validRegionsLite = []string{
+	"us-south",
+	"eu-de",
+	"jp-tok",
 }
 
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
@@ -168,7 +174,7 @@ func TestRunExistingResourcesExample(t *testing.T) {
 }
 
 func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
-	var region = validRegions[common.CryptoIntn(len(validRegions))]
+	var region = validRegionsEnterprise[common.CryptoIntn(len(validRegionsEnterprise))]
 	prefixKMSKey := fmt.Sprintf("%s-key", prefix)
 	prefixKMSKey += strconv.Itoa(common.CryptoIntn(1000))
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
@@ -186,6 +192,11 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		TerraformVersion: terraformVersion,
 	})
 
+	plan := "lakehouse-enterprise"
+	if region == "au-syd" || region == "ca-tor" {
+		plan = "lakehouse-enterprise-mcsp"
+	}
+
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
@@ -195,6 +206,7 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		{Name: "enable_kms_encryption", Value: true, DataType: "bool"},
 		{Name: "kms_endpoint_type", Value: "private", DataType: "string"},
 		{Name: "existing_kms_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "key_protect_crn"), DataType: "string"},
+		{Name: "service_plan", Value: plan, DataType: "string"},
 	}
 	return options
 }
