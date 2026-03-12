@@ -93,12 +93,22 @@ variable "enable_kms_encryption" {
   description = "Flag to enable key management service encryption when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'ca-tor'."
   type        = bool
   default     = false
+
+  validation {
+    condition     = !var.enable_kms_encryption || var.plan == "lakehouse-enterprise"
+    error_message = "Key management service encryption is supported only when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'ca-tor'."
+  }
 }
 
 variable "watsonx_data_kms_key_crn" {
   description = "The CRN of the key management service key used to encrypt the watsonx.data instance."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.plan == "lakehouse-enterprise" || var.watsonx_data_kms_key_crn == null
+    error_message = "The 'watsonx_data_kms_key_crn' variable is only applicable when the plan configured is 'lakehouse-enterprise' and the deployment region is not 'au-syd' and 'ca-tor'.."
+  }
 }
 
 variable "skip_iam_authorization_policy" {
