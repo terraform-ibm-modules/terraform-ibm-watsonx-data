@@ -20,6 +20,12 @@ variable "region" {
   default     = "us-south"
 }
 
+variable "plan" {
+  type        = string
+  description = "The plan required to provision the watsonx.data instance."
+  default     = "lite"
+}
+
 variable "prefix" {
   type        = string
   description = "Prefix for name of all resources created by this example."

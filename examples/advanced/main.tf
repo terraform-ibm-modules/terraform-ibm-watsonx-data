@@ -55,7 +55,7 @@ module "watsonx_data" {
   source                        = "../../"
   region                        = var.region
   watsonx_data_name             = local.watsonx_data_name
-  plan                          = "lakehouse-enterprise"
+  plan                          = var.plan
   resource_group_id             = module.resource_group.resource_group_id
   use_case                      = "workloads"
   resource_tags                 = var.resource_tags
