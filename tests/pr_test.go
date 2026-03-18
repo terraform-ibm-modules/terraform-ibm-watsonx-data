@@ -192,11 +192,6 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		TerraformVersion: terraformVersion,
 	})
 
-	plan := "lakehouse-enterprise"
-	if region == "au-syd" || region == "ca-tor" {
-		plan = "lakehouse-enterprise-mcsp"
-	}
-
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
@@ -206,7 +201,6 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		{Name: "enable_kms_encryption", Value: true, DataType: "bool"},
 		{Name: "kms_endpoint_type", Value: "private", DataType: "string"},
 		{Name: "existing_kms_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "key_protect_crn"), DataType: "string"},
-		{Name: "service_plan", Value: plan, DataType: "string"},
 	}
 	return options
 }

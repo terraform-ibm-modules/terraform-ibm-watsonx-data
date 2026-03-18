@@ -23,15 +23,32 @@ IBM® watsonx.data is a new open architecture lakehouse that combines the elemen
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
-* [terraform-ibm-watsonx-data](#terraform-ibm-watsonx-data)
-* [Examples](./examples)
-:information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
-    * <a href="./examples/advanced">Advanced example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=watsonx-data-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/advanced"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/basic">Basic example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=watsonx-data-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/existing-instance">Existing instance example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=watsonx-data-existing-instance-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/existing-instance"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-* [Deployable Architectures](./solutions)
-    * <a href="./solutions/fully-configurable">Cloud automation for watsonx.data (Fully configurable)</a>
-* [Contributing](#contributing)
+<ul>
+  <li><a href="#terraform-ibm-watsonx-data">terraform-ibm-watsonx-data</a></li>
+  <li><a href="./examples">Examples</a>
+    <ul>
+      <li>
+        <a href="./examples/advanced">Advanced example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=watsonx-data-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/advanced"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/basic">Basic example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=watsonx-data-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/existing-instance">Existing instance example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=watsonx-data-existing-instance-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/existing-instance"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+    </ul>
+    ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
+  </li>
+  <li><a href="./solutions">Deployable Architectures</a>
+    <ul>
+      <li><a href="./solutions/fully-configurable">Cloud automation for watsonx.data (Fully configurable)</a></li>
+    </ul>
+  </li>
+  <li><a href="#contributing">Contributing</a></li>
+</ul>
 <!-- END OVERVIEW HOOK -->
 
 
@@ -120,7 +137,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | Add access management tags to the watsonx.data instance to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console). | `list(string)` | `[]` | no |
 | <a name="input_enable_kms_encryption"></a> [enable\_kms\_encryption](#input\_enable\_kms\_encryption) | Flag to enable key management service encryption when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'ca-tor'. | `bool` | `false` | no |
 | <a name="input_existing_watsonx_data_instance_crn"></a> [existing\_watsonx\_data\_instance\_crn](#input\_existing\_watsonx\_data\_instance\_crn) | The CRN of an existing watsonx.data instance. If not provided, a new instance is provisioned. | `string` | `null` | no |
-| <a name="input_plan"></a> [plan](#input\_plan) | The plan required to provision the watsonx.data instance. Possible values are: `lite`, `lakehouse-enterprise` and `lakehouse-enterprise-mcsp`. The `lite` plan is available in the `eu-de`, `jp-tok` and `us-south`. The `lakehouse-enterprise` plan is available in the `eu-de`, `eu-gb`, `jp-tok`, `us-east` and `us-south` regions. The `lakehouse-enterprise-mcsp` plan is available in `au-syd` and `ca-tor`. [Learn more](https://cloud.ibm.com/watsonxdata) | `string` | `"lite"` | no |
+| <a name="input_plan"></a> [plan](#input\_plan) | The plan required to provision the watsonx.data instance. Possible values are: `Lite` and `Enterprise`. The `Lite` plan is available in the `eu-de`, `us-south`, `jp-tok`, and `eu-gb` regions. The `Enterprise` plan is available in the `eu-de`, `us-east`, `us-south`, `jp-tok`, `eu-gb`, `au-syd`, and `ca-tor` regions. [Learn more](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started) | `string` | `"lite"` | no |
 | <a name="input_region"></a> [region](#input\_region) | Region where the watsonx.data instance is provisioned. | `string` | `"eu-de"` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The ID of the resource group that contains the watsonx.data instance. Required to create an instance of watsonx.data. | `string` | `null` | no |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Add user resource tags to the watsonx.data instance to organize, track, and manage costs. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#tag-types). | `list(string)` | `[]` | no |
