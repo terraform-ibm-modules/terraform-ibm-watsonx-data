@@ -86,7 +86,7 @@ func setupOptionsBasic(t *testing.T, prefix string, dir string) *testhelper.Test
 	})
 	options.TerraformVars = map[string]interface{}{
 		"access_tags":    permanentResources["accessTags"],
-		"region":         validMCSPRegion[common.CryptoIntn(len(validRegionsLite))],
+		"region":         validRegionsLite[common.CryptoIntn(len(validRegionsLite))],
 		"prefix":         options.Prefix,
 		"resource_group": resourceGroup,
 		"resource_tags":  options.Tags,
