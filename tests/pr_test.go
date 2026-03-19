@@ -39,12 +39,18 @@ var permanentResources map[string]interface{}
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
 
-var validRegionsEnterprise = []string{
+var validRegions = []string{
 	"us-south",
 	"eu-de",
 	"eu-gb",
 	"jp-tok",
 	"us-east",
+	// "ca-tor",
+	// "au-syd",  Excluded regions (ca-tor, au-syd) as they are supported only in the lakehouse-enterprise-mcsp plan; this test targets enterprise plan with KMS.
+}
+
+// validMCSPRegion is a subset of validRegions that are supported for MCSP plans.
+var validMCSPRegion = []string{
 	"ca-tor",
 	"au-syd",
 }
@@ -69,6 +75,40 @@ func TestMain(m *testing.M) {
 	}
 
 	os.Exit(m.Run())
+}
+
+func setupOptionsBasic(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  dir,
+		Prefix:        prefix,
+		ResourceGroup: resourceGroup,
+	})
+	options.TerraformVars = map[string]interface{}{
+		"access_tags":    permanentResources["accessTags"],
+		"region":         validMCSPRegion[common.CryptoIntn(len(validRegionsLite))],
+		"prefix":         options.Prefix,
+		"resource_group": resourceGroup,
+		"resource_tags":  options.Tags,
+	}
+	return options
+}
+
+func setupOptionsAdvanced(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  dir,
+		Prefix:        prefix,
+		ResourceGroup: resourceGroup,
+	})
+	options.TerraformVars = map[string]interface{}{
+		"access_tags":    permanentResources["accessTags"],
+		"region":         validMCSPRegion[common.CryptoIntn(len(validMCSPRegion))],
+		"prefix":         options.Prefix,
+		"resource_group": resourceGroup,
+		"resource_tags":  options.Tags,
+	}
+	return options
 }
 
 // Provision KMS - Key Protect to use in DA tests
@@ -114,6 +154,27 @@ func cleanupResources(t *testing.T, terraformOptions *terraform.Options, prefix 
 	}
 }
 
+func TestRunBasicExample(t *testing.T) {
+	t.Parallel()
+
+	options := setupOptionsBasic(t, "wxd-basic", basicExampleDir)
+
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
+}
+
+func TestRunAdvancedExample(t *testing.T) {
+	t.Parallel()
+
+	options := setupOptionsAdvanced(t, "wxd-advanced", advancedExampleDir)
+	options.TerraformVars["region"] = validRegions[common.CryptoIntn(len(validRegions))]
+
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
+}
+
 func TestRunExistingResourcesExample(t *testing.T) {
 	t.Parallel()
 
@@ -137,7 +198,7 @@ func TestRunExistingResourcesExample(t *testing.T) {
 		TerraformDir: tempTerraformDir + "/tests/existing-resources",
 		Vars: map[string]interface{}{
 			"prefix":        prefix,
-			"region":        "us-south",
+			"region":        validRegions[common.CryptoIntn(len(validRegions))],
 			"resource_tags": tags,
 			"access_tags":   permanentResources["accessTags"],
 		},
@@ -174,7 +235,7 @@ func TestRunExistingResourcesExample(t *testing.T) {
 }
 
 func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
-	var region = validRegionsEnterprise[common.CryptoIntn(len(validRegionsEnterprise))]
+	var region = validRegions[common.CryptoIntn(len(validRegions))]
 	prefixKMSKey := fmt.Sprintf("%s-key", prefix)
 	prefixKMSKey += strconv.Itoa(common.CryptoIntn(1000))
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
