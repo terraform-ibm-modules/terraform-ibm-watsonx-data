@@ -197,10 +197,6 @@
                 {
                   "displayname": "Enterprise",
                   "value": "lakehouse-enterprise"
-                },
-                {
-                  "displayname": "Lakehouse-enterprise-mcsp",
-                  "value": "lakehouse-enterprise-mcsp"
                 }
               ]
             },
