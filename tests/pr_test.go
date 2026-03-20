@@ -55,6 +55,12 @@ var validMCSPRegion = []string{
 	"au-syd",
 }
 
+var validRegionsLite = []string{
+	"us-south",
+	"eu-de",
+	"jp-tok",
+}
+
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
 func TestMain(m *testing.M) {
 	var err error
@@ -71,7 +77,24 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
+func setupOptionsBasic(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  dir,
+		Prefix:        prefix,
+		ResourceGroup: resourceGroup,
+	})
+	options.TerraformVars = map[string]interface{}{
+		"access_tags":    permanentResources["accessTags"],
+		"region":         validRegionsLite[common.CryptoIntn(len(validRegionsLite))],
+		"prefix":         options.Prefix,
+		"resource_group": resourceGroup,
+		"resource_tags":  options.Tags,
+	}
+	return options
+}
+
+func setupOptionsAdvanced(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
 		TerraformDir:  dir,
@@ -134,7 +157,7 @@ func cleanupResources(t *testing.T, terraformOptions *terraform.Options, prefix 
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wxd-basic", basicExampleDir)
+	options := setupOptionsBasic(t, "wxd-basic", basicExampleDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
@@ -144,7 +167,7 @@ func TestRunBasicExample(t *testing.T) {
 func TestRunAdvancedExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wxd-advanced", advancedExampleDir)
+	options := setupOptionsAdvanced(t, "wxd-advanced", advancedExampleDir)
 	options.TerraformVars["region"] = validRegions[common.CryptoIntn(len(validRegions))]
 
 	output, err := options.RunTestConsistency()
