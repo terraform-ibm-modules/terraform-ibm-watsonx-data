@@ -45,8 +45,6 @@ var validRegions = []string{
 	"eu-gb",
 	"jp-tok",
 	"us-east",
-	// "ca-tor",
-	// "au-syd",  Excluded regions (ca-tor, au-syd) as they are supported only in the lakehouse-enterprise-mcsp plan; this test targets enterprise plan with KMS.
 }
 
 // validMCSPRegion is a subset of validRegions that are supported for MCSP plans.

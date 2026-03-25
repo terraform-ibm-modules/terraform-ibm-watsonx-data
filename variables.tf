@@ -59,7 +59,7 @@ variable "plan" {
       var.plan == "lite" && contains(["us-south", "eu-de", "jp-tok"], var.region),
       var.plan == "lakehouse-enterprise" && contains(["us-south", "eu-de", "eu-gb", "jp-tok", "us-east", "au-syd", "ca-tor"], var.region)
     ])
-    error_message = "Possible plan and region combinations are: `lite` (eu-de, jp-tok, us-south) and `lakehouse-enterprise` (eu-de, eu-gb, jp-tok, us-south, us-east, au-syd, ca-tor)."
+    error_message = "Possible plan and region combinations are: `lite` (eu-de, jp-tok, us-south), `lakehouse-enterprise` (eu-de, eu-gb, jp-tok, us-south, us-east, au-syd, ca-tor), `lakehouse-enterprise-mcsp` (only in au-syd, ca-tor)."
   }
 }
 
