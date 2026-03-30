@@ -45,10 +45,6 @@ var validRegions = []string{
 	"eu-gb",
 	"jp-tok",
 	"us-east",
-}
-
-// validMCSPRegion is a subset of validRegions that are supported for MCSP plans.
-var validMCSPRegion = []string{
 	"ca-tor",
 	"au-syd",
 }
@@ -75,16 +71,17 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func setupOptionsBasic(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
+func setupOptionsBasic(t *testing.T, prefix string, dir string, region string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
 		TerraformDir:  dir,
 		Prefix:        prefix,
+		Region:        region,
 		ResourceGroup: resourceGroup,
 	})
 	options.TerraformVars = map[string]interface{}{
 		"access_tags":    permanentResources["accessTags"],
-		"region":         validRegionsLite[common.CryptoIntn(len(validRegionsLite))],
+		"region":         options.Region,
 		"prefix":         options.Prefix,
 		"resource_group": resourceGroup,
 		"resource_tags":  options.Tags,
@@ -92,16 +89,17 @@ func setupOptionsBasic(t *testing.T, prefix string, dir string) *testhelper.Test
 	return options
 }
 
-func setupOptionsAdvanced(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
+func setupOptionsAdvanced(t *testing.T, prefix string, dir string, region string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
 		TerraformDir:  dir,
 		Prefix:        prefix,
+		Region:        region,
 		ResourceGroup: resourceGroup,
 	})
 	options.TerraformVars = map[string]interface{}{
 		"access_tags":    permanentResources["accessTags"],
-		"region":         validMCSPRegion[common.CryptoIntn(len(validMCSPRegion))],
+		"region":         options.Region,
 		"prefix":         options.Prefix,
 		"resource_group": resourceGroup,
 		"resource_tags":  options.Tags,
@@ -155,7 +153,8 @@ func cleanupResources(t *testing.T, terraformOptions *terraform.Options, prefix 
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptionsBasic(t, "wxd-basic", basicExampleDir)
+	region := validRegionsLite[common.CryptoIntn(len(validRegionsLite))]
+	options := setupOptionsBasic(t, "wxd-basic", basicExampleDir, region)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
@@ -165,8 +164,8 @@ func TestRunBasicExample(t *testing.T) {
 func TestRunAdvancedExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptionsAdvanced(t, "wxd-advanced", advancedExampleDir)
-	options.TerraformVars["region"] = validRegions[common.CryptoIntn(len(validRegions))]
+	region := validRegions[common.CryptoIntn(len(validRegions))]
+	options := setupOptionsAdvanced(t, "wxd-advanced", advancedExampleDir, region)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
