@@ -60,7 +60,7 @@ module "watsonx_data" {
   use_case                      = "workloads"
   resource_tags                 = var.resource_tags
   access_tags                   = var.access_tags
-  enable_kms_encryption         = true
+  enable_kms_encryption         = var.enable_kms_encryption
   skip_iam_authorization_policy = false
-  watsonx_data_kms_key_crn      = module.key_protect_all_inclusive[0].keys["${local.key_ring_name}.${local.key_name}"].crn
+  watsonx_data_kms_key_crn      = var.enable_kms_encryption ? module.key_protect_all_inclusive[0].keys["${local.key_ring_name}.${local.key_name}"].crn : null
 }

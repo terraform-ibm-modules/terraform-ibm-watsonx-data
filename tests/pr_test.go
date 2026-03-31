@@ -45,6 +45,8 @@ var validRegions = []string{
 	"eu-gb",
 	"jp-tok",
 	"us-east",
+	"au-syd",
+	"ca-tor",
 }
 
 var validRegionsLite = []string{
@@ -164,6 +166,10 @@ func TestRunAdvancedExample(t *testing.T) {
 
 	region := validRegions[common.CryptoIntn(len(validRegions))]
 	options := setupOptionsAdvanced(t, "wxd-advanced", advancedExampleDir, region)
+
+	if region == "au-syd" || region == "ca-tor" {
+		options.TerraformVars["enable_kms_encryption"] = false
+	}
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
