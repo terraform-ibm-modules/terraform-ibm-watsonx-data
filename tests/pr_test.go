@@ -45,8 +45,6 @@ var validRegions = []string{
 	"eu-gb",
 	"jp-tok",
 	"us-east",
-	"ca-tor",
-	"au-syd",
 }
 
 var validRegionsLite = []string{
