@@ -237,6 +237,8 @@ func TestRunExistingResourcesExample(t *testing.T) {
 
 func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
 	region := validRegions[common.CryptoIntn(len(validRegions))]
+	enable_kms_encryption := region != "au-syd" && region != "ca-tor"
+
 	prefixKMSKey := fmt.Sprintf("%s-key", prefix)
 	prefixKMSKey += strconv.Itoa(common.CryptoIntn(1000))
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
@@ -254,8 +256,6 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		TerraformVersion: terraformVersion,
 	})
 
-	enable_kms_encryption := region != "au-syd" && region != "ca-tor"
-
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
@@ -264,8 +264,16 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		{Name: "provider_visibility", Value: "private", DataType: "string"},
 		{Name: "enable_kms_encryption", Value: enable_kms_encryption, DataType: "bool"},
 		{Name: "kms_endpoint_type", Value: "private", DataType: "string"},
-		{Name: "existing_kms_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "key_protect_crn"), DataType: "string"},
 	}
+
+	if enable_kms_encryption {
+		options.TerraformVars = append(options.TerraformVars, testschematic.TestSchematicTerraformVar{
+			Name:     "existing_kms_instance_crn",
+			Value:    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
+			DataType: "string",
+		})
+	}
+
 	return options
 }
 
