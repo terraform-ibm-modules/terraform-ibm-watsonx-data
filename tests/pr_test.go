@@ -263,13 +263,17 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
 		{Name: "provider_visibility", Value: "private", DataType: "string"},
 		{Name: "enable_kms_encryption", Value: enable_kms_encryption, DataType: "bool"},
-		{Name: "kms_endpoint_type", Value: "private", DataType: "string"},
 	}
 
 	if enable_kms_encryption {
 		options.TerraformVars = append(options.TerraformVars, testschematic.TestSchematicTerraformVar{
 			Name:     "existing_kms_instance_crn",
 			Value:    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
+			DataType: "string",
+		})
+		options.TerraformVars = append(options.TerraformVars, testschematic.TestSchematicTerraformVar{
+			Name:     "kms_endpoint_type",
+			Value:    "private",
 			DataType: "string",
 		})
 	}
