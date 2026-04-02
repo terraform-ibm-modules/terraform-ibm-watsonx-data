@@ -237,7 +237,7 @@ func TestRunExistingResourcesExample(t *testing.T) {
 
 func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
 	region := validRegions[common.CryptoIntn(len(validRegions))]
-	enable_kms_encryption := !(region == "au-syd" || region == "ca-tor")
+	enable_kms_encryption := region != "au-syd" && region != "ca-tor"
 
 	prefixKMSKey := fmt.Sprintf("%s-key", prefix)
 	prefixKMSKey += strconv.Itoa(common.CryptoIntn(1000))
