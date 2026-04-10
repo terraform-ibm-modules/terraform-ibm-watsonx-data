@@ -45,14 +45,14 @@ var validRegions = []string{
 	"eu-gb",
 	"jp-tok",
 	"us-east",
-	// "ca-tor",
-	// "au-syd",  Excluded regions (ca-tor, au-syd) as they are supported only in the lakehouse-enterprise-mcsp plan; this test targets enterprise plan with KMS.
+	"au-syd",
+	"ca-tor",
 }
 
-// validMCSPRegion is a subset of validRegions that are supported for MCSP plans.
-var validMCSPRegion = []string{
-	"ca-tor",
-	"au-syd",
+var validRegionsLite = []string{
+	"us-south",
+	"eu-de",
+	"jp-tok",
 }
 
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
@@ -71,16 +71,35 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
+func setupOptionsBasic(t *testing.T, prefix string, dir string, region string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
 		TerraformDir:  dir,
 		Prefix:        prefix,
+		Region:        region,
 		ResourceGroup: resourceGroup,
 	})
 	options.TerraformVars = map[string]interface{}{
 		"access_tags":    permanentResources["accessTags"],
-		"region":         validMCSPRegion[common.CryptoIntn(len(validMCSPRegion))],
+		"region":         options.Region,
+		"prefix":         options.Prefix,
+		"resource_group": resourceGroup,
+		"resource_tags":  options.Tags,
+	}
+	return options
+}
+
+func setupOptionsAdvanced(t *testing.T, prefix string, dir string, region string) *testhelper.TestOptions {
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  dir,
+		Prefix:        prefix,
+		Region:        region,
+		ResourceGroup: resourceGroup,
+	})
+	options.TerraformVars = map[string]interface{}{
+		"access_tags":    permanentResources["accessTags"],
+		"region":         options.Region,
 		"prefix":         options.Prefix,
 		"resource_group": resourceGroup,
 		"resource_tags":  options.Tags,
@@ -134,7 +153,8 @@ func cleanupResources(t *testing.T, terraformOptions *terraform.Options, prefix 
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wxd-basic", basicExampleDir)
+	region := validRegionsLite[common.CryptoIntn(len(validRegionsLite))]
+	options := setupOptionsBasic(t, "wxd-basic", basicExampleDir, region)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
@@ -144,8 +164,12 @@ func TestRunBasicExample(t *testing.T) {
 func TestRunAdvancedExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "wxd-advanced", advancedExampleDir)
-	options.TerraformVars["region"] = validRegions[common.CryptoIntn(len(validRegions))]
+	region := validRegions[common.CryptoIntn(len(validRegions))]
+	options := setupOptionsAdvanced(t, "wxd-advanced", advancedExampleDir, region)
+
+	if region == "au-syd" || region == "ca-tor" {
+		options.TerraformVars["enable_kms_encryption"] = false
+	}
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
@@ -212,7 +236,9 @@ func TestRunExistingResourcesExample(t *testing.T) {
 }
 
 func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
-	var region = validRegions[common.CryptoIntn(len(validRegions))]
+	region := validRegions[common.CryptoIntn(len(validRegions))]
+	enable_kms_encryption := region != "au-syd" && region != "ca-tor"
+
 	prefixKMSKey := fmt.Sprintf("%s-key", prefix)
 	prefixKMSKey += strconv.Itoa(common.CryptoIntn(1000))
 	existingTerraformOptions := setupKMSKeyProtect(t, region, prefixKMSKey)
@@ -236,10 +262,22 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		{Name: "region", Value: options.Region, DataType: "string"},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
 		{Name: "provider_visibility", Value: "private", DataType: "string"},
-		{Name: "enable_kms_encryption", Value: true, DataType: "bool"},
-		{Name: "kms_endpoint_type", Value: "private", DataType: "string"},
-		{Name: "existing_kms_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "key_protect_crn"), DataType: "string"},
+		{Name: "enable_kms_encryption", Value: enable_kms_encryption, DataType: "bool"},
 	}
+
+	if enable_kms_encryption {
+		options.TerraformVars = append(options.TerraformVars, testschematic.TestSchematicTerraformVar{
+			Name:     "existing_kms_instance_crn",
+			Value:    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
+			DataType: "string",
+		})
+		options.TerraformVars = append(options.TerraformVars, testschematic.TestSchematicTerraformVar{
+			Name:     "kms_endpoint_type",
+			Value:    "private",
+			DataType: "string",
+		})
+	}
+
 	return options
 }
 
