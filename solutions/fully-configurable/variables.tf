@@ -90,6 +90,11 @@ variable "enable_kms_encryption" {
   default     = false
 
   validation {
+    condition     = !var.enable_kms_encryption || (var.region != "au-syd" && var.region != "ca-tor")
+    error_message = "Key management service encryption is supported only when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'ca-tor'."
+  }
+
+  validation {
     condition     = var.enable_kms_encryption ? (var.existing_kms_instance_crn != null || var.existing_kms_key_crn != null) : true
     error_message = "When 'enable_kms_encryption' is true, you must provide either 'existing_kms_instance_crn' or 'existing_kms_key_crn'."
   }
