@@ -85,14 +85,9 @@ variable "lite_plan_use_case" {
 }
 
 variable "enable_kms_encryption" {
-  description = "Flag to enable KMS encryption. If set to true, a value must be passed for either `existing_kms_instance_crn` or `existing_kms_key_crn`. This is applicable only for Enterprise plan."
+  description = "Flag to enable KMS encryption. If set to true, a value must be passed for either `existing_kms_instance_crn` or `existing_kms_key_crn`."
   type        = bool
   default     = false
-
-  validation {
-    condition     = !var.enable_kms_encryption || (var.region != "au-syd" && var.region != "ca-tor" && var.service_plan == "lakehouse-enterprise")
-    error_message = "Key management service encryption is supported only when the configured plan is 'Enterprise (lakehouse-enterprise)' and the deployment region is not 'au-syd' and 'ca-tor'."
-  }
 
   validation {
     condition     = var.enable_kms_encryption ? (var.existing_kms_instance_crn != null || var.existing_kms_key_crn != null) : true
@@ -127,7 +122,7 @@ variable "existing_kms_instance_crn" {
 variable "existing_kms_key_crn" {
   type        = string
   default     = null
-  description = "(Optional) CRN of an existing key management service (Key Protect) key to use to encrypt the watsonx.data instance that this solution creates. To create a key ring and key, pass a value for the `existing_kms_instance_crn` input variable. This is applicable only for Enterprise plan."
+  description = "(Optional) CRN of an existing key management service (Key Protect) key to use to encrypt the watsonx.data instance that this solution creates. To create a key ring and key, pass a value for the `existing_kms_instance_crn` input variable."
 
   validation {
     condition = anytrue([
@@ -140,7 +135,7 @@ variable "existing_kms_key_crn" {
 
 variable "kms_endpoint_type" {
   type        = string
-  description = "The type of endpoint to use for communicating with the Key Protect instance. Possible values: `public`, `private`. Applies only if `existing_kms_key_crn` is specified. This is applicable only for Enterprise plan."
+  description = "The type of endpoint to use for communicating with the Key Protect instance. Possible values: `public`, `private`. Applies only if `existing_kms_key_crn` is specified."
   default     = "private"
   validation {
     condition     = can(regex("^(public|private)$", var.kms_endpoint_type))
@@ -151,13 +146,13 @@ variable "kms_endpoint_type" {
 variable "watsonx_data_key_ring_name" {
   type        = string
   default     = "watsonx-data-key-ring"
-  description = "The name of the key ring to create for the watsonx.data instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `<prefix>-value` format. This is applicable only for Enterprise plan."
+  description = "The name of the key ring to create for the watsonx.data instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `<prefix>-value` format."
 }
 
 variable "watsonx_data_key_name" {
   type        = string
   default     = "watsonx-data-key"
-  description = "The name of the key to create for the watsonx.data instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format. This is applicable only for Enterprise plan."
+  description = "The name of the key to create for the watsonx.data instance. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format."
 }
 
 variable "skip_watsonx_data_kms_iam_auth_policy" {

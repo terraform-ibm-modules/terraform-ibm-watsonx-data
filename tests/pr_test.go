@@ -167,10 +167,6 @@ func TestRunAdvancedExample(t *testing.T) {
 	region := validRegions[common.CryptoIntn(len(validRegions))]
 	options := setupOptionsAdvanced(t, "wxd-advanced", advancedExampleDir, region)
 
-	if region == "au-syd" || region == "ca-tor" {
-		options.TerraformVars["enable_kms_encryption"] = false
-	}
-
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
@@ -237,7 +233,6 @@ func TestRunExistingResourcesExample(t *testing.T) {
 
 func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
 	region := validRegions[common.CryptoIntn(len(validRegions))]
-	enable_kms_encryption := region != "au-syd" && region != "ca-tor"
 
 	prefixKMSKey := fmt.Sprintf("%s-key", prefix)
 	prefixKMSKey += strconv.Itoa(common.CryptoIntn(1000))
@@ -262,20 +257,9 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		{Name: "region", Value: options.Region, DataType: "string"},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
 		{Name: "provider_visibility", Value: "private", DataType: "string"},
-		{Name: "enable_kms_encryption", Value: enable_kms_encryption, DataType: "bool"},
-	}
-
-	if enable_kms_encryption {
-		options.TerraformVars = append(options.TerraformVars, testschematic.TestSchematicTerraformVar{
-			Name:     "existing_kms_instance_crn",
-			Value:    terraform.Output(t, existingTerraformOptions, "key_protect_crn"),
-			DataType: "string",
-		})
-		options.TerraformVars = append(options.TerraformVars, testschematic.TestSchematicTerraformVar{
-			Name:     "kms_endpoint_type",
-			Value:    "private",
-			DataType: "string",
-		})
+		{Name: "enable_kms_encryption", Value: true, DataType: "bool"},
+		{Name: "existing_kms_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "key_protect_crn"), DataType: "string"},
+		{Name: "kms_endpoint_type", Value: "private", DataType: "string"},
 	}
 
 	return options
