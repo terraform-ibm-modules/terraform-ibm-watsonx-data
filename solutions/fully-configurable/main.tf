@@ -22,13 +22,38 @@ locals {
   kms_key_ring_name = var.watsonx_data_key_ring_name != null ? "${local.prefix}${var.watsonx_data_key_ring_name}" : null
   kms_key_name      = var.watsonx_data_key_name != null ? "${local.prefix}${var.watsonx_data_key_name}" : null
 
-  existing_kms_instance_guid = var.enable_kms_encryption ? var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].service_instance : var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].service_instance : null : null
-  # fetch KMS region from existing_kms_instance_crn if KMS resources are required and existing_kms_key_crn is not provided
-  kms_region                       = var.enable_kms_encryption ? var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].region : var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].region : null : null
-  kms_service_name                 = var.enable_kms_encryption ? var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].service_name : var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].service_name : null : null
-  kms_account_id                   = var.enable_kms_encryption ? var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].account_id : var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].account_id : null : null
-  kms_key_crn                      = var.enable_kms_encryption ? (var.existing_kms_key_crn != null ? var.existing_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
-  kms_key_id                       = var.enable_kms_encryption ? var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].resource : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].key_id : null
+  # Derive values from existing KMS instance CRN if provided
+  kms_instance_guid_from_crn = var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].service_instance : null
+  kms_region_from_crn        = var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].region : null
+  kms_service_name_from_crn  = var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].service_name : null
+  kms_account_id_from_crn    = var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].account_id : null
+
+  # Derive values from existing KMS key CRN if provided
+  kms_instance_guid_from_key = var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].service_instance : null
+  kms_region_from_key        = var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].region : null
+  kms_service_name_from_key  = var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].service_name : null
+  kms_account_id_from_key    = var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].account_id : null
+  kms_key_id_from_key        = var.existing_kms_key_crn != null ? module.kms_key_crn_parser[0].resource : null
+
+  # Effective values (prefer CRN, fallback to key)
+  existing_kms_instance_guid = var.enable_kms_encryption ? coalesce(local.kms_instance_guid_from_crn, local.kms_instance_guid_from_key) : null
+  kms_region                 = var.enable_kms_encryption ? coalesce(local.kms_region_from_crn, local.kms_region_from_key) : null
+  kms_service_name           = var.enable_kms_encryption ? coalesce(local.kms_service_name_from_crn, local.kms_service_name_from_key) : null
+  kms_account_id             = var.enable_kms_encryption ? coalesce(local.kms_account_id_from_crn, local.kms_account_id_from_key) : null
+
+  # Key CRN and ID (either existing or newly created)
+  kms_key_crn = var.enable_kms_encryption ? (
+    var.existing_kms_key_crn != null
+    ? var.existing_kms_key_crn
+    : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn
+  ) : null
+
+  kms_key_id = var.enable_kms_encryption ? coalesce(
+    local.kms_key_id_from_key,
+    module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].key_id
+  ) : null
+
+  # Cross-account IAM policy creation flag
   create_cross_account_auth_policy = !var.skip_watsonx_data_kms_iam_auth_policy && var.ibmcloud_kms_api_key != null
 }
 
