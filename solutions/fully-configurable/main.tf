@@ -42,15 +42,24 @@ locals {
   kms_account_id             = var.enable_kms_encryption ? coalesce(local.kms_account_id_from_crn, local.kms_account_id_from_key) : null
 
   # Key CRN and ID (either existing or newly created)
-  kms_key_crn = var.enable_kms_encryption ? (
-    var.existing_kms_key_crn != null
-    ? var.existing_kms_key_crn
-    : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn
+  kms_key_crn = var.enable_kms_encryption ? coalesce(
+    var.existing_kms_key_crn,
+    try(
+      module.kms[0].keys[
+        format("%s.%s", local.kms_key_ring_name, local.kms_key_name)
+      ].crn,
+      null
+    )
   ) : null
 
   kms_key_id = var.enable_kms_encryption ? coalesce(
     local.kms_key_id_from_key,
-    module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].key_id
+    try(
+      module.kms[0].keys[
+        format("%s.%s", local.kms_key_ring_name, local.kms_key_name)
+      ].key_id,
+      null
+    )
   ) : null
 
   # Cross-account IAM policy creation flag
