@@ -157,6 +157,9 @@
               "key": "ibmcloud_api_key"
             },
             {
+              "key": "ibmcloud_kms_api_key"
+            },
+            {
               "key": "prefix",
               "required": true,
               "default_value": "dev",
