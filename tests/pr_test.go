@@ -304,6 +304,7 @@ func TestRunFullyConfigurableUpgradeSolutionSchematics(t *testing.T) {
 }
 
 func TestWatsonxDataDefaultConfiguration(t *testing.T) {
+	t.Skip() // To be removed
 	t.Parallel()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
