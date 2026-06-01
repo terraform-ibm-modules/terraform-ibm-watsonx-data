@@ -2,6 +2,7 @@
 package test
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -110,7 +111,7 @@ func setupOptionsAdvanced(t *testing.T, prefix string, dir string, region string
 // Provision KMS - Key Protect to use in DA tests
 func setupKMSKeyProtect(t *testing.T, region string, prefix string) *terraform.Options {
 	realTerraformDir := "./kp-instance"
-	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
+	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueID())))
 
 	checkVariable := "TF_VAR_ibmcloud_api_key"
 	val, present := os.LookupEnv(checkVariable)
@@ -127,8 +128,8 @@ func setupKMSKeyProtect(t *testing.T, region string, prefix string) *terraform.O
 		Upgrade: true,
 	})
 
-	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
-	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
+	terraform.WorkspaceSelectOrNewContext(t, context.Background(), existingTerraformOptions, prefix)
+	_, existErr := terraform.InitAndApplyContextE(t, context.Background(), existingTerraformOptions)
 	require.NoError(t, existErr, "Init and Apply of temp resources (KP Instance and Key creation) failed")
 
 	return existingTerraformOptions
@@ -142,9 +143,9 @@ func cleanupResources(t *testing.T, terraformOptions *terraform.Options, prefix 
 		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
 	} else {
 		logger.Log(t, "START: Destroy (existing resources)")
-		terraform.Destroy(t, terraformOptions)
+		terraform.DestroyContext(t, context.Background(), terraformOptions)
 		if prefix != "" {
-			terraform.WorkspaceDelete(t, terraformOptions, prefix)
+			terraform.WorkspaceDeleteContext(t, context.Background(), terraformOptions, prefix)
 		}
 		logger.Log(t, "END: Destroy (existing resources)")
 	}
@@ -179,9 +180,9 @@ func TestRunExistingResourcesExample(t *testing.T) {
 	// Provision watsonx.data instance
 	// ------------------------------------------------------------------------------------
 
-	prefix := fmt.Sprintf("ex-wxd-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("ex-wxd-%s", strings.ToLower(random.UniqueID()))
 	realTerraformDir := ".."
-	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
+	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueID())))
 	tags := common.GetTagsFromTravis()
 
 	// Verify ibmcloud_api_key variable is set
@@ -204,12 +205,12 @@ func TestRunExistingResourcesExample(t *testing.T) {
 		Upgrade: true,
 	})
 
-	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
-	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
+	terraform.WorkspaceSelectOrNewContext(t, context.Background(), existingTerraformOptions, prefix)
+	_, existErr := terraform.InitAndApplyContextE(t, context.Background(), existingTerraformOptions)
 	if existErr != nil {
 		assert.True(t, existErr == nil, "Init and Apply of temp existing resource failed")
 	} else {
-		outputs, err := terraform.OutputAllE(t, existingTerraformOptions)
+		outputs, err := terraform.OutputAllContextE(t, context.Background(), existingTerraformOptions)
 		require.NoError(t, err, "Failed to retrieve Terraform outputs")
 		expectedOutputs := []string{"account_id", "id", "crn", "guid", "name", "plan_id", "dashboard_url"}
 		_, tfOutputsErr := testhelper.ValidateTerraformOutputs(outputs, expectedOutputs...)
@@ -220,7 +221,7 @@ func TestRunExistingResourcesExample(t *testing.T) {
 				// Do not hard fail the test if the implicit destroy steps fail to allow a full destroy of resource to occur
 				ImplicitRequired: false,
 				TerraformVars: map[string]interface{}{
-					"existing_watsonx_data_instance_crn": terraform.Output(t, existingTerraformOptions, "crn"),
+					"existing_watsonx_data_instance_crn": terraform.OutputContext(t, context.Background(), existingTerraformOptions, "crn"),
 				},
 			})
 			output, err := options.RunTestConsistency()
@@ -258,7 +259,7 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) *testschematic.T
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
 		{Name: "provider_visibility", Value: "private", DataType: "string"},
 		{Name: "enable_kms_encryption", Value: true, DataType: "bool"},
-		{Name: "existing_kms_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "key_protect_crn"), DataType: "string"},
+		{Name: "existing_kms_instance_crn", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "key_protect_crn"), DataType: "string"},
 		{Name: "kms_endpoint_type", Value: "private", DataType: "string"},
 	}
 
