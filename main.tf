@@ -46,8 +46,7 @@ module "kms_key_crn_parser" {
 
 # KMS values
 locals {
-  # kms not applicable for plan - `lakehouse-enterprise-mcsp`
-  validate_kms_plan           = local.enterprise_plan_type == "lakehouse-enterprise" && var.watsonx_data_kms_key_crn != null
+  validate_kms_plan           = var.watsonx_data_kms_key_crn != null
   kms_service                 = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].service_name, null) : null
   kms_account_id              = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].account_id, null) : null
   kms_key_id                  = local.validate_kms_plan ? try(module.kms_key_crn_parser[0].resource, null) : null
