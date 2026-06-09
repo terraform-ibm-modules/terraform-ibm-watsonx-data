@@ -25,26 +25,26 @@ IBM® watsonx.data is a new open architecture lakehouse that combines the elemen
 ## Overview
 <ul>
   <li><a href="#terraform-ibm-watsonx-data">terraform-ibm-watsonx-data</a></li>
-  <li><a href="./examples">Examples</a>
+  <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples">Examples</a>
     <ul>
       <li>
-        <a href="./examples/advanced">Advanced example</a>
+        <a href="https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/advanced">Advanced example</a>
         <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=watsonx-data-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/advanced"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
       </li>
       <li>
-        <a href="./examples/basic">Basic example</a>
+        <a href="https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/basic">Basic example</a>
         <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=watsonx-data-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
       </li>
       <li>
-        <a href="./examples/existing-instance">Existing instance example</a>
+        <a href="https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/existing-instance">Existing instance example</a>
         <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=watsonx-data-existing-instance-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/examples/existing-instance"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
       </li>
     </ul>
     ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
   </li>
-  <li><a href="./solutions">Deployable Architectures</a>
+  <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/solutions">Deployable Architectures</a>
     <ul>
-      <li><a href="./solutions/fully-configurable">Cloud automation for watsonx.data (Fully configurable)</a></li>
+      <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-watsonx-data/tree/main/solutions/fully-configurable">Cloud automation for watsonx.data (Fully configurable)</a></li>
     </ul>
   </li>
   <li><a href="#contributing">Contributing</a></li>
