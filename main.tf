@@ -100,7 +100,7 @@ data "ibm_iam_access_tag" "access_tag" { # tflint-ignore: terraform_unused_decla
 resource "ibm_resource_tag" "watsonx_data_tag" {
   count       = length(var.access_tags) != 0 ? 1 : 0
   resource_id = local.watsonx_data_crn
-  tags        = var.access_tags
+  tags        = sort(var.access_tags)
   tag_type    = "access"
 }
 
