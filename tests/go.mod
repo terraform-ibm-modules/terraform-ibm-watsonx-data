@@ -5,8 +5,8 @@ go 1.26.1
 require (
 	github.com/IBM/go-sdk-core/v5 v5.23.2
 	github.com/gruntwork-io/terratest v1.0.1
-	github.com/stretchr/testify v1.11.1
-	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.77.1
+	github.com/stretchr/testify v1.12.1
+	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.77.4
 )
 
 require (
@@ -14,8 +14,8 @@ require (
 	github.com/IBM-Cloud/bluemix-go v0.0.0-20250818082648-8ebc393b4b26 // indirect
 	github.com/IBM-Cloud/power-go-client v1.16.2 // indirect
 	github.com/IBM/cloud-databases-go-sdk v0.8.1 // indirect
-	github.com/IBM/networking-go-sdk v0.53.5 // indirect
-	github.com/IBM/platform-services-go-sdk v0.101.0 // indirect
+	github.com/IBM/networking-go-sdk v0.53.10 // indirect
+	github.com/IBM/platform-services-go-sdk v0.103.0 // indirect
 	github.com/IBM/project-go-sdk v0.4.0 // indirect
 	github.com/IBM/schematics-go-sdk v0.4.0 // indirect
 	github.com/IBM/vpc-go-sdk v1.0.2 // indirect
@@ -27,7 +27,6 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudflare/circl v1.6.3 // indirect
 	github.com/cyphar/filepath-securejoin v0.6.1 // indirect
-	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.15 // indirect
@@ -81,10 +80,9 @@ require (
 	github.com/oklog/ulid/v2 v2.1.2 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/pjbgf/sha1cd v0.6.0 // indirect
-	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
 	github.com/skeema/knownhosts v1.3.1 // indirect
-	github.com/stretchr/objx v0.5.2 // indirect
+	github.com/stretchr/objx v0.5.3 // indirect
 	github.com/tmccombs/hcl2json v0.6.7 // indirect
 	github.com/ulikunitz/xz v0.5.13 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
@@ -95,6 +93,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.43.0 // indirect
 	go.opentelemetry.io/otel/trace v1.43.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.55.0 // indirect
 	golang.org/x/mod v0.40.0 // indirect
 	golang.org/x/net v0.58.0 // indirect
